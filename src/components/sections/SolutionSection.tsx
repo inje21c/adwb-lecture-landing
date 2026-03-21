@@ -23,7 +23,13 @@ const SolutionSection = () => {
               "제품을 만들기 전에 보도자료를 먼저 써라." — Working Backwards
             </p>
           </div>
-          <p className="text-xl font-semibold text-primary">여기에 AI를 결합했습니다.</p>
+          <p className="text-xl font-semibold text-primary mb-6">저는 여기에 AI를 결합했습니다.</p>
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <span className="font-semibold text-foreground">AI-Driven Working Backwards:</span><br/>
+            보도자료에서 시작하여, AI 바이브코딩으로 목업을 만들고,<br/>
+            현업이 직접 체험하고 피드백하는 반복 사이클을 거쳐,<br/>
+            명확한 RFP까지 도달하는 12단계 파이프라인.
+          </p>
         </div>
 
         {/* Pipeline flow */}
@@ -72,7 +78,8 @@ const SolutionSection = () => {
           </div>
 
           <p className="text-center text-sm text-muted-foreground mt-8">
-            Step 9~10은 요구사항이 수렴될 때까지 <span className="font-semibold text-primary">반복</span>됩니다.
+            Step 9~10은 요구사항이 수렴될 때까지 <span className="font-semibold text-primary">반복</span>됩니다.<br/>
+            이 반복 사이클이 방법론의 핵심 엔진입니다.
           </p>
         </div>
       </div>

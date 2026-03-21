@@ -34,7 +34,7 @@ const BeforeAfterSection = () => {
                 </th>
                 <th className="text-left p-4 font-semibold text-primary bg-secondary rounded-tr-lg">
                   <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-primary" /> 새 방법론
+                    <Check className="w-4 h-4 text-primary" /> AI-Driven WB
                   </div>
                 </th>
               </tr>

@@ -1,0 +1,10 @@
+export { default as HeroSection } from "./HeroSection";
+export { default as ProblemSection } from "./ProblemSection";
+export { default as SolutionSection } from "./SolutionSection";
+export { default as StepsDetailSection } from "./StepsDetailSection";
+export { default as PositioningSection } from "./PositioningSection";
+export { default as BeforeAfterSection } from "./BeforeAfterSection";
+export { default as AcademicSection } from "./AcademicSection";
+export { default as ToolStackSection } from "./ToolStackSection";
+export { default as CTASection } from "./CTASection";
+export { default as FooterSection } from "./FooterSection";

@@ -1,15 +1,14 @@
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
-import { MessageSquare, Palette, Eye, GitBranch, Code, Rocket, Server, Cloud } from "lucide-react";
+import { MessageSquare, Palette, Eye, GitBranch, Code, Rocket, Server } from "lucide-react";
 
 const tools = [
-  { icon: MessageSquare, name: "ChatGPT / Claude", role: "기획 · 사고 정리" },
-  { icon: Palette, name: "Behance / Dribbble", role: "UI 레퍼런스" },
+  { icon: MessageSquare, name: "ChatGPT, Claude", role: "기획/사고 정리" },
+  { icon: Palette, name: "Behance, Dribbble", role: "UI 레퍼런스" },
   { icon: Eye, name: "Lovable", role: "UI 생성" },
   { icon: GitBranch, name: "GitHub", role: "코드 관리" },
-  { icon: Code, name: "Claude Code / Codex", role: "개발 · 수정" },
-  { icon: Rocket, name: "Firebase", role: "배포 · 시연" },
+  { icon: Code, name: "Claude Code, Codex", role: "개발/수정" },
+  { icon: Rocket, name: "Firebase", role: "배포/시연" },
   { icon: Server, name: "AWS EC2", role: "인프라" },
-  { icon: Cloud, name: "AI Tools", role: "전체 파이프라인 지원" },
 ];
 
 const ToolStackSection = () => {

@@ -11,12 +11,12 @@ const cards = [
   {
     icon: Package,
     title: "수강 후 가져가는 것",
-    desc: "확정 보도자료 + KPI 정의서, Lovable 목업, 작동하는 데모 사이트, 설계서 + RFP 초안",
+    desc: "확정 보도자료 + KPI 정의서, Lovable 목업 + 구조화된 소스 코드, 작동하는 데모 사이트 (Firebase URL), 설계서 + RFP 초안",
   },
   {
     icon: Users,
     title: "대상",
-    desc: "개발자, 비개발자(기획/영업/PM), AI 시대 IT 조달 프로세스 혁신에 관심 있는 리더",
+    desc: "개발자: 바이브코딩을 요구사항 구체화 도구로 활용하고 싶은 분 · 비개발자: 자기 생각을 시각적 목업으로 만들고 싶은 기획/영업/PM · 리더: AI 시대의 IT 조달 프로세스 혁신에 관심 있는 분",
   },
 ];
 
@@ -51,6 +51,7 @@ const CTASection = () => {
           <Button variant="hero" size="lg" className="text-lg px-12 py-7">
             강의 문의하기
           </Button>
+          <p className="text-sm text-primary-foreground/50 mt-4">DM 또는 이메일로 문의해 주세요.</p>
         </div>
       </div>
     </section>

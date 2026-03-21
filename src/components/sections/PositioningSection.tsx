@@ -7,7 +7,8 @@ const PositioningSection = () => {
     <section id="positioning" className="py-24 md:py-32 section-padding bg-secondary/40">
       <div ref={ref} className="max-w-3xl mx-auto text-center">
         <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <p className="text-sm font-semibold text-muted-foreground tracking-widest uppercase mb-8">핵심 포지셔닝</p>
+          <p className="text-sm font-semibold text-muted-foreground tracking-widest uppercase mb-4">핵심 포지셔닝</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">바이브코딩은 개발 도구가 아닙니다.</h2>
           <blockquote className="text-xl md:text-2xl leading-relaxed text-foreground/80 mb-8">
             "엔터프라이즈 시스템을 처음부터 끝까지 바이브코딩만으로 개발하는 것은 현실적이지 않습니다.
             <br /><br />

@@ -1,14 +1,16 @@
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import ProblemSection from "@/components/ProblemSection";
-import SolutionSection from "@/components/SolutionSection";
-import StepsDetailSection from "@/components/StepsDetailSection";
-import PositioningSection from "@/components/PositioningSection";
-import BeforeAfterSection from "@/components/BeforeAfterSection";
-import AcademicSection from "@/components/AcademicSection";
-import ToolStackSection from "@/components/ToolStackSection";
-import CTASection from "@/components/CTASection";
-import FooterSection from "@/components/FooterSection";
+import { Navbar } from "@/components/common";
+import {
+  HeroSection,
+  ProblemSection,
+  SolutionSection,
+  StepsDetailSection,
+  PositioningSection,
+  BeforeAfterSection,
+  AcademicSection,
+  ToolStackSection,
+  CTASection,
+  FooterSection,
+} from "@/components/sections";
 
 const Index = () => {
   return (

@@ -26,8 +26,14 @@ const ProblemSection = () => {
             </h2>
           </div>
 
-          {/* Right: Distortion diagram */}
+          {/* Right: narrative + distortion diagram */}
           <div className={`transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+            <div className="space-y-4 text-sm text-muted-foreground leading-relaxed mb-8">
+              <p>현업은 자기가 원하는 것을 텍스트, 혹여 PPT 정도로밖에 표현하지 못합니다.</p>
+              <p>그 문서를 기획자가 듣고 → 문서로 만들고 → IT가 해석합니다.<br/>3단계를 거치면서 원래 의도의 절반은 사라지고, 나머지 절반은 왜곡됩니다.</p>
+              <p>RFP는 텍스트로 가득 차 있고,<br/>개발업체마다 이걸 다르게 읽고,<br/>견적은 2배씩 차이가 나고,<br/>개발이 끝나면 서로 "약속이 달랐다"고 합니다.</p>
+              <p className="font-medium text-foreground/70">요구공학에서 말하는 전형적인 페인포인트들입니다.</p>
+            </div>
             <div className="space-y-0">
               {[
                 { label: "현업의 말", pct: "100%", width: "w-full", color: "bg-primary" },
@@ -44,7 +50,7 @@ const ProblemSection = () => {
                 </div>
               ))}
               <p className="text-sm text-muted-foreground mt-4 pl-28">
-                → 3단계를 거치며 원래 의도의 절반은 사라지고, 나머지는 왜곡됩니다.
+                → 3단계를 거치며 원래 의도의 절반은 사라지고, 나머지 절반은 왜곡됩니다.
               </p>
             </div>
           </div>

@@ -10,11 +10,11 @@ const areas: { key: string; label: string; subtitle: string; steps: Step[] }[] =
     steps: [
       { num: 1, name: "보도자료 작성", purpose: "고객가치 정의", tool: "ChatGPT / Claude", icon: FileEdit },
       { num: 2, name: "KPI 구체화", purpose: "성공 기준 정의", tool: "ChatGPT / Claude", icon: BarChart3 },
-      { num: 3, name: "UI 생성 프롬프트 개발", purpose: "시각화 설계도 확보", tool: "ChatGPT + Behance", icon: Palette },
+      { num: 3, name: "UI 생성 프롬프트 개발", purpose: "시각화 설계도 확보", tool: "ChatGPT + Behance/Dribbble", icon: Palette },
     ],
   },
   {
-    key: "B", label: "영역 B", subtitle: "반복적 구체화 (핵심 엔진)",
+    key: "B", label: "영역 B", subtitle: "반복적 구체화 — 핵심 엔진",
     steps: [
       { num: 4, name: "Lovable UI 생성", purpose: "화면 가시화", tool: "Lovable", icon: Eye },
       { num: 5, name: "GitHub 푸시·클론", purpose: "코드 확보", tool: "GitHub", icon: GitBranch },
