@@ -1,4 +1,5 @@
-import { Linkedin } from "lucide-react";
+import { Linkedin, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const FooterSection = () => {
@@ -12,6 +13,9 @@ const FooterSection = () => {
           <a href="#" className="text-primary-foreground/50 hover:text-primary-foreground/80 transition-colors" aria-label="LinkedIn">
             <Linkedin className="w-5 h-5" />
           </a>
+          <Link to="/design" className="text-primary-foreground/50 hover:text-primary-foreground/80 transition-colors" aria-label="Design Document">
+            <FileText className="w-5 h-5" />
+          </Link>
         </div>
         <p className="text-sm text-primary-foreground/40">{t.footer.copyright}</p>
       </div>
