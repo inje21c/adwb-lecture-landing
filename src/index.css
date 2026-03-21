@@ -52,24 +52,19 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Noto Sans KR', 'Inter', sans-serif;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply overflow-wrap-break-word;
     text-wrap: balance;
   }
 
   p {
     text-wrap: pretty;
-    overflow-wrap: break-word;
   }
 }
 
-@layer utilities {
-  .overflow-wrap-break-word {
-    overflow-wrap: break-word;
-  }
-}
 
 @layer components {
   .section-padding {

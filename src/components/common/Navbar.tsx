@@ -1,14 +1,8 @@
 import { useState, useEffect } from "react";
-
-const navItems = [
-  { label: "문제", href: "problem" },
-  { label: "해법", href: "solution" },
-  { label: "12단계", href: "steps" },
-  { label: "비교", href: "comparison" },
-  { label: "강의", href: "cta" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
+  const { lang, t, toggle } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -32,9 +26,9 @@ const Navbar = () => {
           ADWB
         </button>
 
-        {/* Desktop */}
+        {/* Desktop nav + lang toggle */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map(item => (
+          {t.nav.items.map(item => (
             <button
               key={item.href}
               onClick={() => scrollTo(item.href)}
@@ -43,24 +37,46 @@ const Navbar = () => {
               {item.label}
             </button>
           ))}
+          <button
+            onClick={toggle}
+            className={`text-xs font-semibold font-inter px-2.5 py-1 rounded border transition-colors ${
+              scrolled
+                ? 'border-border text-foreground/70 hover:text-foreground'
+                : 'border-primary-foreground/30 text-primary-foreground/70 hover:text-primary-foreground'
+            }`}
+          >
+            {lang === "ko" ? "EN" : "KR"}
+          </button>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden flex flex-col gap-1.5"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="메뉴"
-        >
-          {[0,1,2].map(i => (
-            <span key={i} className={`block w-5 h-0.5 transition-all ${scrolled ? 'bg-foreground' : 'bg-primary-foreground'}`} />
-          ))}
-        </button>
+        {/* Mobile: lang toggle + hamburger */}
+        <div className="md:hidden flex items-center gap-3">
+          <button
+            onClick={toggle}
+            className={`text-xs font-semibold font-inter px-2 py-1 rounded border transition-colors ${
+              scrolled
+                ? 'border-border text-foreground/70'
+                : 'border-primary-foreground/30 text-primary-foreground/70'
+            }`}
+          >
+            {lang === "ko" ? "EN" : "KR"}
+          </button>
+          <button
+            className="flex flex-col gap-1.5"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={t.nav.menuLabel}
+          >
+            {[0,1,2].map(i => (
+              <span key={i} className={`block w-5 h-0.5 transition-all ${scrolled ? 'bg-foreground' : 'bg-primary-foreground'}`} />
+            ))}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-t border-border">
-          {navItems.map(item => (
+          {t.nav.items.map(item => (
             <button
               key={item.href}
               onClick={() => scrollTo(item.href)}
