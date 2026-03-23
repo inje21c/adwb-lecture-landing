@@ -106,7 +106,7 @@ const en: Locale = {
 
   positioning: {
     tag: "Core Positioning",
-    headline: "Vibe coding is not a development tool.",
+    headline: "Vibe coding is not just a development tool.",
     quote1: "\"Building an enterprise system end-to-end with vibe coding alone is not realistic.",
     quote2Pre: "But when used to make business thinking ",
     quote2Highlight: "'visible'",
@@ -169,6 +169,23 @@ const en: Locale = {
     ],
     button: "Inquire About Workshop",
     contactNote: "Reach out via DM or email.",
+  },
+
+  contactForm: {
+    title: "Inquire About Workshop",
+    description: "Fill in the details below and we'll get back to you shortly.",
+    nameLabel: "Name",
+    namePlaceholder: "John Doe",
+    orgLabel: "Organization / Company",
+    orgPlaceholder: "(Optional) Company or organization",
+    contactLabel: "Contact (Email or Phone)",
+    contactPlaceholder: "email@example.com or +82-10-0000-0000",
+    messageLabel: "Message",
+    messagePlaceholder: "Tell us what you'd like to know about the workshop.",
+    submitButton: "Send Inquiry",
+    sendingButton: "Sending...",
+    successMessage: "Your inquiry has been submitted. We'll contact you soon!",
+    fallbackMessage: "Your email app will open. Please review and send.",
   },
 
   footer: {

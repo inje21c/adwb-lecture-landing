@@ -169,6 +169,23 @@ const ko = {
     contactNote: "DM 또는 이메일로 문의해 주세요.",
   },
 
+  contactForm: {
+    title: "강의 문의하기",
+    description: "아래 정보를 입력해 주시면 빠르게 연락드리겠습니다.",
+    nameLabel: "이름",
+    namePlaceholder: "홍길동",
+    orgLabel: "소속 / 회사",
+    orgPlaceholder: "(선택) 회사 또는 소속",
+    contactLabel: "연락처 (이메일 또는 전화)",
+    contactPlaceholder: "email@example.com 또는 010-0000-0000",
+    messageLabel: "문의 내용",
+    messagePlaceholder: "워크숍에 대해 궁금한 점을 적어주세요.",
+    submitButton: "문의 보내기",
+    sendingButton: "전송 중...",
+    successMessage: "문의가 접수되었습니다. 빠르게 연락드리겠습니다!",
+    fallbackMessage: "이메일 앱이 열립니다. 내용을 확인 후 전송해 주세요.",
+  },
+
   footer: {
     tagline: "기술은 도구이고, 사람이 중심입니다.",
     copyright: "© 2026. AI-Driven Working Backwards Methodology.",

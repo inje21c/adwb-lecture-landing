@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Package, Users } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import ContactFormDialog from "@/components/ContactFormDialog";
 
 const cardIcons = [GraduationCap, Package, Users];
 
 const CTASection = () => {
   const { t } = useLanguage();
   const { ref, isVisible } = useScrollReveal();
+  const [formOpen, setFormOpen] = useState(false);
 
   return (
     <section id="cta" className="py-24 md:py-32 section-padding gradient-navy">
@@ -35,10 +38,12 @@ const CTASection = () => {
         </div>
 
         <div className={`text-center transition-all duration-700 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <Button variant="hero" size="lg" className="text-lg px-12 py-7">{t.cta.button}</Button>
+          <Button variant="hero" size="lg" className="text-lg px-12 py-7" onClick={() => setFormOpen(true)}>{t.cta.button}</Button>
           <p className="text-sm text-primary-foreground/50 mt-4">{t.cta.contactNote}</p>
         </div>
       </div>
+
+      <ContactFormDialog open={formOpen} onOpenChange={setFormOpen} />
     </section>
   );
 };
