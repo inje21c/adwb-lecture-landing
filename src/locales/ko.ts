@@ -104,7 +104,7 @@ const ko = {
 
   positioning: {
     tag: "핵심 포지셔닝",
-    headline: "바이브코딩은 개발 도구가 아닙니다.",
+    headline: "바이브코딩은 개발 도구만이 아닙니다.",
     quote1: "\"엔터프라이즈 시스템을 처음부터 끝까지 바이브코딩만으로 개발하는 것은 현실적이지 않습니다.",
     quote2Pre: "그러나 현업의 생각을 ",
     quote2Highlight: "'보이게'",
