@@ -68,6 +68,37 @@ const ko = {
     iterateLabel: "반복",
   },
 
+  workingBackwards: {
+    tag: "Working Backwards란?",
+    headline: "Amazon이 개발한 제품 개발 철학",
+    origin: "2004년 아마존 내부에서 시작된 방법론 — 제품을 만들기 전에 먼저 고객의 관점에서 생각합니다.",
+    description:
+      "Working Backwards는 '완성된 제품이 출시되는 날'을 상상하고, 그 시점의 보도자료를 먼저 작성하는 것에서 시작합니다. 이 과정이 팀이 무엇을 만들어야 하는지 명확히 정렬하게 합니다.",
+    corePrinciple: "결과(보도자료)를 먼저 정의하고, 거꾸로 거슬러 올라가 개발을 시작합니다.",
+    steps: [
+      {
+        num: "01",
+        name: "보도자료 작성",
+        description:
+          "출시 당일 고객이 읽을 보도자료를 먼저 씁니다. 제품의 가치와 고객 이익을 한 페이지로 압축합니다.",
+      },
+      {
+        num: "02",
+        name: "FAQ 작성",
+        description:
+          "고객과 내부 이해관계자가 물을 모든 질문에 미리 답합니다. 모호한 가정을 제거합니다.",
+      },
+      {
+        num: "03",
+        name: "사용자 경험 시각화",
+        description:
+          "실제 고객이 제품을 사용하는 여정을 구체적으로 그립니다. 이 시점부터 개발이 시작됩니다.",
+      },
+    ],
+    connection:
+      "기존 Working Backwards는 텍스트 문서(보도자료 + FAQ)로 수렴합니다. ADWB는 여기서 한 발 더 나아가 — AI 바이브코딩으로 실제 동작하는 데모를 만들어 팀을 시각적으로 정렬합니다.",
+  },
+
   steps: {
     tag: "12단계 상세",
     headline: "3개 영역으로 보는 방법론",

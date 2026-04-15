@@ -70,6 +70,37 @@ const en: Locale = {
     iterateLabel: "Iterate",
   },
 
+  workingBackwards: {
+    tag: "What is Working Backwards?",
+    headline: "Amazon's Product Development Philosophy",
+    origin: "A methodology born inside Amazon in 2004 — think from the customer's perspective before building anything.",
+    description:
+      "Working Backwards starts by imagining launch day and writing the press release first. This single act forces a team to clearly align on what they are actually building and why.",
+    corePrinciple: "Define the outcome (press release) first, then work backwards to start development.",
+    steps: [
+      {
+        num: "01",
+        name: "Write the Press Release",
+        description:
+          "Write the press release customers will read on launch day. Compress the product's value and customer benefit into a single page.",
+      },
+      {
+        num: "02",
+        name: "Write the FAQ",
+        description:
+          "Pre-answer every question customers and internal stakeholders will ask. Eliminate ambiguous assumptions before they become bugs.",
+      },
+      {
+        num: "03",
+        name: "Visualize the User Experience",
+        description:
+          "Concretely map the journey a real customer takes through the product. Only after this does development begin.",
+      },
+    ],
+    connection:
+      "Traditional Working Backwards converges on text documents (press release + FAQ). ADWB goes one step further — AI vibe coding turns those documents into a live, working demo that aligns the whole team visually.",
+  },
+
   steps: {
     tag: "12 Steps in Detail",
     headline: "The Methodology in 3 Areas",

@@ -1,6 +1,7 @@
 export { default as HeroSection } from "./HeroSection";
 export { default as ProblemSection } from "./ProblemSection";
 export { default as SolutionSection } from "./SolutionSection";
+export { default as WorkingBackwardsSection } from "./WorkingBackwardsSection";
 export { default as StepsDetailSection } from "./StepsDetailSection";
 export { default as PositioningSection } from "./PositioningSection";
 export { default as BeforeAfterSection } from "./BeforeAfterSection";

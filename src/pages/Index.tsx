@@ -3,6 +3,7 @@ import {
   HeroSection,
   ProblemSection,
   SolutionSection,
+  WorkingBackwardsSection,
   StepsDetailSection,
   PositioningSection,
   BeforeAfterSection,
@@ -19,6 +20,7 @@ const Index = () => {
       <HeroSection />
       <ProblemSection />
       <SolutionSection />
+      <WorkingBackwardsSection />
       <StepsDetailSection />
       <PositioningSection />
       <BeforeAfterSection />
