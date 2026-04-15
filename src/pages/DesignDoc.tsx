@@ -116,21 +116,22 @@ const DesignDoc = () => {
           </div>
 
           {/* Document body */}
-          <article className="bg-white/97 backdrop-blur-sm px-6 md:px-12 py-10 prose prose-slate max-w-none
-            prose-headings:text-foreground
-            prose-h1:text-2xl prose-h1:font-bold prose-h1:mb-2
-            prose-h2:text-xl prose-h2:font-bold prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:pb-2
-            prose-h3:text-base prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-2
-            prose-h4:text-sm prose-h4:font-semibold
-            prose-p:text-foreground/80 prose-p:leading-relaxed
-            prose-strong:text-foreground
-            prose-code:text-foreground prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+          <article className="bg-white px-6 md:px-12 py-10 prose max-w-none
+            prose-headings:text-gray-900 prose-headings:font-bold
+            prose-h1:text-2xl prose-h1:mb-2
+            prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-2
+            prose-h3:text-base prose-h3:mt-6 prose-h3:mb-2
+            prose-h4:text-sm
+            prose-p:text-gray-700 prose-p:leading-relaxed
+            prose-strong:text-gray-900
+            prose-li:text-gray-700
+            prose-code:text-gray-800 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono
             prose-pre:bg-[#282c34] prose-pre:text-[#abb2bf] prose-pre:text-xs prose-pre:leading-relaxed
             prose-table:text-sm
-            prose-th:bg-muted prose-th:px-4 prose-th:py-2 prose-th:font-semibold
-            prose-td:px-4 prose-td:py-2 prose-td:border-border
-            prose-blockquote:border-primary prose-blockquote:text-muted-foreground
-            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+            prose-th:bg-gray-50 prose-th:text-gray-700 prose-th:px-4 prose-th:py-2 prose-th:font-semibold
+            prose-td:text-gray-700 prose-td:px-4 prose-td:py-2
+            prose-blockquote:border-gray-300 prose-blockquote:text-gray-500
+            prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
           ">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
           </article>
