@@ -3,7 +3,7 @@ const ko = {
     items: [
       { label: "문제", href: "problem" },
       { label: "해법", href: "solution" },
-      { label: "12단계", href: "steps" },
+      { label: "상세 단계", href: "steps" },
       { label: "비교", href: "comparison" },
       { label: "강의", href: "cta" },
     ],
@@ -55,17 +55,17 @@ const ko = {
     descLines: [
       "보도자료에서 시작하여, AI 바이브코딩으로 목업을 만들고,",
       "현업이 직접 체험하고 피드백하는 반복 사이클을 거쳐,",
-      "명확한 RFP까지 도달하는 12단계 파이프라인.",
+      "명확한 RFP까지 도달하는 6단계 파이프라인.",
     ],
-    pipelineSteps: [
-      "보도자료", "KPI", "프롬프트", "Lovable", "GitHub",
-      "Claude Code", "데모", "배포", "시연", "반복", "설계서", "RFP",
+    phases: [
+      { phase: 1, title: "보도자료 작성", tool: "ChatGPT · Claude · Gemini", tag: "1~2일 소요" },
+      { phase: 2, title: "KPI 역산", tool: "AI 대화형 구체화", tag: "기능 목록화" },
+      { phase: 3, title: "프롬프트 설계", tool: "레퍼런스 조합 (역설계)", tag: "UI/UX 요구사항" },
+      { phase: 4, title: "목업 제작", tool: "Lovable · Stitch · Figma", tag: "단계별/컴포넌트" },
+      { phase: 5, title: "설계서 생성", tool: "Codex · Claude Code", tag: "기능/화면 설계서" },
+      { phase: 6, title: "RFP 작성", tool: "AI 문서 자동화", tag: "확장 발주 방식" },
     ],
-    repeatNote: "Step 9~10은 요구사항이 수렴될 때까지 ",
-    repeatHighlight: "반복",
-    repeatSuffix: "됩니다.",
-    repeatEngine: "이 반복 사이클이 방법론의 핵심 엔진입니다.",
-    iterateLabel: "반복",
+    summary: "총 소요 기간: 업무 1인 기준 3~4 영업일 (기존 대비 80~90% 단축)",
   },
 
   workingBackwards: {
@@ -100,7 +100,7 @@ const ko = {
   },
 
   steps: {
-    tag: "12단계 상세",
+    tag: "상세 단계",
     headline: "3개 영역으로 보는 방법론",
     areas: [
       {
@@ -251,5 +251,13 @@ const ko = {
   },
 } as const;
 
-export type Locale = typeof ko;
+type Widen<T> =
+  T extends string ? string :
+  T extends number ? number :
+  T extends boolean ? boolean :
+  T extends readonly (infer U)[] ? Widen<U>[] :
+  T extends object ? { [K in keyof T]: Widen<T[K]> } :
+  T;
+
+export type Locale = Widen<typeof ko>;
 export { ko };

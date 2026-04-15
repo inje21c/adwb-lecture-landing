@@ -5,7 +5,7 @@ const en: Locale = {
     items: [
       { label: "Problem", href: "problem" },
       { label: "Solution", href: "solution" },
-      { label: "12 Steps", href: "steps" },
+      { label: "Step Detail", href: "steps" },
       { label: "Compare", href: "comparison" },
       { label: "Workshop", href: "cta" },
     ],
@@ -57,17 +57,17 @@ const en: Locale = {
     descLines: [
       "Starting from a press release, building mockups with AI vibe coding,",
       "iterating through cycles where business users experience and give feedback,",
-      "arriving at a clear RFP through a 12-step pipeline.",
+      "arriving at a clear RFP through a 6-phase pipeline.",
     ],
-    pipelineSteps: [
-      "Press Release", "KPI", "Prompt", "Lovable", "GitHub",
-      "Claude Code", "Demo", "Deploy", "Review", "Iterate", "Design Doc", "RFP",
+    phases: [
+      { phase: 1, title: "Press Release", tool: "ChatGPT · Claude · Gemini", tag: "1–2 days" },
+      { phase: 2, title: "KPI Backtrack", tool: "AI Conversational Refinement", tag: "Feature Listing" },
+      { phase: 3, title: "Prompt Design", tool: "Reference Combination (Reverse-eng.)", tag: "UI/UX Requirements" },
+      { phase: 4, title: "Mockup Creation", tool: "Lovable · Stitch · Figma", tag: "Step-by-step / Components" },
+      { phase: 5, title: "Design Doc", tool: "Codex · Claude Code", tag: "Functional / Screen Specs" },
+      { phase: 6, title: "RFP Writing", tool: "AI Document Automation", tag: "Procurement Ready" },
     ],
-    repeatNote: "Steps 9–10 repeat until requirements ",
-    repeatHighlight: "converge",
-    repeatSuffix: ".",
-    repeatEngine: "This iteration cycle is the core engine of the methodology.",
-    iterateLabel: "Iterate",
+    summary: "Total time: 3–4 business days per person (80–90% reduction vs. traditional)",
   },
 
   workingBackwards: {
@@ -102,7 +102,7 @@ const en: Locale = {
   },
 
   steps: {
-    tag: "12 Steps in Detail",
+    tag: "Steps in Detail",
     headline: "The Methodology in 3 Areas",
     areas: [
       {
