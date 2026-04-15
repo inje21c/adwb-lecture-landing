@@ -4,6 +4,7 @@ export { default as SolutionSection } from "./SolutionSection";
 export { default as WorkingBackwardsSection } from "./WorkingBackwardsSection";
 export { default as StepsDetailSection } from "./StepsDetailSection";
 export { default as PositioningSection } from "./PositioningSection";
+export { default as MethodologyContextSection } from "./MethodologyContextSection";
 export { default as BeforeAfterSection } from "./BeforeAfterSection";
 export { default as AcademicSection } from "./AcademicSection";
 export { default as ToolStackSection } from "./ToolStackSection";

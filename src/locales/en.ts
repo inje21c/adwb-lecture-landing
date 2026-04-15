@@ -147,6 +147,34 @@ const en: Locale = {
     tagline: "Technology is a tool. People are at the center.",
   },
 
+  methodologyContext: {
+    tag: "Methodology Context",
+    headline: "What Software Engineering Already Knew",
+    intro:
+      "Evolutionary Prototyping, Throwaway Prototyping, Participatory Design — SE already has similar concepts. ADWB is not a new invention. But it is clearly distinguished along three dimensions.",
+    labelTraditional: "Traditional",
+    labelAdwb: "ADWB",
+    differentiators: [
+      {
+        dimension: "Entry Point",
+        traditional: "Starts after requirements are fixed. A tool for development kickoff.",
+        adwb: "Starts before requirements exist. Generates requirements directly from non-technical language (press release).",
+      },
+      {
+        dimension: "Who Executes",
+        traditional: "Requires specialist developers. High entry cost makes pre-procurement use impractical.",
+        adwb: "Non-developers execute directly with AI tools. Business users access it through natural language and visualize outcomes themselves.",
+      },
+      {
+        dimension: "Output Purpose",
+        traditional: "Prototype → development kickoff. Aimed at internal team alignment.",
+        adwb: "Mockup → RFP + procurement. Specialized for stakeholder persuasion, budget acquisition, and vendor tendering.",
+      },
+    ],
+    honestPositioning:
+      "This is not a new invention. It is existing SE concepts re-applied to the procurement context, with AI lowering the execution cost. IEEE Software 2025 (Borg et al.) already points in the same direction. That is precisely what makes it credible.",
+  },
+
   comparison: {
     tag: "Comparison",
     headline: "Traditional vs AI-Driven Working Backwards",

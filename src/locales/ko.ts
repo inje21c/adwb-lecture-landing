@@ -145,6 +145,34 @@ const ko = {
     tagline: "기술은 도구이고, 사람이 중심입니다.",
   },
 
+  methodologyContext: {
+    tag: "방법론적 맥락",
+    headline: "소프트웨어공학이 이미 알고 있던 것",
+    intro:
+      "Evolutionary Prototyping, Throwaway Prototyping, Participatory Design — SE에는 이미 유사한 개념들이 있습니다. ADWB는 새로운 발명이 아닙니다. 그러나 세 가지 차원에서 분명하게 구별됩니다.",
+    labelTraditional: "기존",
+    labelAdwb: "ADWB",
+    differentiators: [
+      {
+        dimension: "시작점",
+        traditional: "요구사항이 확정된 이후 시작. 개발 착수의 도구.",
+        adwb: "요구사항이 없는 상태에서 시작. 비기술 언어(보도자료)로부터 요구사항을 직접 생성.",
+      },
+      {
+        dimension: "실행 주체",
+        traditional: "전문 개발자 필요. 진입 비용이 높아 조달 전 단계에 적용하기 어려움.",
+        adwb: "비개발자가 AI 도구로 직접 실행. 현업 담당자가 자연어로 접근하여 시각화까지 수행.",
+      },
+      {
+        dimension: "산출물 목적",
+        traditional: "프로토타입 → 개발 착수. 내부 팀 정렬이 목적.",
+        adwb: "목업 → RFP + 조달. 이해관계자 설득·예산 확보·발주 프로세스에 특화.",
+      },
+    ],
+    honestPositioning:
+      "새로운 발명이 아닙니다. 기존 SE 개념을 조달·발주 맥락에 재적용하고, AI가 실행 비용을 낮춘 것입니다. IEEE Software 2025(Borg et al.)가 이미 같은 방향을 가리킵니다. 이것이 오히려 신뢰의 근거입니다.",
+  },
+
   comparison: {
     tag: "비교",
     headline: "기존 방식 vs AI-Driven Working Backwards",

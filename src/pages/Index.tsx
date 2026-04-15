@@ -6,6 +6,7 @@ import {
   WorkingBackwardsSection,
   StepsDetailSection,
   PositioningSection,
+  MethodologyContextSection,
   BeforeAfterSection,
   AcademicSection,
   ToolStackSection,
@@ -23,6 +24,7 @@ const Index = () => {
       <WorkingBackwardsSection />
       <StepsDetailSection />
       <PositioningSection />
+      <MethodologyContextSection />
       <BeforeAfterSection />
       <AcademicSection />
       <ToolStackSection />
