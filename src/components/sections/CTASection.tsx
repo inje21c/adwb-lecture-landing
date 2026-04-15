@@ -18,6 +18,7 @@ const CTASection = () => {
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <p className="text-sky/70 text-sm tracking-widest uppercase mb-4 font-semibold">{t.cta.tag}</p>
           <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">{t.cta.headline}</h2>
+          <p className="text-primary-foreground/60 text-base max-w-xl mx-auto leading-relaxed">{t.cta.subtext}</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">

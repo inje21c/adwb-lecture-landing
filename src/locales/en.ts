@@ -225,15 +225,16 @@ const en: Locale = {
   },
 
   cta: {
-    tag: "Workshop",
-    headline: "Experience This Methodology Firsthand.",
+    tag: "Interested?",
+    headline: "I'd love to talk about this methodology with you.",
+    subtext: "A workshop curriculum is in the works. Your feedback now helps shape what it becomes.",
     cards: [
-      { title: "1-Day Workshop (8 hrs)", desc: "From press release to RFP in one day — experience the full end-to-end pipeline hands-on." },
-      { title: "What You Take Away", desc: "Finalized press release + KPI definition, Lovable mockup + structured source code, working demo site (Firebase URL), design doc + RFP draft" },
-      { title: "Who It's For", desc: "Developers: leverage vibe coding for requirement specification · Non-devs: turn ideas into visual mockups (planners/sales/PMs) · Leaders: innovate IT procurement in the AI era" },
+      { title: "Discuss Team Adoption", desc: "Struggling with IT procurement or requirements definition in your org? Let's walk through your specific situation together." },
+      { title: "Register Early Interest", desc: "A 1-day intensive session is being planned. Leave your interest now and you'll be the first to hear when it opens." },
+      { title: "Who I'd Love to Talk To", desc: "Planners / PMs · Developers · Sales / BizDev · IT Procurement — if you've experienced the pain of requirement distortion firsthand, you're exactly who this is for." },
     ],
-    button: "Inquire About Workshop",
-    contactNote: "Reach out via DM or email.",
+    button: "Connect",
+    contactNote: "Reach out via LinkedIn DM or the form below.",
   },
 
   contactForm: {
