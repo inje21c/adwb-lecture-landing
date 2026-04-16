@@ -1,3 +1,5 @@
+// next-themes: Toast(Sonner) 컴포넌트의 테마 동기화용. 현재 라이트 모드만 사용 중.
+// 다크모드 활성화 시: tailwind.config.ts에서 darkMode: 'class' 설정 필요.
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, toast } from "sonner";
 
