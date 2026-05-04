@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>12강 — 회사에서 써도 될까?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+:root {
+  --ink: #16161a;
+  --ink-soft: #3a3a42;
+  --ink-mute: #76767f;
+  --paper: #f5f2ec;
+  --paper-warm: #ece7dd;
+  --line: #d8d2c4;
+  --accent: #ff5a1f;
+  --accent-soft: #ffe8de;
+}
+html, body { margin:0; padding:0; background:#0a0a0c; font-family:'Pretendard', sans-serif; color:var(--ink); }
+deck-stage section { background:var(--paper); overflow:hidden; font-family:'Pretendard', sans-serif; color:var(--ink); letter-spacing:-0.01em; }
+.slide-pad { padding: 94px 108px 86px; box-sizing:border-box; width:100%; height:100%; display:flex; flex-direction:column; position:relative; }
+.eyebrow { font-size:24px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); font-family:'JetBrains Mono', monospace; }
+.h1 { font-size:96px; font-weight:800; line-height:1.05; letter-spacing:-0.03em; }
+.h2 { font-size:72px; font-weight:760; line-height:1.1; letter-spacing:-0.025em; }
+.h3 { font-size:54px; font-weight:760; line-height:1.18; letter-spacing:-0.02em; }
+.body-lg { font-size:36px; font-weight:400; line-height:1.45; color:var(--ink-soft); }
+.body { font-size:29px; font-weight:400; line-height:1.52; color:var(--ink-soft); }
+.small { font-size:23px; font-weight:500; color:var(--ink-mute); line-height:1.45; }
+.mono { font-family:'JetBrains Mono', monospace; }
+.accent { color:var(--accent); }
+.strike { text-decoration: line-through; color: var(--ink-mute); }
+.rule { height:2px; background:var(--ink); width:100%; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:44px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; }
+.grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+.grid-5 { display:grid; grid-template-columns:repeat(5, 1fr); gap:16px; }
+.card { background:#fff; border:1.5px solid var(--ink); padding:34px 32px; }
+.card-warm { background:var(--paper-warm); padding:34px 32px; border-left:4px solid var(--ink); }
+.card-accent { background:var(--accent); border:1.5px solid var(--accent); color:#fff; padding:34px 32px; }
+.card-accent .small, .card-accent .body, .card-accent .body-lg { color:rgba(255,255,255,.88); }
+.quote { font-size:56px; font-weight:700; line-height:1.27; letter-spacing:-0.02em; }
+.num { font-family:'JetBrains Mono', monospace; font-weight:800; }
+.bg-ink { background:var(--ink); color:var(--paper); }
+.bg-ink .h1, .bg-ink .h2, .bg-ink .h3, .bg-ink .quote { color:var(--paper); }
+.bg-ink .body-lg, .bg-ink .body, .bg-ink .small { color:#c0bfc7; }
+.bg-warm { background:var(--paper-warm); }
+.bg-accent { background:var(--accent); color:#fff; }
+.bg-accent .h1, .bg-accent .h2, .bg-accent .h3, .bg-accent .quote { color:#fff; }
+.bg-accent .body-lg, .bg-accent .body, .bg-accent .small { color:rgba(255,255,255,.9); }
+.pageno { position:absolute; bottom:36px; right:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; }
+.footnote { position:absolute; bottom:36px; left:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; text-transform:uppercase; }
+.bg-ink .pageno, .bg-ink .footnote { color:#76767f; }
+.bg-accent .pageno, .bg-accent .footnote { color:rgba(255,255,255,.72); }
+table.compare { width:100%; border-collapse:collapse; font-size:25px; }
+table.compare th, table.compare td { text-align:left; padding:19px 21px; border-bottom:1px solid var(--line); vertical-align:top; }
+table.compare th { font-weight:800; color:var(--ink); font-size:20px; text-transform:uppercase; letter-spacing:.08em; border-bottom:2px solid var(--ink); }
+table.compare td { color:var(--ink-soft); line-height:1.42; }
+.bg-ink table.compare th { color:var(--paper); border-bottom-color:var(--accent); }
+.bg-ink table.compare td { color:#d7d4ce; border-bottom-color:rgba(255,255,255,.15); }
+.prompt-block { font-family:'JetBrains Mono', monospace; background:var(--ink); color:#f5f2ec; padding:28px 32px; font-size:21px; line-height:1.58; white-space:pre-wrap; border-radius:5px; }
+.code-block { font-family:'JetBrains Mono', monospace; background:#fff; border:1.5px solid var(--ink); color:var(--ink); padding:26px 30px; font-size:21px; line-height:1.55; white-space:pre-wrap; border-radius:5px; }
+.tag { display:inline-block; padding:7px 14px; border:1.4px solid var(--ink); border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:18px; margin:0 6px 8px 0; }
+ul.clean { margin:0; padding-left:28px; font-size:29px; line-height:1.72; color:var(--ink-soft); }
+ol.clean { margin:0; padding-left:32px; font-size:29px; line-height:1.72; color:var(--ink-soft); }
+.flow { display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; align-items:stretch; }
+.flow .step { background:#fff; border:1.5px solid var(--ink); padding:26px 22px; }
+.flow .step strong { display:block; font-size:24px; margin:12px 0 8px; }
+.flow .step .num { color:var(--accent); font-size:30px; }
+</style>
+<script type="application/json" id="speaker-notes">
+[
+  "12강은 전체 과정의 마지막입니다. 만든 도구가 회사에서 써도 되는지 점검합니다.",
+  "오늘의 핵심 메시지입니다. 작동만으로는 부족하고 설명, 통제, 운영 가능성이 필요합니다.",
+  "지금까지의 여정을 정리합니다. 마지막 강의는 회사 적용 가능성을 검토하는 시간입니다.",
+  "취미 도구와 회사 도구는 책임의 크기가 다릅니다. 같은 코드라도 맥락이 달라집니다.",
+  "적용 수준을 세 단계로 나눕니다. 개인, 팀, 공식 업무 도구입니다.",
+  "리스크 지도는 데이터, 보안, 품질, 운영입니다. 이 네 가지를 기준으로 점검합니다.",
+  "데이터 등급을 먼저 봅니다. 공개 가능, 내부 일반, 민감 내부, 개인 및 고객정보로 나눕니다.",
+  "개인정보와 고객정보는 실습과 외부 도구에서 제외한다는 원칙을 강조합니다.",
+  "외부 AI 입력 판단 기준입니다. 데이터가 어디로 가는지, 어떤 기록이 남는지를 봐야 합니다.",
+  "접근 통제와 비밀값 관리는 회사 도구의 기본입니다.",
+  "AI 출력은 검토 대상입니다. 특히 숫자와 원인 해석은 사람이 봐야 합니다.",
+  "결과 검증 루틴입니다. 숫자, 원문, 해석, 톤, 책임 표시를 확인합니다.",
+  "운영 책임을 Owner, Maintainer, Reviewer, User로 나누면 명확합니다.",
+  "운영 문서는 목적, 사용자, 데이터, 금지사항, 오류 대응, 변경 이력 정도면 충분합니다.",
+  "변경 통제는 복잡한 절차가 아니라 최소한의 기록과 되돌리기입니다.",
+  "장애 대응 질문 목록입니다. 비개발자도 원인을 좁혀갈 수 있게 합니다.",
+  "회사 적용 체크리스트입니다. 이 체크리스트를 통과하지 못하면 개인 실험 수준으로 유지해야 합니다.",
+  "Go, Pilot, Hold, No-Go 기준입니다. 때로는 멈추는 것도 좋은 판단입니다.",
+  "쇼케이스는 문제, 도구, 시연, 판단의 흐름으로 진행합니다.",
+  "3분 발표 템플릿입니다. 문제, 가치, demo, 체크 결과, 다음 액션으로 구성합니다.",
+  "쇼케이스 평가는 문제 적합성, 사용성, 데이터 안전성, 결과 신뢰성, 확장 가능성으로 봅니다.",
+  "개인 포트폴리오 1페이지는 과정의 결과물입니다. 문제, 해결, 성과, 주의사항을 담습니다.",
+  "동아리 운영 모델입니다. 정기 아이디어 공유와 쇼케이스가 있으면 지속성이 생깁니다.",
+  "리더의 역할은 코딩을 대신해주는 것이 아니라 문제 발굴, 경계 설정, 산출물화, 확산입니다.",
+  "12강 전체를 회고합니다. 업무 문제 번역, 결과 정의, demo, 데이터와 AI, 보안과 운영 기준이 핵심입니다.",
+  "마지막 메시지입니다. 바이브코딩은 취미로 시작할 수 있지만 조직의 일하는 방식을 바꿀 수 있습니다.",
+  "과정의 마지막 슬라이드입니다. 첫 번째 버전에서 다시 시작하자는 메시지로 닫습니다."
+]
+</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+<section data-label="01 Title">
+<div class="slide-pad" style="justify-content:center;">
+<div style="display:flex; justify-content:space-between; align-items:flex-start;">
+<div class="eyebrow">VIBE CODING · LECTURE 12</div>
+<div class="mono small">PART 3 · 업무 적용</div></div>
+<div style="margin-top:auto; margin-bottom:auto;">
+<div class="mono small" style="margin-bottom:28px; color:var(--ink-mute);">// 강의 12강</div>
+<div class="h1">회사에서<br><span class='accent'>써도 될까?</span></div>
+<div class="body-lg" style="margin-top:48px; max-width:1300px;">보안·운영·품질 기준으로 바이브코딩 도구를 점검하고 최종 쇼케이스로 마무리한다.</div>
+</div><div style="display:flex; justify-content:space-between; align-items:flex-end;"><div class="rule" style="width:240px;"></div><div class="mono small">내 도구를 실제 업무에 붙이기</div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">01</div>
+</div>
+</section>
+<section data-label="02 Core" class="bg-warm">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="margin-bottom:36px;">CORE MESSAGE</div>
+<div class="quote" style="max-width:1600px;">회사에서 쓸 수 있는 도구는<br><span class='accent'>작동하는 도구</span>가 아니라,<br>설명되고 통제되고 운영될 수 있는 도구다.</div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">02</div>
+</div>
+</section>
+<section data-label="03 12강까지의 여정">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:36px;">12강까지의 여정</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">오늘은 전체 과정을 엔터프라이즈 관점으로 닫습니다.</div>
+<ul class="clean"><li>1~3강: 바이브코딩의 개념, 말하기, 도구 선택</li><li>4~8강: 아이디어를 demo, 기능정의서, RFP로 전환</li><li>9~11강: 데이터, AI 기능, 배포와 공유</li><li>12강: 회사 적용 가능성을 최종 점검</li></ul>
+<div class="footnote">L12 · PART 3</div><div class="pageno">03</div>
+</div>
+</section>
+<section data-label="04 취미 도구와 회사 도구">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:44px;">취미 도구와 회사 도구</div>
+<div class="grid-2">
+<div class="card"><div class="mono small" style="margin-bottom:18px; color:var(--ink-mute);">HOBBY TOOL</div><div class="body">내가 쓰고 내가 고친다.<br>실패해도 영향이 작다.<br>설명보다 경험이 중요하다.</div></div>
+<div class="card-accent"><div class="mono small" style="margin-bottom:18px; color:rgba(255,255,255,.86);">COMPANY TOOL</div><div class="body" style="color:rgba(255,255,255,.92);">다른 사람이 의존한다.<br>데이터와 책임이 생긴다.<br>보안, 품질, 운영 설명이 필요하다.</div></div>
+</div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">04</div>
+</div>
+</section>
+<section data-label="05 적용 수준 3단계">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:38px;">적용 수준 3단계</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">도구의 수준에 따라 필요한 검토가 달라집니다.</div>
+<div class="grid-3"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">개인 도구</div><div class="small">나만 쓰는 반복 업무 보조. 샘플 또는 비민감 데이터 중심</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">팀 도구</div><div class="small">동료가 함께 쓰는 파일럿. 사용법과 운영자가 필요</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">공식 업무 도구</div><div class="small">사내 정책, 보안, IT, 데이터 거버넌스 검토 필요</div></div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">05</div>
+</div>
+</section>
+<section data-label="06 리스크 지도">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:38px;">리스크 지도</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">회사 적용을 보려면 네 가지 리스크를 함께 봐야 합니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">데이터</div><div class="small">개인정보, 고객정보, 내부 기밀</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">보안</div><div class="small">API Key, 접근 통제, 외부 배포</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">품질</div><div class="small">오류, 환각, 잘못된 계산</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">운영</div><div class="small">담당자, 변경 이력, 장애 대응</div></div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">06</div>
+</div>
+</section>
+<section data-label="07 데이터 등급을 먼저 묻는다">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">데이터 등급을 먼저 묻는다</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">데이터를 다루기 전에는 등급을 먼저 판단해야 합니다.</div>
+<table class="compare"><thead><tr><th>등급</th><th>예시</th><th>사용 판단</th></tr></thead><tbody><tr><td>공개 가능</td><td>교육용 샘플, 가짜 데이터</td><td>실습·외부 데모 가능</td></tr><tr><td>내부 일반</td><td>개인식별 없는 집계 자료</td><td>사내 한정 검토 필요</td></tr><tr><td>민감 내부</td><td>영업 전략, 미공개 실적</td><td>외부 입력·배포 금지</td></tr><tr><td>개인/고객정보</td><td>이름, 연락처, 식별번호, 거래정보</td><td>정책·법규 검토 전 사용 금지</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">07</div>
+</div>
+</section>
+<section data-label="08 개인정보와 고객정보는 기본적으로 제외">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:36px;">개인정보와 고객정보는 기본적으로 제외</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">금융회사나 고객데이터를 다루는 조직에서는 특히 보수적으로 접근해야 합니다.</div>
+<ul class="clean"><li>교육 실습에는 식별 가능한 개인정보를 쓰지 않는다</li><li>고객명, 연락처, 계좌번호, 계약번호, 상담번호는 제외한다</li><li>거래 내역과 신용 정보는 더 강한 통제가 필요하다</li><li>필요하면 익명화·마스킹·집계 후 사용한다</li><li>판단이 애매하면 사용하지 않는다</li></ul>
+<div class="footnote">L12 · PART 3</div><div class="pageno">08</div>
+</div>
+</section>
+<section data-label="09 외부 AI 입력 판단">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">외부 AI 입력 판단</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">외부 AI에 입력하는 순간 데이터 반출 관점이 생깁니다.</div>
+<table class="compare"><thead><tr><th>질문</th><th>판단</th></tr></thead><tbody><tr><td>회사 밖 서비스에 입력되는가?</td><td>그렇다면 데이터 등급 확인 필요</td></tr><tr><td>원문 데이터가 전송되는가?</td><td>가능하면 집계·마스킹 후 사용</td></tr><tr><td>출력 결과가 의사결정에 쓰이는가?</td><td>사람의 검토 절차 필요</td></tr><tr><td>기록이 남는가?</td><td>보존·삭제 정책 확인</td></tr><tr><td>내규와 계약상 제한이 있는가?</td><td>관련 부서 검토 필요</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">09</div>
+</div>
+</section>
+<section data-label="10 비밀값과 접근 통제">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:36px;">비밀값과 접근 통제</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">작은 도구라도 접근과 비밀값은 반드시 관리해야 합니다.</div>
+<ul class="clean"><li>API Key를 클라이언트 코드에 넣지 않는다</li><li>공개 저장소에 비밀값을 올리지 않는다</li><li>배포 링크를 누구나 접근할 수 있게 열지 않는다</li><li>팀 도구는 접근 범위와 책임자를 정한다</li><li>실제 업무 적용은 사내 인증·권한 체계를 검토한다</li></ul>
+<div class="footnote">L12 · PART 3</div><div class="pageno">10</div>
+</div>
+</section>
+<section data-label="11 AI 출력은 검토 대상">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:38px;">AI 출력은 검토 대상</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">AI 결과는 초안이지 결재 문서가 아닙니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">계산 오류</div><div class="small">숫자를 잘못 옮길 수 있다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">환각</div><div class="small">데이터에 없는 원인을 만들 수 있다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">과장</div><div class="small">성과를 실제보다 크게 보이게 할 수 있다</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">책임</div><div class="small">최종 판단은 사람이 해야 한다</div></div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">11</div>
+</div>
+</section>
+<section data-label="12 결과 검증 루틴">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">결과 검증 루틴</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">검증 루틴을 만들면 AI 결과를 더 안전하게 쓸 수 있습니다.</div>
+<table class="compare"><thead><tr><th>단계</th><th>질문</th></tr></thead><tbody><tr><td>1. 숫자 검산</td><td>합계와 비율이 맞는가</td></tr><tr><td>2. 원문 대조</td><td>입력 데이터와 다른 말이 없는가</td></tr><tr><td>3. 해석 분리</td><td>사실과 추정이 구분되는가</td></tr><tr><td>4. 톤 점검</td><td>보고 대상에 맞는가</td></tr><tr><td>5. 책임 표시</td><td>AI 초안임을 알고 검토했는가</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">12</div>
+</div>
+</section>
+<section data-label="13 운영 책임을 정한다">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:38px;">운영 책임을 정한다</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">회사용 도구는 만든 사람만 아는 상태로 두면 안 됩니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">Owner</div><div class="small">누가 관리하는가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">Maintainer</div><div class="small">누가 수정하는가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">Reviewer</div><div class="small">누가 결과를 검토하는가</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">User</div><div class="small">누가 사용하는가</div></div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">13</div>
+</div>
+</section>
+<section data-label="14 운영 문서에 들어갈 것">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">운영 문서에 들어갈 것</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">운영 문서는 길 필요는 없지만 있어야 합니다.</div>
+<table class="compare"><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>목적</td><td>무엇을 줄이기 위한 도구인가</td></tr><tr><td>사용자</td><td>누가 사용할 수 있는가</td></tr><tr><td>데이터</td><td>어떤 데이터를 넣을 수 있는가</td></tr><tr><td>금지사항</td><td>무엇을 넣으면 안 되는가</td></tr><tr><td>오류 대응</td><td>문제가 생기면 누구에게 연락하는가</td></tr><tr><td>변경 이력</td><td>언제 무엇이 바뀌었는가</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">14</div>
+</div>
+</section>
+<section data-label="15 변경 통제의 최소 원칙">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:36px;">변경 통제의 최소 원칙</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">작은 도구도 사용자가 생기면 변경 통제가 필요합니다.</div>
+<ul class="clean"><li>동작하는 버전을 기준으로 보관한다</li><li>큰 변경은 한 번에 하나씩 한다</li><li>변경 이유를 커밋 메시지나 변경 이력에 적는다</li><li>사용자에게 영향을 주는 변경은 공지한다</li><li>문제가 생기면 이전 버전으로 되돌린다</li></ul>
+<div class="footnote">L12 · PART 3</div><div class="pageno">15</div>
+</div>
+</section>
+<section data-label="16 장애 대응 질문">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">장애 대응 질문</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">장애 대응도 질문 목록으로 시작하면 됩니다.</div>
+<table class="compare"><thead><tr><th>상황</th><th>확인 질문</th></tr></thead><tbody><tr><td>도구가 열리지 않음</td><td>배포 링크와 파일 경로가 맞는가</td></tr><tr><td>계산이 틀림</td><td>입력 데이터 형식이 바뀌었는가</td></tr><tr><td>AI 결과 이상</td><td>프롬프트와 입력 값이 바뀌었는가</td></tr><tr><td>복사 안 됨</td><td>브라우저 권한 또는 버튼 오류인가</td></tr><tr><td>사용자 혼란</td><td>화면 안내와 README가 충분한가</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">16</div>
+</div>
+</section>
+<section data-label="17 회사 적용 체크리스트">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">회사 적용 체크리스트</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">이 체크리스트가 12강의 핵심 실무 산출물입니다.</div>
+<table class="compare"><thead><tr><th>영역</th><th>체크</th></tr></thead><tbody><tr><td>데이터</td><td>민감정보, 고객정보, 내부 기밀이 없는가</td></tr><tr><td>보안</td><td>API Key, 접근 권한, 외부 배포 위험이 없는가</td></tr><tr><td>품질</td><td>계산과 AI 출력 검증 절차가 있는가</td></tr><tr><td>운영</td><td>담당자, 변경 이력, 오류 대응이 정해졌는가</td></tr><tr><td>조직</td><td>개인 실험인지 팀 파일럿인지 공식 서비스인지 구분했는가</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">17</div>
+</div>
+</section>
+<section data-label="18 Go / No-Go 판단">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">Go / No-Go 판단</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">모든 도구를 계속 밀어붙일 필요는 없습니다.</div>
+<table class="compare"><thead><tr><th>판단</th><th>조건</th></tr></thead><tbody><tr><td>GO</td><td>샘플/비민감 데이터, 사용법 명확, 오류 영향 낮음</td></tr><tr><td>PILOT</td><td>팀 내 제한 사용, 담당자와 피드백 루프 있음</td></tr><tr><td>HOLD</td><td>데이터·보안·운영 기준이 불명확함</td></tr><tr><td>NO-GO</td><td>개인정보, 고객정보, 키 노출, 외부 배포 위험 있음</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">18</div>
+</div>
+</section>
+<section data-label="19 최종 쇼케이스 구조">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:38px;">최종 쇼케이스 구조</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">마지막 발표는 길게 설명하지 않고 판단 가능하게 보여주는 것이 목표입니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">문제</div><div class="small">어떤 반복 업무를 줄이려 했는가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">도구</div><div class="small">무엇을 만들었는가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">시연</div><div class="small">입력, 처리, 출력 흐름</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">판단</div><div class="small">계속, 수정, 보류, 폐기</div></div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">19</div>
+</div>
+</section>
+<section data-label="20 3분 발표 템플릿">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">3분 발표 템플릿</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">짧은 발표일수록 구조가 중요합니다.</div>
+<table class="compare"><thead><tr><th>시간</th><th>내용</th></tr></thead><tbody><tr><td>0:00~0:30</td><td>문제와 사용자</td></tr><tr><td>0:30~1:00</td><td>Working Backwards 산출물: 가치와 KPI</td></tr><tr><td>1:00~2:00</td><td>demo 시연</td></tr><tr><td>2:00~2:30</td><td>보안·운영 체크 결과</td></tr><tr><td>2:30~3:00</td><td>다음 액션</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">20</div>
+</div>
+</section>
+<section data-label="21 평가 기준">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">평가 기준</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">평가 기준은 순위 매기기가 아니라 다음 개선 방향을 찾기 위한 것입니다.</div>
+<table class="compare"><thead><tr><th>항목</th><th>질문</th></tr></thead><tbody><tr><td>문제 적합성</td><td>실제 반복 업무를 줄이는가</td></tr><tr><td>사용성</td><td>처음 보는 사람도 쓸 수 있는가</td></tr><tr><td>데이터 안전성</td><td>민감정보 없이 사용할 수 있는가</td></tr><tr><td>결과 신뢰성</td><td>계산과 AI 출력이 검증 가능한가</td></tr><tr><td>확장 가능성</td><td>팀 파일럿으로 갈 가치가 있는가</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">21</div>
+</div>
+</section>
+<section data-label="22 개인 포트폴리오 1페이지">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:38px;">개인 포트폴리오 1페이지</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">과정이 끝나면 각자 1페이지 포트폴리오를 남깁니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">문제</div><div class="small">반복 업무와 현재 불편</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">해결</div><div class="small">만든 도구와 핵심 기능</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">성과</div><div class="small">기대 KPI와 사용 효과</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">주의</div><div class="small">데이터·보안·운영 제한사항</div></div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">22</div>
+</div>
+</section>
+<section data-label="23 동아리 운영 모델">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:34px;">동아리 운영 모델</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">사내 동아리는 한 번의 강의가 아니라 지속적인 실험 커뮤니티가 되어야 합니다.</div>
+<table class="compare"><thead><tr><th>활동</th><th>주기</th></tr></thead><tbody><tr><td>아이디어 공유</td><td>월 1회</td></tr><tr><td>공통 실습</td><td>월 1회</td></tr><tr><td>개인 도구 개선</td><td>상시</td></tr><tr><td>쇼케이스</td><td>분기 1회</td></tr><tr><td>보안·운영 리뷰</td><td>필요 시 관련 부서와 협의</td></tr></tbody></table>
+<div class="footnote">L12 · PART 3</div><div class="pageno">23</div>
+</div>
+</section>
+<section data-label="24 리더의 역할">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:38px;">리더의 역할</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">동아리 리더는 코딩 선생님이 아니라 실행 구조를 만드는 사람입니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">문제 발굴</div><div class="small">현업 반복 업무를 찾아낸다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">경계 설정</div><div class="small">보안과 데이터 사용 기준을 지킨다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">산출물화</div><div class="small">demo를 문서와 의사결정 자료로 바꾼다</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">확산</div><div class="small">좋은 사례를 팀과 조직으로 연결한다</div></div></div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">24</div>
+</div>
+</section>
+<section data-label="25 12강 전체 회고">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 12</div>
+<div class="h3" style="margin-bottom:36px;">12강 전체 회고</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">전체 과정의 핵심을 다섯 문장으로 정리합니다.</div>
+<ul class="clean"><li>바이브코딩은 코드 작성 기술이 아니라 업무 문제 번역 능력이다</li><li>Working Backwards는 만들기 전에 결과를 선명하게 만든다</li><li>화면과 demo는 요구사항을 빠르게 정렬한다</li><li>데이터와 AI는 도구를 실무 흐름에 붙인다</li><li>보안과 운영 기준이 있어야 회사 도구가 된다</li></ul>
+<div class="footnote">L12 · PART 3</div><div class="pageno">25</div>
+</div>
+</section>
+<section data-label="26 Closing" class="bg-accent">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="color:rgba(255,255,255,.85); margin-bottom:38px;">CLOSING</div>
+<div class="h1" style="max-width:1500px;">바이브코딩은<br><span class='accent'>취미로 시작할 수 있지만</span>,<br>조직의 일하는 방식을 바꿀 수 있다.</div>
+<div class="body-lg" style="margin-top:52px; max-width:1450px;">작은 도구 하나를 만들고, 검증하고, 공유하고, 안전하게 운영하는 경험이 새로운 업무 역량이 됩니다.</div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">26</div>
+</div>
+</section>
+<section data-label="27 End">
+<div class="slide-pad" style="justify-content:center; align-items:center; text-align:center;">
+<div class="eyebrow" style="margin-bottom:40px;">FIN · LECTURE 12 · COURSE COMPLETE</div>
+<div class="h1">끝이 아니라<br><span class="accent">첫 번째 버전</span>입니다.</div>
+<div class="body-lg" style="margin-top:54px; max-width:1180px;">이제 각자의 업무에서 작은 불편함 하나를 다시 고르고, 다음 버전을 만들어가면 됩니다.</div>
+<div class="footnote">L12 · PART 3</div><div class="pageno">27</div>
+</div>
+</section>
+
+</deck-stage>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="바이브코딩 사내 동아리 입문 3강: 모델, 인터페이스, 시작 환경과 Hello World">
+<title>3강 — 그래서 뭐로 해야 해?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --ink: #16161a;
+    --ink-soft: #3a3a42;
+    --ink-mute: #76767f;
+    --paper: #f5f2ec;
+    --paper-warm: #ece7dd;
+    --line: #d8d2c4;
+    --accent: #ff5a1f;
+    --accent-soft: #ffe8de;
+  }
+  html, body { margin:0; padding:0; background:#0a0a0c; font-family: 'Pretendard', sans-serif; color: var(--ink); }
+  * { box-sizing: border-box; }
+  b, strong { font-weight: 800; }
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+  deck-stage section { background: var(--paper); overflow: hidden; font-family: 'Pretendard', sans-serif; color: var(--ink); letter-spacing: -0.01em; }
+  .slide-pad { padding: 100px 110px 90px; box-sizing: border-box; width:100%; height:100%; display:flex; flex-direction:column; }
+  .eyebrow { font-size: 24px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+  .h1 { font-size: 96px; font-weight: 800; line-height: 1.05; letter-spacing: -0.025em; }
+  .h2 { font-size: 72px; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; }
+  .h3 { font-size: 56px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+  .body { font-size: 30px; font-weight: 400; line-height: 1.5; color: var(--ink-soft); }
+  .body-lg { font-size: 36px; font-weight: 400; line-height: 1.45; color: var(--ink-soft); }
+  .small { font-size: 24px; font-weight: 500; color: var(--ink-mute); }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .pageno { position: absolute; bottom: 36px; right: 48px; font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--ink-mute); letter-spacing: 0.1em; }
+  .footnote { position: absolute; bottom: 36px; left: 48px; font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--ink-mute); letter-spacing: 0.1em; text-transform: uppercase; }
+  .rule { height: 2px; background: var(--ink); width: 100%; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .card { background: #fff; border: 1.5px solid var(--ink); padding: 36px 32px; }
+  .card-warm { background: var(--paper-warm); padding: 36px 32px; border-left: 4px solid var(--ink); }
+  .quote { font-size: 56px; font-weight: 600; line-height: 1.25; letter-spacing: -0.02em; }
+  .num { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .accent { color: var(--accent); }
+  .strike { text-decoration: line-through; color: var(--ink-mute); }
+  .bg-ink { background: var(--ink); color: var(--paper); }
+  .bg-ink .body, .bg-ink .small { color: #c0bfc7; }
+  .bg-ink .pageno, .bg-ink .footnote { color: #76767f; }
+  .bg-accent { background: var(--accent); color: #fff; }
+  .bg-accent .body, .bg-accent .small { color: rgba(255,255,255,0.85); }
+  .bg-accent .pageno, .bg-accent .footnote { color: rgba(255,255,255,0.7); }
+  .bg-warm { background: var(--paper-warm); }
+  .prompt-block { font-family: 'JetBrains Mono', monospace; background: var(--ink); color: #f5f2ec; padding: 28px 32px; font-size: 22px; line-height: 1.65; white-space: pre-wrap; border-radius: 4px; }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 24px; }
+  table.compare th, table.compare td { text-align: left; padding: 18px 20px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.compare th { font-weight: 700; color: var(--ink); font-size: 20px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 2px solid var(--ink); }
+  table.compare td { color: var(--ink-soft); line-height: 1.4; }
+  .tag { display:inline-block; padding: 6px 14px; border:1px solid var(--ink); border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 18px; }
+</style>
+<script type="application/json" id="speaker-notes">
+[
+  "안녕하세요. 3강에서는 그래서 무엇으로 시작해야 하는지 다룹니다. 1강은 정의, 2강은 말하기, 3강은 환경 선택입니다.",
+  "핵심 메시지는 도구가 결과를 만드는 것이 아니라는 점입니다. 자기 작업의 성격을 알면 도구 선택은 훨씬 단순해집니다.",
+  "이 세션은 어떤 모델과 인터페이스를 써야 할지 헷갈리는 분, 오늘 안에 첫 화면을 띄우고 싶은 분을 위한 강의입니다.",
+  "오늘은 모델 선택, 인터페이스, 조합 가이드, 함정, Hello World 순서로 갑니다.",
+  "먼저 모델입니다. 같은 프롬프트라도 모델의 성격에 따라 결과 품질, 속도, 비용이 달라집니다.",
+  "모델을 고를 때는 스펙표가 아니라 자기 작업을 기준으로 봅니다. 코드 추론력, 긴 문맥, 속도, 비용, 신뢰성이 핵심입니다.",
+  "모델은 빠른 모델, 추론 모델, 대중 모델로 나눠 보면 이해가 쉽습니다. 작업의 난도에 따라 갈아타면 됩니다.",
+  "다음은 인터페이스입니다. 같은 모델도 어디에서 쓰느냐에 따라 경험이 완전히 달라집니다.",
+  "인터페이스는 채팅형, 캔버스형, 에디터형, 에이전트형으로 나눠 봅니다. 자동화가 커질수록 검토 책임도 커집니다.",
+  "한눈에 비교하면, 채팅형은 기획과 문구에 좋고, 캔버스형은 한 화면 프로토타입에 좋고, 에디터형은 여러 파일 앱에 좋습니다.",
+  "이제 조합입니다. 시작 단계에 맞춰 어디서 시작하고 언제 갈아탈지 정해야 합니다.",
+  "처음은 채팅과 캔버스 조합이 좋습니다. 익숙해지면 에디터형, 자동화 단계에서는 에이전트형을 검토합니다.",
+  "빠른 시작과 전문 시작을 구분합니다. 동아리 1차 목표는 빠른 시작이고, 서비스처럼 운영할 때 GitHub, VS Code, Supabase, Vercel 같은 조합으로 확장합니다.",
+  "도구 선택의 함정도 있습니다. 도구 자체가 아니라 자기 단계와 작업 성격에 맞는지가 중요합니다.",
+  "첫 번째 함정은 가장 좋다는 도구를 무조건 따라가는 것입니다. 지금 익힐 수 있는 도구가 우선입니다.",
+  "이제 Hello World입니다. 오늘 목표는 완성된 서비스가 아니라 첫 화면을 띄우고 수정 사이클을 경험하는 것입니다.",
+  "시작에 필요한 핵심은 두 가지입니다. 코딩 가능한 LLM 모델과 결과를 보며 피드백할 수 있는 채팅 코딩 인터페이스입니다.",
+  "첫 프로젝트는 거창한 앱이 아닙니다. 한 화면, 한 입력, 한 결과를 가진 작은 도구입니다.",
+  "이 템플릿대로 첫 프롬프트를 보내면 됩니다. 2강에서 배운 맥락, 경계, 초안 요청이 들어 있습니다.",
+  "첫 사이클은 간단합니다. 초안을 받고, 화면을 확인하고, 한 곳을 짚어 고치고, 다시 결과를 받습니다.",
+  "시리즈 전체를 돌아보면, 1강은 정의, 2강은 말하기, 3강은 도구입니다. 세 가지가 만나야 첫 작품이 나옵니다.",
+  "마지막 메시지입니다. 시작은 도구가 아니라 작은 한 가지의 불편함입니다. 그 불편함을 한 화면짜리 도구로 옮겨보면 됩니다.",
+  "감사합니다. 이제 직접 만들어볼 차례입니다."
+]
+</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+<!-- 1 Title -->
+<section data-label="01 Title">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div class="eyebrow">VIBE CODING · LECTURE 03</div>
+      <div class="mono small">2026 · 입문 시리즈 3/3</div>
+    </div>
+    <div>
+      <div class="mono small" style="margin-bottom: 28px; color: var(--ink-mute);">// 강의 3강</div>
+      <div class="h1">그래서 <span class="accent">뭐로</span><br>해야 해?</div>
+      <div style="margin-top: 56px; max-width: 1100px;" class="body-lg">
+        모델, 인터페이스, 빠른 시작과 전문 시작 — 내 작업에 맞는 환경 선택의 기준.
+      </div>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div class="rule" style="width: 240px;"></div>
+      <div class="mono small">바이브코딩 시작하기</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 Core -->
+<section data-label="02 Core" class="bg-warm">
+  <div class="slide-pad" style="justify-content:center;">
+    <div class="eyebrow" style="margin-bottom: 40px;">CORE MESSAGE</div>
+    <div class="quote" style="max-width: 1600px;">
+      도구가 결과를 만들지 않는다.<br>
+      <span class="accent">자기 작업의 성격</span>을 알면, 도구는 따라온다.
+    </div>
+    <div class="pageno">02</div>
+  </div>
+</section>
+
+<!-- 3 Audience -->
+<section data-label="03 Audience">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">FOR WHOM</div>
+    <div class="h3" style="margin-bottom: 56px;">이 세션은 이런 분을 위한 것입니다.</div>
+    <div class="grid-2" style="gap: 24px;">
+      <div class="card-warm" style="padding: 28px;"><div style="font-size: 28px;">"어떤 AI를 써야 해?"가 매번 헷갈린다</div></div>
+      <div class="card-warm" style="padding: 28px;"><div style="font-size: 28px;">ChatGPT, Claude, Cursor… 차이를 모르겠다</div></div>
+      <div class="card-warm" style="padding: 28px;"><div style="font-size: 28px;">시작 단계에서 시간을 낭비하고 싶지 않다</div></div>
+      <div class="card-warm" style="padding: 28px;"><div style="font-size: 28px;">오늘 안에 첫 화면을 띄워보고 싶다</div></div>
+    </div>
+    <div class="footnote">L03 · 대상</div>
+    <div class="pageno">03</div>
+  </div>
+</section>
+
+<!-- 4 Agenda -->
+<section data-label="04 Agenda">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 32px;">AGENDA</div>
+    <div class="h2" style="margin-bottom: 80px;">오늘 다룰 다섯 가지</div>
+    <div style="display:grid; grid-template-columns: 80px 1fr; row-gap: 32px; column-gap: 40px; font-size: 34px;">
+      <div class="num accent" style="font-size: 36px;">01</div><div><b>모델 선택</b> · 두뇌를 어떻게 고를 것인가</div>
+      <div class="num accent" style="font-size: 36px;">02</div><div><b>인터페이스</b> · 어디서 쓸 것인가</div>
+      <div class="num accent" style="font-size: 36px;">03</div><div><b>조합 가이드</b> · 단계별 추천 세팅</div>
+      <div class="num accent" style="font-size: 36px;">04</div><div><b>함정</b> · 도구 선택의 흔한 실수</div>
+      <div class="num accent" style="font-size: 36px;">05</div><div><b>Hello World</b> · 오늘 안에 첫 화면 띄우기</div>
+    </div>
+    <div class="footnote">L03 · AGENDA</div>
+    <div class="pageno">04</div>
+  </div>
+</section>
+
+<!-- 5 Section: Model -->
+<section data-label="05 Section Model" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 01 / 05</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">01</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">모델</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1200px;">
+        같은 프롬프트도 두뇌가 다르면 결과가 다르다.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">05</div>
+  </div>
+</section>
+
+<!-- 6 Model criteria -->
+<section data-label="06 Model Criteria">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">6. 모델을 고르는 다섯 가지 기준</div>
+    <div class="h3" style="margin-bottom: 64px;">스펙이 아니라 <span class="accent">자기 작업</span>을 기준으로 보라.</div>
+    <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 44px;">01</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 16px 0 12px;">코드 추론력</div>
+        <div class="small">로직·구조를 정확히 짜는 능력</div>
+      </div>
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 44px;">02</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 16px 0 12px;">긴 문맥</div>
+        <div class="small">긴 명세·여러 파일을 한 번에 보기</div>
+      </div>
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 44px;">03</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 16px 0 12px;">속도</div>
+        <div class="small">반복 사이클을 빠르게 돌리는 힘</div>
+      </div>
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 44px;">04</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 16px 0 12px;">비용</div>
+        <div class="small">개인이 매일 쓰는 한도 안에서</div>
+      </div>
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 44px;">05</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 16px 0 12px;">신뢰성</div>
+        <div class="small">엉뚱한 결과를 덜 만드는가</div>
+      </div>
+    </div>
+    <div style="margin-top: 56px; padding: 28px 36px; background: var(--paper-warm); border-left: 4px solid var(--accent);" class="body-lg">
+      "가장 똑똑한 모델"이 아니라 <b>"내 작업 방식과 가장 잘 맞는 모델"</b>이 정답이다.
+    </div>
+    <div class="footnote">L03 · 모델</div>
+    <div class="pageno">06</div>
+  </div>
+</section>
+
+<!-- 7 Model archetypes -->
+<section data-label="07 Model Types">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">7. 모델의 세 가지 갈래</div>
+    <div class="h3" style="margin-bottom: 56px;">브랜드 말고 <span class="accent">성격</span>으로 나눠라.</div>
+    <div class="grid-3" style="gap: 24px;">
+      <div class="card" style="padding: 40px 32px;">
+        <div class="mono small accent" style="margin-bottom: 16px;">TYPE A</div>
+        <div style="font-size: 32px; font-weight: 700; margin-bottom: 16px;">빠른 모델</div>
+        <div class="body" style="font-size: 24px; margin-bottom: 24px;">짧은 프롬프트 → 빠른 답.<br>UI 시안·문구·간단 변환에 강함.</div>
+        <div class="small">예: 경량·빠른 응답 계열</div>
+      </div>
+      <div class="card bg-accent" style="padding: 40px 32px; border-color: var(--accent);">
+        <div class="mono small" style="margin-bottom: 16px; color: rgba(255,255,255,0.85);">TYPE B</div>
+        <div style="font-size: 32px; font-weight: 700; color:#fff; margin-bottom: 16px;">추론 모델</div>
+        <div class="body" style="font-size: 24px; color: rgba(255,255,255,0.92); margin-bottom: 24px;">복잡한 로직·구조 설계.<br>오류 디버깅·아키텍처 결정에 강함.</div>
+        <div class="small" style="color: rgba(255,255,255,0.85);">예: 추론·고성능 코딩 계열</div>
+      </div>
+      <div class="card" style="padding: 40px 32px;">
+        <div class="mono small accent" style="margin-bottom: 16px;">TYPE C</div>
+        <div style="font-size: 32px; font-weight: 700; margin-bottom: 16px;">대중 모델</div>
+        <div class="body" style="font-size: 24px; margin-bottom: 24px;">균형형, 일상 사용에 무난.<br>처음 입문자에게 가장 친숙.</div>
+        <div class="small">예: ChatGPT·Claude·Gemini 기본형</div>
+      </div>
+    </div>
+    <div style="margin-top: 56px;" class="body-lg">
+      <b>전략:</b> 빠른 작업엔 A, 어려운 일엔 B, 일상은 C. 이 세 가지를 상황별로 갈아탄다.
+    </div>
+    <div class="footnote">L03 · 모델</div>
+    <div class="pageno">07</div>
+  </div>
+</section>
+
+<!-- 8 Section: Interface -->
+<section data-label="08 Section Interface" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 02 / 05</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">02</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">인터페이스</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1200px;">
+        같은 모델도 어디에서 쓰느냐에 따라 경험이 완전히 달라진다.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">08</div>
+  </div>
+</section>
+
+<!-- 9 Four interfaces -->
+<section data-label="09 Four Interfaces">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">8. 인터페이스 네 가지</div>
+    <div class="h3" style="margin-bottom: 48px;">통제력과 자동화 사이.</div>
+    <div class="grid-4">
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 40px;">01</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 12px 0;">채팅형</div>
+        <div class="small" style="margin-bottom: 16px;">질문/응답 중심</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 6px;">
+          <span class="tag">ChatGPT</span><span class="tag">Claude</span>
+        </div>
+        <div class="small" style="margin-top: 16px; font-size: 20px;">입문자 최적</div>
+      </div>
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 40px;">02</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 12px 0;">캔버스형</div>
+        <div class="small" style="margin-bottom: 16px;">바로 화면 미리보기</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 6px;">
+          <span class="tag">Artifacts</span><span class="tag">Canvas</span>
+        </div>
+        <div class="small" style="margin-top: 16px; font-size: 20px;">결과를 즉시 본다</div>
+      </div>
+      <div class="card" style="padding: 32px 24px;">
+        <div class="num accent" style="font-size: 40px;">03</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 12px 0;">에디터형</div>
+        <div class="small" style="margin-bottom: 16px;">코드 에디터 + AI</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 6px;">
+          <span class="tag">Cursor</span><span class="tag">Copilot</span>
+        </div>
+        <div class="small" style="margin-top: 16px; font-size: 20px;">중급자 표준</div>
+      </div>
+      <div class="card bg-accent" style="padding: 32px 24px; border-color: var(--accent);">
+        <div class="num" style="font-size: 40px; color:#fff;">04</div>
+        <div style="font-size: 26px; font-weight: 700; margin: 12px 0; color:#fff;">에이전트형</div>
+        <div class="small" style="margin-bottom: 16px; color: rgba(255,255,255,0.85);">파일·명령 자동 실행</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 6px;">
+          <span class="tag" style="border-color:#fff; color:#fff;">Claude Code</span>
+        </div>
+        <div class="small" style="margin-top: 16px; font-size: 20px; color: rgba(255,255,255,0.9);">강력하지만 경계 필요</div>
+      </div>
+    </div>
+    <div class="footnote">L03 · 인터페이스</div>
+    <div class="pageno">09</div>
+  </div>
+</section>
+
+<!-- 10 Interface comparison -->
+<section data-label="10 Interface Compare">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">8.5 한눈에 보기</div>
+    <table class="compare">
+      <thead><tr><th>유형</th><th>강점</th><th>약점</th><th class="accent">언제 쓸까</th></tr></thead>
+      <tbody>
+        <tr><td><b>채팅형</b></td><td>가장 쉬움. 대화로 바로 묻고 답함</td><td>실제 결과를 화면으로 못 본다</td><td>아이디어·기획·문구</td></tr>
+        <tr><td><b>캔버스형</b></td><td>코드와 결과를 한 화면에서 본다</td><td>큰 프로젝트엔 부적합</td><td>한 화면 도구·프로토타입</td></tr>
+        <tr><td><b>에디터형</b></td><td>여러 파일 다루기 편함</td><td>설치·설정 부담</td><td>여러 화면 앱·반복 작업</td></tr>
+        <tr><td><b>에이전트형</b></td><td>스스로 파일 만들고 실행</td><td>예상 밖 행동 위험</td><td>익숙해진 뒤, 명확한 요구</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 56px; padding: 28px 36px; background: var(--paper-warm); border-left: 4px solid var(--accent);" class="body-lg">
+      통제력을 줄수록 자동화가 늘고, 자동화가 늘수록 검토가 더 중요해진다.
+    </div>
+    <div class="footnote">L03 · 인터페이스</div>
+    <div class="pageno">10</div>
+  </div>
+</section>
+
+<!-- 11 Section: Combo -->
+<section data-label="11 Section Combo" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 03 / 05</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">03</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">조합</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1200px;">
+        단계별 추천 세팅 — 어디서 시작하고 언제 갈아탈 것인가.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">11</div>
+  </div>
+</section>
+
+<!-- 12 Stages -->
+<section data-label="12 Stages">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">9. 단계별 추천 조합</div>
+    <div class="h3" style="margin-bottom: 56px;">자기 단계에 맞는 도구가 정답이다.</div>
+    <div class="grid-3" style="gap: 24px;">
+      <div class="card-warm">
+        <div class="mono small" style="margin-bottom: 12px;">STAGE 1</div>
+        <div style="font-size: 30px; font-weight: 700; margin-bottom: 16px;">처음 시작</div>
+        <div class="body" style="font-size: 24px; margin-bottom: 24px;">한 화면짜리 도구를 만든다.</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 8px; margin-bottom: 16px;">
+          <span class="tag">대중 모델</span><span class="tag">채팅형</span><span class="tag">캔버스형</span>
+        </div>
+        <div class="small">→ 결과를 즉시 보고, 사이클을 익힌다.</div>
+      </div>
+      <div class="card-warm" style="border-left-color: var(--accent);">
+        <div class="mono small accent" style="margin-bottom: 12px;">STAGE 2</div>
+        <div style="font-size: 30px; font-weight: 700; margin-bottom: 16px;">조금 익숙</div>
+        <div class="body" style="font-size: 24px; margin-bottom: 24px;">여러 화면 도구·복수 파일.</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 8px; margin-bottom: 16px;">
+          <span class="tag">추론 모델</span><span class="tag">에디터형</span>
+        </div>
+        <div class="small">→ 디버깅·구조 설계가 늘어난다.</div>
+      </div>
+      <div class="card bg-accent" style="border: 1.5px solid var(--accent);">
+        <div class="mono small" style="margin-bottom: 12px; color: rgba(255,255,255,0.85);">STAGE 3</div>
+        <div style="font-size: 30px; font-weight: 700; margin-bottom: 16px; color:#fff;">자동화</div>
+        <div class="body" style="font-size: 24px; margin-bottom: 24px; color: rgba(255,255,255,0.92);">반복 작업을 위임한다.</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 8px; margin-bottom: 16px;">
+          <span class="tag" style="border-color:#fff; color:#fff;">추론 모델</span><span class="tag" style="border-color:#fff; color:#fff;">에이전트형</span>
+        </div>
+        <div class="small" style="color: rgba(255,255,255,0.9);">→ 명확한 경계와 검토가 필수.</div>
+      </div>
+    </div>
+    <div class="footnote">L03 · 조합</div>
+    <div class="pageno">12</div>
+  </div>
+</section>
+
+<!-- 13 Start options -->
+<section data-label="13 Start Options">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">9.4 빠른 시작 vs 전문 시작</div>
+    <div class="h3" style="margin-bottom: 48px;">처음부터 거창하게 세팅하지 않는다. <span class="accent">목적에 맞게</span> 나눈다.</div>
+    <div class="grid-2" style="gap: 40px;">
+      <div class="card-warm" style="padding: 44px 40px;">
+        <div class="mono small accent" style="margin-bottom: 16px;">OPTION A · 빠른 시작</div>
+        <div style="font-size: 34px; font-weight: 800; margin-bottom: 20px;">채팅 + 캔버스</div>
+        <div class="body" style="font-size: 25px; margin-bottom: 28px;">설치 없이 오늘 바로 첫 화면을 띄운다. 동아리 첫 실습에 가장 적합하다.</div>
+        <table class="compare" style="font-size: 22px;">
+          <tbody>
+            <tr><td><b>목표</b></td><td>한 화면 도구, HTML 초안, 간단한 자동화</td></tr>
+            <tr><td><b>도구</b></td><td>ChatGPT / Claude / Gemini + Canvas·Artifacts</td></tr>
+            <tr><td><b>장점</b></td><td>진입장벽 낮음, 결과 확인 빠름</td></tr>
+            <tr><td><b>주의</b></td><td>큰 프로젝트·다중 파일 관리에는 한계</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="padding: 44px 40px; border-color: var(--accent);">
+        <div class="mono small accent" style="margin-bottom: 16px;">OPTION B · 전문 시작</div>
+        <div style="font-size: 34px; font-weight: 800; margin-bottom: 20px;">VS Code/Cursor + GitHub + 배포</div>
+        <div class="body" style="font-size: 25px; margin-bottom: 28px;">서비스처럼 운영할 작은 앱을 만들 때 선택한다. 구조·버전·배포를 함께 관리한다.</div>
+        <table class="compare" style="font-size: 22px;">
+          <tbody>
+            <tr><td><b>코딩</b></td><td>VS Code, Cursor, Copilot, 에이전트형 도구</td></tr>
+            <tr><td><b>버전</b></td><td>GitHub 저장소</td></tr>
+            <tr><td><b>백엔드</b></td><td>Supabase 등 관리형 DB·Auth</td></tr>
+            <tr><td><b>배포</b></td><td>Vercel / Firebase Hosting 등</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top: 44px; padding: 28px 36px; background: var(--paper-warm); border-left: 4px solid var(--accent);" class="body-lg">
+      동아리 1차 목표는 <b>빠른 시작</b>. 반복해서 만들 수 있게 되면 <b>전문 시작</b>으로 확장한다.
+    </div>
+    <div class="footnote">L03 · 조합</div>
+    <div class="pageno">13</div>
+  </div>
+</section>
+
+<!-- 14 Section Pitfalls -->
+<section data-label="14 Section Pitfalls" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 04 / 05</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">04</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">함정</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1200px;">
+        도구 선택에서 흔히 빠지는 세 가지 함정.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">14</div>
+  </div>
+</section>
+
+<!-- 15 Pitfalls -->
+<section data-label="15 Pitfalls">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">10. 흔한 세 가지 함정</div>
+    <div class="grid-3" style="gap: 24px;">
+      <div class="card">
+        <div class="mono small" style="color: var(--ink-mute); margin-bottom: 12px;">TRAP 01</div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 16px;">"가장 좋다"는 도구를 따라간다</div>
+        <div class="body" style="font-size: 22px;">자기 단계와 안 맞으면 의미가 없다. 가장 좋은 도구가 아니라 <b>지금 내가 익힐 수 있는 도구</b>가 답이다.</div>
+      </div>
+      <div class="card">
+        <div class="mono small" style="color: var(--ink-mute); margin-bottom: 12px;">TRAP 02</div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 16px;">한 도구로 모든 일을 한다</div>
+        <div class="body" style="font-size: 22px;">기획·디버깅·자동화는 성격이 다르다. 한 도구에 묶여 있으면 작업의 성격에 따라 <b>갈아타는 유연함</b>을 잃는다.</div>
+      </div>
+      <div class="card">
+        <div class="mono small" style="color: var(--ink-mute); margin-bottom: 12px;">TRAP 03</div>
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 16px;">도구가 다 해줄 거라 기대한다</div>
+        <div class="body" style="font-size: 22px;">도구는 도구일 뿐이다. <b>의도 설계와 결과 검토</b>는 여전히 사람의 일이다.</div>
+      </div>
+    </div>
+    <div style="margin-top: 64px;" class="quote">
+      도구는 <span class="strike">정답</span>이 아니라 <span class="accent">선택지</span>다.
+    </div>
+    <div class="footnote">L03 · 함정</div>
+    <div class="pageno">15</div>
+  </div>
+</section>
+
+<!-- 16 Section Hello World -->
+<section data-label="16 Section Hello" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 05 / 05</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">05</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">Hello World</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1200px;">
+        오늘 안에 첫 화면을 띄운다.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">16</div>
+  </div>
+</section>
+
+<!-- 17 Setup -->
+<section data-label="17 Setup">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">11. 시작할 때 필요한 것</div>
+    <div class="h3" style="margin-bottom: 56px;">핵심은 딱 두 가지다.</div>
+    <div class="grid-2" style="gap: 32px;">
+      <div class="card-warm">
+        <div class="num accent" style="font-size: 56px;">01</div>
+        <div style="font-size: 34px; font-weight: 800; margin: 16px 0;">코딩 가능한 LLM 모델</div>
+        <div class="body" style="font-size: 25px;">코드·화면·오류를 이해하고 수정안을 낼 수 있는 AI 모델.</div>
+      </div>
+      <div class="card-warm" style="border-left-color: var(--accent);">
+        <div class="num accent" style="font-size: 56px;">02</div>
+        <div style="font-size: 34px; font-weight: 800; margin: 16px 0;">채팅 코딩 인터페이스</div>
+        <div class="body" style="font-size: 25px;">명령하고, 결과를 보고, 다시 피드백할 수 있는 작업 공간.</div>
+      </div>
+    </div>
+    <div style="margin-top: 64px;" class="body-lg">
+      인터넷과 브라우저는 기본 전제다. 처음에는 <b>"내가 지금 손이 닿는 도구"</b>가 가장 좋은 도구다.
+    </div>
+    <div class="footnote">L03 · Hello World</div>
+    <div class="pageno">17</div>
+  </div>
+</section>
+
+<!-- 18 First Project -->
+<section data-label="18 First Project">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">12. 첫 프로젝트 정의</div>
+    <div class="h3" style="margin-bottom: 24px;">거창한 앱이 아니라, <span class="accent">하나짜리 도구</span>를 만든다.</div>
+    <div class="body-lg" style="margin-bottom: 56px;">조건은 세 가지뿐.</div>
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      <div class="card" style="padding: 36px 32px; text-align:center;">
+        <div class="num accent" style="font-size: 48px;">01</div>
+        <div style="font-size: 28px; font-weight: 700; margin: 16px 0 8px;">한 화면</div>
+        <div class="small">탭이나 메뉴 없이</div>
+      </div>
+      <div class="card" style="padding: 36px 32px; text-align:center;">
+        <div class="num accent" style="font-size: 48px;">02</div>
+        <div style="font-size: 28px; font-weight: 700; margin: 16px 0 8px;">한 입력</div>
+        <div class="small">필드·버튼·선택 하나</div>
+      </div>
+      <div class="card" style="padding: 36px 32px; text-align:center;">
+        <div class="num accent" style="font-size: 48px;">03</div>
+        <div style="font-size: 28px; font-weight: 700; margin: 16px 0 8px;">한 결과</div>
+        <div class="small">결과 한 가지</div>
+      </div>
+    </div>
+    <div style="margin-top: 56px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <div class="card-warm" style="padding: 24px;"><div class="small mono accent">예시</div><div style="font-size: 24px; margin-top: 8px;">제목 → SNS용 짧은 카피</div></div>
+      <div class="card-warm" style="padding: 24px;"><div class="small mono accent">예시</div><div style="font-size: 24px; margin-top: 8px;">메모 → 액션 아이템</div></div>
+      <div class="card-warm" style="padding: 24px;"><div class="small mono accent">예시</div><div style="font-size: 24px; margin-top: 8px;">엑셀 한 줄 → 보고 문구</div></div>
+    </div>
+    <div class="footnote">L03 · Hello World</div>
+    <div class="pageno">18</div>
+  </div>
+</section>
+
+<!-- 19 First Prompt template -->
+<section data-label="19 First Prompt" class="bg-warm">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">13. 첫 프롬프트 템플릿</div>
+    <div class="h3" style="margin-bottom: 32px;">2강의 5대 원칙을 그대로 끼워 넣었다.</div>
+    <div class="prompt-block" style="font-size: 22px;">나는 [반복적으로 하는 작업]을 줄이기 위해 한 화면짜리 웹 도구를 만들고 싶다.
+
+사용자는 [나 자신 / 동료]이고, IT 지식은 일반 수준이다.
+
+화면을 열면 가장 먼저 [입력 필드]가 보여야 한다.
+사용자가 [입력 행동]을 하면, [결과]가 화면 아래에 표시된다.
+완료되면 결과를 복사할 수 있는 버튼이 함께 보인다.
+
+문구·배치·색상은 알아서 정해도 된다.
+하지만 새로운 화면이나 메뉴는 추가하지 마라.
+복잡한 데이터 저장도 하지 마라.
+
+이번에는 완성본이 아니라 1차 초안을 만들어라.</div>
+    <div class="footnote">L03 · Hello World</div>
+    <div class="pageno">19</div>
+  </div>
+</section>
+
+<!-- 20 First cycle -->
+<section data-label="20 First Cycle">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">14. 첫 사이클 — 한 번만 고쳐본다</div>
+    <div class="h3" style="margin-bottom: 64px;">완성이 아니라 <span class="accent">사이클의 감각</span>을 익히는 것이 목표다.</div>
+    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+      <div class="card" style="padding: 28px;">
+        <div class="num accent" style="font-size: 40px;">01</div>
+        <div style="font-size: 24px; font-weight: 700; margin: 12px 0;">초안 받기</div>
+        <div class="small">템플릿대로 보낸다</div>
+      </div>
+      <div class="card" style="padding: 28px;">
+        <div class="num accent" style="font-size: 40px;">02</div>
+        <div style="font-size: 24px; font-weight: 700; margin: 12px 0;">화면 확인</div>
+        <div class="small">실제로 동작하는가</div>
+      </div>
+      <div class="card" style="padding: 28px;">
+        <div class="num accent" style="font-size: 40px;">03</div>
+        <div style="font-size: 24px; font-weight: 700; margin: 12px 0;">한 곳 짚기</div>
+        <div class="small">"여기를 이렇게"</div>
+      </div>
+      <div class="card bg-accent" style="padding: 28px; border-color: var(--accent);">
+        <div class="num" style="font-size: 40px; color:#fff;">04</div>
+        <div style="font-size: 24px; font-weight: 700; margin: 12px 0; color:#fff;">다시 받기</div>
+        <div class="small" style="color: rgba(255,255,255,0.9);">변화 확인 = 첫 사이클 완성</div>
+      </div>
+    </div>
+    <div style="margin-top: 64px; padding: 32px 40px; background: var(--paper-warm); border-left: 4px solid var(--accent);" class="body-lg">
+      이 사이클이 익숙해지면, <b>어떤 도구를 써도 흐름은 같다</b>.
+    </div>
+    <div class="footnote">L03 · Hello World</div>
+    <div class="pageno">20</div>
+  </div>
+</section>
+
+<!-- 21 Series Recap -->
+<section data-label="21 Series Recap" class="bg-ink">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 32px; color: var(--accent);">SERIES RECAP</div>
+    <div class="h2" style="color: var(--paper); margin-bottom: 64px;">세 번의 강의가 만나는 곳</div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;">
+      <div class="card" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); padding: 36px 32px;">
+        <div class="mono small accent">L01</div>
+        <div style="font-size: 30px; font-weight: 700; color:#fff; margin: 12px 0;">정의</div>
+        <div class="small">바이브코딩이 무엇인가, 왜 지금인가.</div>
+      </div>
+      <div class="card" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); padding: 36px 32px;">
+        <div class="mono small accent">L02</div>
+        <div style="font-size: 30px; font-weight: 700; color:#fff; margin: 12px 0;">말하기</div>
+        <div class="small">맥락 + 경계가 있는 협업 요청.</div>
+      </div>
+      <div class="card bg-accent" style="border-color: var(--accent); padding: 36px 32px;">
+        <div class="mono small" style="color: rgba(255,255,255,0.85);">L03</div>
+        <div style="font-size: 30px; font-weight: 700; color:#fff; margin: 12px 0;">도구</div>
+        <div class="small" style="color: rgba(255,255,255,0.9);">자기 작업에 맞는 모델·환경.</div>
+      </div>
+    </div>
+    <div style="margin-top: 80px;" class="quote" >
+      셋이 만나는 자리에서 <span style="color: var(--accent);">첫 작품</span>이 태어난다.
+    </div>
+    <div class="pageno">21</div>
+  </div>
+</section>
+
+<!-- 22 Closing -->
+<section data-label="22 Closing" class="bg-accent">
+  <div class="slide-pad" style="justify-content:center;">
+    <div class="eyebrow" style="color: rgba(255,255,255,0.85); margin-bottom: 40px;">CLOSING</div>
+    <div class="h1" style="color: #fff; margin-bottom: 56px;">시작은<br>도구가 아니라<br>작은 한 가지의 불편함이다.</div>
+    <div class="body-lg" style="color: rgba(255,255,255,0.95);">
+      오늘, 그 한 가지를 골라 <b>한 화면짜리 도구</b>로 옮겨라.
+    </div>
+    <div class="pageno" style="color: rgba(255,255,255,0.7);">22</div>
+  </div>
+</section>
+
+<!-- 23 Thanks -->
+<section data-label="23 End">
+  <div class="slide-pad" style="justify-content:center; align-items:center; text-align:center;">
+    <div class="eyebrow" style="margin-bottom: 40px;">FIN · LECTURE 03 · 시리즈 종료</div>
+    <div class="h1">감사합니다.</div>
+    <div class="body-lg" style="margin-top: 40px;">이제 직접 만들어볼 차례입니다.</div>
+    <div class="pageno">23</div>
+  </div>
+</section>
+
+</deck-stage>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>11강 — 동료에게 공유해볼까?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+:root {
+  --ink: #16161a;
+  --ink-soft: #3a3a42;
+  --ink-mute: #76767f;
+  --paper: #f5f2ec;
+  --paper-warm: #ece7dd;
+  --line: #d8d2c4;
+  --accent: #ff5a1f;
+  --accent-soft: #ffe8de;
+}
+html, body { margin:0; padding:0; background:#0a0a0c; font-family:'Pretendard', sans-serif; color:var(--ink); }
+deck-stage section { background:var(--paper); overflow:hidden; font-family:'Pretendard', sans-serif; color:var(--ink); letter-spacing:-0.01em; }
+.slide-pad { padding: 94px 108px 86px; box-sizing:border-box; width:100%; height:100%; display:flex; flex-direction:column; position:relative; }
+.eyebrow { font-size:24px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); font-family:'JetBrains Mono', monospace; }
+.h1 { font-size:96px; font-weight:800; line-height:1.05; letter-spacing:-0.03em; }
+.h2 { font-size:72px; font-weight:760; line-height:1.1; letter-spacing:-0.025em; }
+.h3 { font-size:54px; font-weight:760; line-height:1.18; letter-spacing:-0.02em; }
+.body-lg { font-size:36px; font-weight:400; line-height:1.45; color:var(--ink-soft); }
+.body { font-size:29px; font-weight:400; line-height:1.52; color:var(--ink-soft); }
+.small { font-size:23px; font-weight:500; color:var(--ink-mute); line-height:1.45; }
+.mono { font-family:'JetBrains Mono', monospace; }
+.accent { color:var(--accent); }
+.strike { text-decoration: line-through; color: var(--ink-mute); }
+.rule { height:2px; background:var(--ink); width:100%; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:44px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; }
+.grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+.grid-5 { display:grid; grid-template-columns:repeat(5, 1fr); gap:16px; }
+.card { background:#fff; border:1.5px solid var(--ink); padding:34px 32px; }
+.card-warm { background:var(--paper-warm); padding:34px 32px; border-left:4px solid var(--ink); }
+.card-accent { background:var(--accent); border:1.5px solid var(--accent); color:#fff; padding:34px 32px; }
+.card-accent .small, .card-accent .body, .card-accent .body-lg { color:rgba(255,255,255,.88); }
+.quote { font-size:56px; font-weight:700; line-height:1.27; letter-spacing:-0.02em; }
+.num { font-family:'JetBrains Mono', monospace; font-weight:800; }
+.bg-ink { background:var(--ink); color:var(--paper); }
+.bg-ink .h1, .bg-ink .h2, .bg-ink .h3, .bg-ink .quote { color:var(--paper); }
+.bg-ink .body-lg, .bg-ink .body, .bg-ink .small { color:#c0bfc7; }
+.bg-warm { background:var(--paper-warm); }
+.bg-accent { background:var(--accent); color:#fff; }
+.bg-accent .h1, .bg-accent .h2, .bg-accent .h3, .bg-accent .quote { color:#fff; }
+.bg-accent .body-lg, .bg-accent .body, .bg-accent .small { color:rgba(255,255,255,.9); }
+.pageno { position:absolute; bottom:36px; right:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; }
+.footnote { position:absolute; bottom:36px; left:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; text-transform:uppercase; }
+.bg-ink .pageno, .bg-ink .footnote { color:#76767f; }
+.bg-accent .pageno, .bg-accent .footnote { color:rgba(255,255,255,.72); }
+table.compare { width:100%; border-collapse:collapse; font-size:25px; }
+table.compare th, table.compare td { text-align:left; padding:19px 21px; border-bottom:1px solid var(--line); vertical-align:top; }
+table.compare th { font-weight:800; color:var(--ink); font-size:20px; text-transform:uppercase; letter-spacing:.08em; border-bottom:2px solid var(--ink); }
+table.compare td { color:var(--ink-soft); line-height:1.42; }
+.bg-ink table.compare th { color:var(--paper); border-bottom-color:var(--accent); }
+.bg-ink table.compare td { color:#d7d4ce; border-bottom-color:rgba(255,255,255,.15); }
+.prompt-block { font-family:'JetBrains Mono', monospace; background:var(--ink); color:#f5f2ec; padding:28px 32px; font-size:21px; line-height:1.58; white-space:pre-wrap; border-radius:5px; }
+.code-block { font-family:'JetBrains Mono', monospace; background:#fff; border:1.5px solid var(--ink); color:var(--ink); padding:26px 30px; font-size:21px; line-height:1.55; white-space:pre-wrap; border-radius:5px; }
+.tag { display:inline-block; padding:7px 14px; border:1.4px solid var(--ink); border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:18px; margin:0 6px 8px 0; }
+ul.clean { margin:0; padding-left:28px; font-size:29px; line-height:1.72; color:var(--ink-soft); }
+ol.clean { margin:0; padding-left:32px; font-size:29px; line-height:1.72; color:var(--ink-soft); }
+.flow { display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; align-items:stretch; }
+.flow .step { background:#fff; border:1.5px solid var(--ink); padding:26px 22px; }
+.flow .step strong { display:block; font-size:24px; margin:12px 0 8px; }
+.flow .step .num { color:var(--accent); font-size:30px; }
+</style>
+<script type="application/json" id="speaker-notes">
+[
+  "11강은 로컬 도구를 동료가 볼 수 있는 형태로 공유하는 시간입니다.",
+  "오늘의 핵심 메시지입니다. 배포는 완성이 아니라 피드백을 받을 수 있는 상태를 만드는 일입니다.",
+  "우리는 이미 로컬에서 동작하는 도구를 만들었습니다. 이제 공유 가능 상태로 바꿉니다.",
+  "로컬 도구와 공유 도구는 요구되는 설명 수준이 다릅니다.",
+  "공유 전 체크리스트입니다. 샘플 데이터, 사용법, 주의사항, 복구 방법이 있어야 합니다.",
+  "GitHub를 개발자 도구로만 설명하면 어렵습니다. 변경 이력과 설명서의 집이라고 보면 됩니다.",
+  "README는 배포된 도구의 사용 설명서입니다. 비개발자도 이해할 수 있게 써야 합니다.",
+  "버전관리는 다섯 단계로 이해하면 됩니다. 만들고, 추가하고, 기록하고, 올리고, 공유합니다.",
+  "정적 웹 배포는 서버 없이 파일만 올려서 웹페이지로 보여주는 방식입니다. 첫 공유 실습에 적합합니다.",
+  "여러 배포 선택지가 있습니다. 동아리에서는 GitHub Pages, Vercel, Firebase 중 익숙한 도구를 쓰면 됩니다.",
+  "배포 금지 항목입니다. 실제 업무 데이터나 키가 포함된 파일은 절대 올리면 안 됩니다.",
+  "샘플 데이터는 가짜 데이터, 마스킹, 축약, 검증을 거쳐 만들어야 합니다.",
+  "비밀값과 환경변수 개념을 간단히 설명합니다. 정적 사이트에 키를 넣는 것은 위험합니다.",
+  "피드백 질문은 구체적이어야 합니다. 어때요가 아니라 어디서 막혔는지를 물어야 합니다.",
+  "버전 이름을 붙이면 현재 상태가 분명해집니다. v0.1, v0.2, v0.3, v1.0으로 설명할 수 있습니다.",
+  "변경 이력은 기능정의서와 운영 문서의 기초가 됩니다.",
+  "공유 대상은 단계적으로 넓혀야 합니다. 나, 동료, 팀, 전사 순서가 안전합니다.",
+  "파일럿은 짧고 작게 설계합니다. 기간, 대상, 데이터, 측정, 결정을 정합니다.",
+  "좋은 피드백은 2강에서 배운 것처럼 위치, 문제, 방향, 제한이 구체적이어야 합니다.",
+  "롤백은 배포에서 중요한 개념입니다. 문제가 생겼을 때 이전 버전으로 돌아갈 수 있어야 합니다.",
+  "이 프롬프트로 README를 만들 수 있습니다. 설명서가 있어야 동료가 테스트할 수 있습니다.",
+  "체크리스트로 배포 전 위험을 줄입니다.",
+  "데모데이는 짧고 구조적으로 운영합니다. 문제, 시연, 피드백, 다음 액션입니다.",
+  "마무리입니다. 공유는 검증의 시작입니다. 다음 강의는 회사에서 써도 되는지를 다룹니다."
+]
+</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+<section data-label="01 Title">
+<div class="slide-pad" style="justify-content:center;">
+<div style="display:flex; justify-content:space-between; align-items:flex-start;">
+<div class="eyebrow">VIBE CODING · LECTURE 11</div>
+<div class="mono small">PART 3 · 업무 적용</div></div>
+<div style="margin-top:auto; margin-bottom:auto;">
+<div class="mono small" style="margin-bottom:28px; color:var(--ink-mute);">// 강의 11강</div>
+<div class="h1">동료에게<br><span class='accent'>공유해볼까?</span></div>
+<div class="body-lg" style="margin-top:48px; max-width:1300px;">로컬 도구를 샘플 데이터 기반 웹 데모로 배포하고 피드백을 받는 시간.</div>
+</div><div style="display:flex; justify-content:space-between; align-items:flex-end;"><div class="rule" style="width:240px;"></div><div class="mono small">내 도구를 실제 업무에 붙이기</div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">01</div>
+</div>
+</section>
+<section data-label="02 Core" class="bg-warm">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="margin-bottom:36px;">CORE MESSAGE</div>
+<div class="quote" style="max-width:1600px;">배포는 완성이 아니다.<br><span class='accent'>다른 사람이 써보고 피드백을 줄 수 있는 상태</span>로 만드는 것이다.</div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">02</div>
+</div>
+</section>
+<section data-label="03 지금까지 만든 것">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:36px;">지금까지 만든 것</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">이제 이 도구를 혼자 쓰는 상태에서 다른 사람이 볼 수 있는 상태로 옮깁니다.</div>
+<ul class="clean"><li>Working Backwards 1페이지 생성기</li><li>화면 목업과 로컬 프로토타입</li><li>엑셀 붙여넣기 보고 요약기</li><li>AI 보고 프롬프트 생성 기능</li></ul>
+<div class="footnote">L11 · PART 3</div><div class="pageno">03</div>
+</div>
+</section>
+<section data-label="04 로컬과 공유의 차이">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:44px;">로컬과 공유의 차이</div>
+<div class="grid-2">
+<div class="card"><div class="mono small" style="margin-bottom:18px; color:var(--ink-mute);">LOCAL</div><div class="body">내 PC에서만 열린다.<br>설명하지 않아도 내가 쓸 수 있다.<br>깨져도 나만 불편하다.</div></div>
+<div class="card-accent"><div class="mono small" style="margin-bottom:18px; color:rgba(255,255,255,.86);">SHARED</div><div class="body" style="color:rgba(255,255,255,.92);">동료가 링크로 접속한다.<br>사용법, 샘플, 제한사항이 필요하다.<br>오류와 피드백을 관리해야 한다.</div></div>
+</div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">04</div>
+</div>
+</section>
+<section data-label="05 공유 전 체크">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:38px;">공유 전 체크</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">배포 전에 최소한의 공유 조건을 갖춰야 합니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">샘플 데이터</div><div class="small">실제 회사 데이터가 아닌 교육용 데이터</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">사용법</div><div class="small">처음 보는 사람도 이해할 안내문</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">주의사항</div><div class="small">민감정보 입력 금지와 책임 범위</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">복구 방법</div><div class="small">문제가 생기면 이전 버전으로 돌아갈 수 있어야 함</div></div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">05</div>
+</div>
+</section>
+<section data-label="06 GitHub는 코드 창고가 아니라 변경 이력이다">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:36px;">GitHub는 코드 창고가 아니라 변경 이력이다</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">비개발자에게 GitHub는 협업과 기록의 도구로 설명하는 것이 좋습니다.</div>
+<ul class="clean"><li>처음 만든 버전을 저장한다</li><li>수정할 때마다 기록을 남긴다</li><li>문제가 생기면 이전 버전과 비교한다</li><li>README로 사용법과 제한사항을 설명한다</li><li>동료 피드백을 이슈로 정리할 수 있다</li></ul>
+<div class="footnote">L11 · PART 3</div><div class="pageno">06</div>
+</div>
+</section>
+<section data-label="07 README에 반드시 들어갈 것">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:34px;">README에 반드시 들어갈 것</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">README는 동료가 처음 보는 설명서입니다.</div>
+<table class="compare"><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>도구 이름</td><td>무엇을 하는 도구인지</td></tr><tr><td>사용 대상</td><td>누가 쓰는지</td></tr><tr><td>사용 방법</td><td>1, 2, 3단계로 설명</td></tr><tr><td>샘플 데이터</td><td>바로 테스트할 수 있는 예시</td></tr><tr><td>주의사항</td><td>민감정보 입력 금지, 저장 없음</td></tr><tr><td>버전</td><td>현재 버전과 변경 내용</td></tr></tbody></table>
+<div class="footnote">L11 · PART 3</div><div class="pageno">07</div>
+</div>
+</section>
+<section data-label="08 버전관리의 기본 흐름">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">FLOW</div>
+<div class="h3" style="margin-bottom:36px;">버전관리의 기본 흐름</div>
+<div class="body-lg" style="margin-bottom:46px; max-width:1500px;">버전관리는 코드를 잘 쓰는 기술보다 변경을 통제하는 습관입니다.</div>
+<div class="flow"><div class="step"><div class="num">01</div><strong>Create</strong><div class="small">저장소를 만든다</div></div><div class="step"><div class="num">02</div><strong>Add</strong><div class="small">파일을 추가한다</div></div><div class="step"><div class="num">03</div><strong>Commit</strong><div class="small">변경 이유를 기록한다</div></div><div class="step"><div class="num">04</div><strong>Push</strong><div class="small">원격 저장소에 올린다</div></div><div class="step"><div class="num">05</div><strong>Release</strong><div class="small">공유 가능한 버전을 정한다</div></div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">08</div>
+</div>
+</section>
+<section data-label="09 정적 웹 배포란">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:38px;">정적 웹 배포란</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">우리가 만든 단일 HTML 도구는 정적 웹 배포에 적합합니다.</div>
+<div class="grid-3"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">서버 코드 없음</div><div class="small">HTML, CSS, JS 파일만 올린다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">빠른 배포</div><div class="small">작은 도구를 링크로 공유하기 쉽다</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">제한 있음</div><div class="small">DB, 로그인, 비공개 데이터 처리에는 부적합</div></div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">09</div>
+</div>
+</section>
+<section data-label="10 배포 선택지">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:34px;">배포 선택지</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">어떤 배포 도구를 쓰든 핵심은 교육용 샘플만 배포한다는 점입니다.</div>
+<table class="compare"><thead><tr><th>도구</th><th>특징</th><th>사용 시점</th></tr></thead><tbody><tr><td>GitHub Pages</td><td>GitHub 저장소와 연결이 쉽다</td><td>가장 단순한 정적 페이지</td></tr><tr><td>Vercel</td><td>프론트엔드 배포가 빠르다</td><td>React/Next 확장 시</td></tr><tr><td>Firebase Hosting</td><td>정적 웹과 앱 배포에 적합</td><td>Firebase를 이미 쓰는 경우</td></tr><tr><td>사내 환경</td><td>보안 통제가 가능하다</td><td>실제 업무 적용 시</td></tr></tbody></table>
+<div class="footnote">L11 · PART 3</div><div class="pageno">10</div>
+</div>
+</section>
+<section data-label="11 절대 배포하면 안 되는 것">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:36px;">절대 배포하면 안 되는 것</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">공유 실습은 교육용 샘플 버전만 대상으로 합니다.</div>
+<ul class="clean"><li>API Key가 코드 안에 들어간 파일</li><li>실제 고객정보가 포함된 샘플 데이터</li><li>내부 실적 원본이나 비공개 문서</li><li>회사 계정 또는 인증 우회 정보</li><li>외부 공개가 불가능한 화면 캡처</li></ul>
+<div class="footnote">L11 · PART 3</div><div class="pageno">11</div>
+</div>
+</section>
+<section data-label="12 샘플 데이터 전략">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:38px;">샘플 데이터 전략</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">배포용 샘플 데이터는 실제 업무 맥락은 살리되 위험은 제거해야 합니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">가짜 데이터</div><div class="small">실제 구조와 비슷하지만 값은 임의로 만든다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">마스킹</div><div class="small">식별 가능한 값은 제거하거나 바꾼다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">축약</div><div class="small">필요한 열과 행만 남긴다</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">검증</div><div class="small">누가 봐도 민감정보가 없는지 확인</div></div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">12</div>
+</div>
+</section>
+<section data-label="13 비밀값과 환경변수">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:36px;">비밀값과 환경변수</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">11강 배포 실습에서는 API 없는 안전 버전을 기준으로 합니다.</div>
+<ul class="clean"><li>API Key는 코드에 직접 쓰지 않는다</li><li>공개 저장소에 비밀값을 올리지 않는다</li><li>프론트엔드만 있는 정적 사이트는 키 보호가 어렵다</li><li>AI API 호출은 별도 서버나 안전한 백엔드 구조가 필요하다</li><li>처음 배포는 API 없는 버전으로 제한한다</li></ul>
+<div class="footnote">L11 · PART 3</div><div class="pageno">13</div>
+</div>
+</section>
+<section data-label="14 피드백을 받을 질문">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:34px;">피드백을 받을 질문</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">피드백도 구조화해야 합니다.</div>
+<table class="compare"><thead><tr><th>나쁜 질문</th><th>좋은 질문</th></tr></thead><tbody><tr><td>어때요?</td><td>처음 화면에서 무엇을 해야 할지 바로 알 수 있었나요?</td></tr><tr><td>괜찮나요?</td><td>입력부터 결과 복사까지 막힌 지점은 어디였나요?</td></tr><tr><td>예쁜가요?</td><td>업무에 쓰려면 어떤 출력이 더 필요했나요?</td></tr><tr><td>좋죠?</td><td>민감정보 입력 금지 안내가 충분히 보였나요?</td></tr></tbody></table>
+<div class="footnote">L11 · PART 3</div><div class="pageno">14</div>
+</div>
+</section>
+<section data-label="15 버전 이름 붙이기">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:38px;">버전 이름 붙이기</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">버전 이름은 완성도를 말해주는 약속입니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">v0.1</div><div class="small">나만 실행되는 로컬 초안</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">v0.2</div><div class="small">동료에게 보여줄 샘플 데모</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">v0.3</div><div class="small">피드백 반영 버전</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">v1.0</div><div class="small">사용 기준과 제한사항이 정리된 파일럿</div></div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">15</div>
+</div>
+</section>
+<section data-label="16 변경 이력 예시">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:34px;">변경 이력 예시</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">변경 이력은 나중에 무엇을 고쳤는지 설명하는 자료가 됩니다.</div>
+<table class="compare"><thead><tr><th>버전</th><th>변경 내용</th></tr></thead><tbody><tr><td>v0.1</td><td>엑셀 붙여넣기, 기본 계산</td></tr><tr><td>v0.2</td><td>AI 프롬프트 생성, 복사 버튼 추가</td></tr><tr><td>v0.3</td><td>오류 메시지 개선, 샘플 데이터 버튼 추가</td></tr><tr><td>v0.4</td><td>피드백 반영, README 보완</td></tr></tbody></table>
+<div class="footnote">L11 · PART 3</div><div class="pageno">16</div>
+</div>
+</section>
+<section data-label="17 공유 대상 정하기">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:38px;">공유 대상 정하기</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">공유 범위가 커질수록 책임도 커집니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">나 자신</div><div class="small">개인 생산성 실험</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">동료 1~2명</div><div class="small">사용성 피드백</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">팀 파일럿</div><div class="small">업무 적용 가능성 확인</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">전사 공유</div><div class="small">공식 검토 후 진행</div></div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">17</div>
+</div>
+</section>
+<section data-label="18 파일럿 테스트 설계">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:34px;">파일럿 테스트 설계</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">작은 파일럿도 설계가 있어야 합니다.</div>
+<table class="compare"><thead><tr><th>항목</th><th>설계</th></tr></thead><tbody><tr><td>기간</td><td>1주일 또는 3회 사용</td></tr><tr><td>대상</td><td>동료 2~3명</td></tr><tr><td>데이터</td><td>샘플 또는 마스킹 데이터</td></tr><tr><td>측정</td><td>사용 시간, 막힌 지점, 재사용 의향</td></tr><tr><td>결정</td><td>계속, 수정, 보류, 폐기</td></tr></tbody></table>
+<div class="footnote">L11 · PART 3</div><div class="pageno">18</div>
+</div>
+</section>
+<section data-label="19 좋은 피드백의 조건">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:36px;">좋은 피드백의 조건</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">2강의 ‘여기를 이렇게’ 원칙이 다시 등장합니다.</div>
+<ul class="clean"><li>화면 위치가 구체적이다</li><li>무엇이 불편했는지 말한다</li><li>원하는 방향을 제시한다</li><li>새 기능 요구와 버그를 구분한다</li><li>바로 고칠 것과 나중에 할 것을 나눈다</li></ul>
+<div class="footnote">L11 · PART 3</div><div class="pageno">19</div>
+</div>
+</section>
+<section data-label="20 롤백을 생각하라">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:36px;">롤백을 생각하라</div>
+<div class="body-lg" style="margin-bottom:38px; max-width:1480px;">배포의 핵심은 앞으로만 가는 것이 아니라 돌아올 수 있는 것입니다.</div>
+<ul class="clean"><li>배포 후 문제가 생기면 이전 버전으로 돌아갈 수 있어야 한다</li><li>수정 전 파일을 남겨둔다</li><li>큰 변경은 한 번에 많이 하지 않는다</li><li>동작하던 버전을 기준점으로 삼는다</li><li>링크 공유 후에는 변경 내용을 기록한다</li></ul>
+<div class="footnote">L11 · PART 3</div><div class="pageno">20</div>
+</div>
+</section>
+<section data-label="21 README 생성 프롬프트">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">PROMPT</div>
+<div class="h3" style="margin-bottom:30px;">README 생성 프롬프트</div>
+<div class="body-lg" style="margin-bottom:32px; max-width:1500px;">공유 전에는 반드시 설명서를 붙입니다.</div>
+<div class="prompt-block">다음 웹 도구의 README.md를 작성해라.
+
+도구 이름: 엑셀 붙여넣기 보고 요약기
+목적: 샘플 표 데이터를 붙여넣어 합계, 비율, 보고 문구를 생성한다.
+사용자: 비개발자 회사원
+기능: 데이터 붙여넣기, 계산, 보고 문구 생성, AI 프롬프트 생성, 복사
+제약: 서버 없음, DB 없음, 저장 없음, 실제 회사 데이터 입력 금지
+
+README에는 다음을 포함해라.
+1. 도구 소개
+2. 사용 방법
+3. 샘플 데이터
+4. 주의사항
+5. 버전 정보
+6. 피드백 방법
+
+비개발자도 이해할 수 있게 간결하게 작성해라.</div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">21</div>
+</div>
+</section>
+<section data-label="22 개인 배포 체크리스트">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:34px;">개인 배포 체크리스트</div>
+<div class="body-lg" style="margin-bottom:36px; max-width:1500px;">개인별 배포 전 체크리스트입니다.</div>
+<table class="compare"><thead><tr><th>체크</th><th>질문</th></tr></thead><tbody><tr><td>□</td><td>샘플 데이터만 들어갔는가</td></tr><tr><td>□</td><td>API Key나 비밀값이 없는가</td></tr><tr><td>□</td><td>README가 있는가</td></tr><tr><td>□</td><td>민감정보 입력 금지 안내가 보이는가</td></tr><tr><td>□</td><td>동료가 테스트할 질문을 준비했는가</td></tr><tr><td>□</td><td>문제가 생기면 되돌릴 버전이 있는가</td></tr></tbody></table>
+<div class="footnote">L11 · PART 3</div><div class="pageno">22</div>
+</div>
+</section>
+<section data-label="23 데모데이 준비">
+<div class="slide-pad">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 11</div>
+<div class="h3" style="margin-bottom:38px;">데모데이 준비</div>
+<div class="body-lg" style="margin-bottom:42px; max-width:1500px;">공유의 마지막은 피드백을 받는 짧은 데모입니다.</div>
+<div class="grid-4"><div class="card"><div class="mono small accent" style="margin-bottom:12px;">01</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">3분 설명</div><div class="small">문제, 도구, 사용 장면</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">02</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">1분 시연</div><div class="small">입력, 실행, 결과, 복사</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">03</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">1분 피드백</div><div class="small">좋았던 점과 고칠 점</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">04</div><div style="font-size:30px; font-weight:760; margin-bottom:14px;">다음 액션</div><div class="small">계속, 수정, 보류 결정</div></div></div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">23</div>
+</div>
+</section>
+<section data-label="24 Closing" class="bg-accent">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="color:rgba(255,255,255,.85); margin-bottom:38px;">CLOSING</div>
+<div class="h1" style="max-width:1500px;">공유는 끝이 아니라,<br><span class='accent'>검증의 시작</span>이다.</div>
+<div class="body-lg" style="margin-top:52px; max-width:1450px;">다음 시간에는 회사에서 실제로 써도 되는지, 보안·운영·거버넌스 기준으로 최종 점검합니다.</div>
+<div class="footnote">L11 · PART 3</div><div class="pageno">24</div>
+</div>
+</section>
+
+</deck-stage>
+</body>
+</html>

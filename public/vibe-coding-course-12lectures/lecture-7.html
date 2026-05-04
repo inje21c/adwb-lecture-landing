@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>7강 — demo를 기능정의서로 바꾸기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+:root {
+  --ink: #16161a;
+  --ink-soft: #3a3a42;
+  --ink-mute: #76767f;
+  --paper: #f5f2ec;
+  --paper-warm: #ece7dd;
+  --line: #d8d2c4;
+  --accent: #ff5a1f;
+  --accent-soft: #ffe8de;
+}
+html, body { margin:0; padding:0; background:#0a0a0c; font-family:'Pretendard', sans-serif; color:var(--ink); }
+deck-stage section { background:var(--paper); overflow:hidden; font-family:'Pretendard', sans-serif; color:var(--ink); letter-spacing:-0.01em; }
+.slide-pad { padding: 94px 108px 86px; box-sizing:border-box; width:100%; height:100%; display:flex; flex-direction:column; position:relative; }
+.eyebrow { font-size:24px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); font-family:'JetBrains Mono', monospace; }
+.h1 { font-size:96px; font-weight:800; line-height:1.05; letter-spacing:-0.03em; }
+.h2 { font-size:72px; font-weight:760; line-height:1.1; letter-spacing:-0.025em; }
+.h3 { font-size:54px; font-weight:760; line-height:1.18; letter-spacing:-0.02em; }
+.body-lg { font-size:36px; font-weight:400; line-height:1.45; color:var(--ink-soft); }
+.body { font-size:29px; font-weight:400; line-height:1.52; color:var(--ink-soft); }
+.small { font-size:23px; font-weight:500; color:var(--ink-mute); line-height:1.45; }
+.mono { font-family:'JetBrains Mono', monospace; }
+.accent { color:var(--accent); }
+.strike { text-decoration: line-through; color: var(--ink-mute); }
+.rule { height:2px; background:var(--ink); width:100%; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:44px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; }
+.grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+.card { background:#fff; border:1.5px solid var(--ink); padding:34px 32px; }
+.card-warm { background:var(--paper-warm); padding:34px 32px; border-left:4px solid var(--ink); }
+.card-accent { background:var(--accent); border:1.5px solid var(--accent); color:#fff; padding:34px 32px; }
+.card-accent .small, .card-accent .body { color:rgba(255,255,255,.88); }
+.quote { font-size:56px; font-weight:700; line-height:1.27; letter-spacing:-0.02em; }
+.num { font-family:'JetBrains Mono', monospace; font-weight:800; }
+.bg-ink { background:var(--ink); color:var(--paper); }
+.bg-ink .h1, .bg-ink .h2, .bg-ink .h3, .bg-ink .quote { color:var(--paper); }
+.bg-ink .body-lg, .bg-ink .body, .bg-ink .small { color:#c0bfc7; }
+.bg-warm { background:var(--paper-warm); }
+.bg-accent { background:var(--accent); color:#fff; }
+.bg-accent .h1, .bg-accent .h2, .bg-accent .h3, .bg-accent .quote { color:#fff; }
+.bg-accent .body-lg, .bg-accent .body, .bg-accent .small { color:rgba(255,255,255,.9); }
+.pageno { position:absolute; bottom:36px; right:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; }
+.footnote { position:absolute; bottom:36px; left:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; text-transform:uppercase; }
+.bg-ink .pageno, .bg-ink .footnote { color:#76767f; }
+.bg-accent .pageno, .bg-accent .footnote { color:rgba(255,255,255,.72); }
+table.compare { width:100%; border-collapse:collapse; font-size:25px; }
+table.compare th, table.compare td { text-align:left; padding:19px 21px; border-bottom:1px solid var(--line); vertical-align:top; }
+table.compare th { font-weight:800; color:var(--ink); font-size:20px; text-transform:uppercase; letter-spacing:.08em; border-bottom:2px solid var(--ink); }
+table.compare td { color:var(--ink-soft); line-height:1.42; }
+.bg-ink table.compare th { color:var(--paper); border-bottom-color:var(--accent); }
+.bg-ink table.compare td { color:#d7d4ce; border-bottom-color:rgba(255,255,255,.15); }
+.prompt-block { font-family:'JetBrains Mono', monospace; background:var(--ink); color:#f5f2ec; padding:28px 32px; font-size:22px; line-height:1.62; white-space:pre-wrap; border-radius:5px; }
+.tag { display:inline-block; padding:7px 14px; border:1.4px solid var(--ink); border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:18px; margin:0 6px 8px 0; }
+ul.clean { margin:0; padding-left:28px; font-size:29px; line-height:1.72; color:var(--ink-soft); }
+</style>
+<script type="application/json" id="speaker-notes">
+[
+  "7강은 demo를 문서로 바꾸는 시간입니다. 일반 강의와 차별화되는 핵심 강의입니다.",
+  "오늘의 핵심은 작동하는 demo를 기준으로 기능정의서를 만드는 것입니다.",
+  "기존 방식은 문서를 먼저 만들지만, 우리는 demo를 먼저 보고 문서를 추출합니다.",
+  "7강의 입력은 demo이고 출력은 기능정의서 패키지입니다.",
+  "기능정의서는 여러 이해관계자가 같은 대상을 보게 하는 문서입니다.",
+  "화면 요소를 기능 항목으로 변환합니다.",
+  "기능 목록은 ID, 기능명, 설명, 우선순위로 시작하면 됩니다.",
+  "화면정의서는 화면명과 목적, 주요 구성요소를 적습니다.",
+  "사용자 흐름은 행동과 시스템 반응을 쌍으로 정리합니다.",
+  "데이터 항목 정의는 비개발자도 이해할 수 있는 수준으로 합니다.",
+  "업무 규칙은 기능이 어떤 조건에서 어떻게 동작하는지를 설명합니다.",
+  "상태 정의가 있으면 구현과 테스트가 쉬워집니다.",
+  "기업 실습에서는 제약 조건을 문서에 남기는 것이 중요합니다.",
+  "인수 기준은 나중에 테스트 기준이 됩니다.",
+  "이제 AI를 활용해 문서를 추출하는 단계입니다.",
+  "이 프롬프트는 demo 설명에서 기능정의서를 추출합니다.",
+  "화면정의서 프롬프트는 화면의 구조와 상태를 문서화합니다.",
+  "데이터 명세는 항목명과 설명, 예시값까지 포함합니다.",
+  "공통 실습에서는 모두 같은 demo를 기준으로 문서를 만듭니다.",
+  "문서 생성은 AI가 하지만 검토와 범위 판단은 사람이 합니다.",
+  "개인 적용에서는 자기 demo의 기능정의서를 만듭니다.",
+  "기능정의서는 이해관계자 리뷰를 위한 도구입니다.",
+  "7강의 완료 기준은 문서 패키지의 기본 구성입니다.",
+  "오늘의 정리입니다. demo는 끝이 아니라 문서화의 출발점입니다.",
+  "다음 8강에서는 기능정의서를 RFP와 발표 자료로 확장합니다."
+]
+</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+<section data-label="01 demo를 기능정의서로 바꾸기">
+<div class="slide-pad" style="justify-content:center;">
+<div style="display:flex; justify-content:space-between; align-items:flex-start;">
+<div class="eyebrow">VIBE CODING · LECTURE 07</div>
+<div class="mono small">AI-DRIVEN WORKING BACKWARDS</div></div>
+<div style="margin-top:auto; margin-bottom:auto;">
+<div class="mono small" style="margin-bottom:28px; color:var(--ink-mute);">// 강의 7강</div>
+<div class="h1">demo를<br><span class='accent'>기능정의서로</span><br>바꾸기</div>
+<div class="body-lg" style="margin-top:48px; max-width:1260px;">작동하는 화면에서 기능, 데이터, 예외, 제약을 역공학한다.</div>
+</div><div style="display:flex; justify-content:space-between; align-items:flex-end;"><div class="rule" style="width:240px;"></div><div class="mono small">바이브코딩 시작하기</div></div>
+<div class="footnote">L07 · </div><div class="pageno">01</div>
+</div></section>
+
+<section data-label="02 Slide 2" class="bg-warm">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="margin-bottom:36px;">CORE MESSAGE</div>
+<div class="quote" style="max-width:1600px;">좋은 요구사항은 상상에서 나오지 않는다.<br><span class='accent'>작동하는 demo에서 추출</span>된다.</div>
+<div class="footnote">L07 · </div><div class="pageno">02</div>
+</div></section>
+
+<section data-label="03 왜 demo 이후에 문서화하는가">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">왜 demo 이후에 문서화하는가</div>
+<ul class="clean"><li>텍스트만으로 쓴 요구사항은 해석 차이가 크다</li><li>화면이 있으면 누락과 충돌이 바로 드러난다</li><li>기능정의서는 demo의 작동 방식을 설명하는 문서가 된다</li><li>RFP는 기능정의서를 기반으로 더 구체화된다</li></ul>
+<div class="footnote">L07 · </div><div class="pageno">03</div>
+</div></section>
+
+<section data-label="04 오늘의 입력과 출력">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">오늘의 입력과 출력</div>
+<table class="compare"><thead><tr><th>입력</th><th>출력</th></tr></thead><tbody><tr><td>6강에서 만든 로컬 demo</td><td>기능 목록</td></tr><tr><td>화면 목업과 실제 화면</td><td>화면정의서</td></tr><tr><td>입력 폼과 결과 영역</td><td>데이터 항목 정의</td></tr><tr><td>버튼과 동작</td><td>이벤트/처리 규칙</td></tr><tr><td>오류와 빈 상태</td><td>예외 처리</td></tr><tr><td>제약 조건</td><td>보안·운영 제약</td></tr></tbody></table>
+<div style="margin-top:42px; padding:28px 36px; background:var(--paper-warm); border-left:4px solid var(--accent);" class="body-lg">오늘은 코드를 더 만드는 시간이 아니라, 만든 것을 설명 가능한 산출물로 바꾸는 시간이다.</div>
+<div class="footnote">L07 · </div><div class="pageno">04</div>
+</div></section>
+
+<section data-label="05 기능정의서의 역할">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">기능정의서의 역할</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">현업</div><div class="body" style="font-size:25px;">내가 원한 기능이 맞는지 확인</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">기획</div><div class="body" style="font-size:25px;">범위와 우선순위를 정리</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">개발</div><div class="body" style="font-size:25px;">구현 단위를 이해</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">보안</div><div class="body" style="font-size:25px;">위험 입력과 저장 여부 확인</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">운영</div><div class="body" style="font-size:25px;">오류와 예외 흐름 파악</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">발주</div><div class="body" style="font-size:25px;">RFP의 요구사항으로 전환</div></div></div>
+<div class="footnote">L07 · </div><div class="pageno">05</div>
+</div></section>
+
+<section data-label="06 기능 추출 기준">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">기능 추출 기준</div>
+<table class="compare"><thead><tr><th>화면에서 보이는 것</th><th>기능정의서 항목</th></tr></thead><tbody><tr><td>입력창</td><td>입력 기능</td></tr><tr><td>선택 버튼</td><td>옵션 선택 기능</td></tr><tr><td>생성 버튼</td><td>결과 생성 기능</td></tr><tr><td>결과 카드</td><td>결과 표시 기능</td></tr><tr><td>복사 버튼</td><td>클립보드 복사 기능</td></tr><tr><td>초기화 버튼</td><td>입력값 초기화 기능</td></tr><tr><td>주의 문구</td><td>보안/사용 제한 안내</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">06</div>
+</div></section>
+
+<section data-label="07 기능 목록 템플릿">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">기능 목록 템플릿</div>
+<table class="compare"><thead><tr><th>ID</th><th>기능명</th><th>설명</th><th>우선순위</th></tr></thead><tbody><tr><td>F-001</td><td>아이디어 입력</td><td>사용자가 만들고 싶은 도구의 아이디어를 입력한다</td><td>필수</td></tr><tr><td>F-002</td><td>1페이지 생성</td><td>입력값을 기반으로 보도자료, KPI, 프롬프트를 생성한다</td><td>필수</td></tr><tr><td>F-003</td><td>결과 복사</td><td>생성된 결과를 클립보드로 복사한다</td><td>필수</td></tr><tr><td>F-004</td><td>초기화</td><td>입력값과 결과를 초기화한다</td><td>선택</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">07</div>
+</div></section>
+
+<section data-label="08 화면정의서 템플릿">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">화면정의서 템플릿</div>
+<table class="compare"><thead><tr><th>화면 ID</th><th>화면명</th><th>목적</th><th>주요 구성요소</th></tr></thead><tbody><tr><td>S-001</td><td>메인 입력 화면</td><td>아이디어와 조건을 입력한다</td><td>입력 폼, 생성 버튼, 안내문</td></tr><tr><td>S-002</td><td>결과 표시 영역</td><td>생성 결과를 확인하고 복사한다</td><td>결과 카드, 복사 버튼, 초기화 버튼</td></tr><tr><td>S-003</td><td>오류/안내 상태</td><td>필수값 누락 또는 입력 제한을 안내한다</td><td>오류 메시지, 입력 안내</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">08</div>
+</div></section>
+
+<section data-label="09 사용자 흐름 정의">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">사용자 흐름 정의</div>
+<table class="compare"><thead><tr><th>순서</th><th>사용자 행동</th><th>시스템 반응</th></tr></thead><tbody><tr><td>1</td><td>도구를 연다</td><td>입력 화면과 안내문을 표시한다</td></tr><tr><td>2</td><td>아이디어 정보를 입력한다</td><td>필수 입력값을 받는다</td></tr><tr><td>3</td><td>생성 버튼을 누른다</td><td>입력값을 검증한다</td></tr><tr><td>4</td><td>결과를 확인한다</td><td>보도자료, KPI, 프롬프트를 표시한다</td></tr><tr><td>5</td><td>복사 버튼을 누른다</td><td>선택 결과를 클립보드에 복사한다</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">09</div>
+</div></section>
+
+<section data-label="10 데이터 항목 정의">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">데이터 항목 정의</div>
+<table class="compare"><thead><tr><th>항목명</th><th>입력/출력</th><th>필수</th><th>설명</th></tr></thead><tbody><tr><td>idea</td><td>입력</td><td>Y</td><td>만들고 싶은 도구 또는 서비스 아이디어</td></tr><tr><td>user</td><td>입력</td><td>Y</td><td>대상 사용자</td></tr><tr><td>painPoint</td><td>입력</td><td>Y</td><td>현재 불편 또는 문제</td></tr><tr><td>kpi</td><td>입력</td><td>N</td><td>성공 기준</td></tr><tr><td>pressRelease</td><td>출력</td><td>Y</td><td>보도자료형 요약 문장</td></tr><tr><td>screenPrompt</td><td>출력</td><td>Y</td><td>화면 생성용 프롬프트</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">10</div>
+</div></section>
+
+<section data-label="11 업무 규칙 정의">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">업무 규칙 정의</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">필수값</div><div class="body" style="font-size:25px;">아이디어와 사용자, 문제는 반드시 입력</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">결과 생성</div><div class="body" style="font-size:25px;">빈 값은 기본 문구로 보완하거나 안내</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">복사</div><div class="body" style="font-size:25px;">결과가 없으면 복사 버튼 비활성</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">초기화</div><div class="body" style="font-size:25px;">입력과 결과를 모두 삭제</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">보안 안내</div><div class="body" style="font-size:25px;">민감정보 입력 금지 문구 노출</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">저장 제한</div><div class="body" style="font-size:25px;">브라우저 밖으로 데이터를 보내지 않음</div></div></div>
+<div class="footnote">L07 · </div><div class="pageno">11</div>
+</div></section>
+
+<section data-label="12 빈 상태와 오류 상태">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">빈 상태와 오류 상태</div>
+<table class="compare"><thead><tr><th>상태</th><th>조건</th><th>표시 문구</th></tr></thead><tbody><tr><td>빈 상태</td><td>아직 입력 전</td><td>아이디어를 입력하면 1페이지 산출물이 생성됩니다.</td></tr><tr><td>필수값 누락</td><td>필수 입력값 없음</td><td>필수 항목을 먼저 입력해주세요.</td></tr><tr><td>결과 없음</td><td>생성 전 복사 시도</td><td>복사할 결과가 없습니다.</td></tr><tr><td>복사 성공</td><td>복사 완료</td><td>클립보드에 복사했습니다.</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">12</div>
+</div></section>
+
+<section data-label="13 보안·제약 정의">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">보안·제약 정의</div>
+<table class="compare"><thead><tr><th>제약</th><th>정의</th></tr></thead><tbody><tr><td>데이터 저장</td><td>입력값은 서버나 DB에 저장하지 않는다</td></tr><tr><td>외부 전송</td><td>외부 API로 전송하지 않는다</td></tr><tr><td>민감정보</td><td>개인정보, 고객정보, 회사 내부자료 입력을 금지한다</td></tr><tr><td>인증</td><td>로그인과 권한 관리는 이번 범위에서 제외한다</td></tr><tr><td>연동</td><td>회사 시스템과 연동하지 않는다</td></tr></tbody></table>
+<div style="margin-top:42px; padding:28px 36px; background:var(--paper-warm); border-left:4px solid var(--accent);" class="body-lg">초기 demo의 가치는 안전한 범위 안에서 빠르게 학습하는 것이다.</div>
+<div class="footnote">L07 · </div><div class="pageno">13</div>
+</div></section>
+
+<section data-label="14 인수 기준">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">인수 기준</div>
+<table class="compare"><thead><tr><th>기능</th><th>인수 기준</th></tr></thead><tbody><tr><td>입력</td><td>모든 필드에 텍스트를 입력할 수 있다</td></tr><tr><td>생성</td><td>필수값 입력 후 생성 버튼을 누르면 결과가 표시된다</td></tr><tr><td>복사</td><td>복사 버튼을 누르면 해당 결과가 클립보드에 복사된다</td></tr><tr><td>초기화</td><td>초기화 버튼을 누르면 입력값과 결과가 사라진다</td></tr><tr><td>보안 안내</td><td>민감정보 입력 금지 안내가 화면에 표시된다</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">14</div>
+</div></section>
+
+<section data-label="15 AI로 문서 생성하기" class="bg-ink">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="color:var(--accent);">AI DOCUMENTATION</div>
+<div class="num" style="font-size:220px; line-height:1; color:var(--accent); margin-top:50px;">01</div>
+<div class="h1" style="margin-top:24px;">AI로 문서 생성하기</div>
+<div class="body-lg" style="margin-top:32px; max-width:1250px;">demo와 화면 설명을 AI에게 주고 기능정의서를 추출한다.</div>
+<div class="footnote">L07 · </div><div class="pageno">15</div>
+</div></section>
+
+<section data-label="16 기능정의서 생성 프롬프트">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">기능정의서 생성 프롬프트</div>
+<div class="prompt-block">다음 demo 설명을 바탕으로 기능정의서를 작성해줘.
+
+[demo 설명]
+- 사용자는 아이디어, 사용자, 현재 불편, 기대 효과, 핵심 기능, KPI, 제약 조건을 입력한다.
+- 생성 버튼을 누르면 보도자료 문장, 고객 가치, KPI, 화면 프롬프트, Codex 프롬프트가 생성된다.
+- 결과별 복사 버튼과 전체 초기화 버튼이 있다.
+- 서버, DB, 로그인, 외부 API는 사용하지 않는다.
+
+작성 형식은 다음과 같다.
+1. 서비스 개요
+2. 사용자
+3. 기능 목록
+4. 화면 목록
+5. 데이터 항목
+6. 업무 규칙
+7. 예외 처리
+8. 보안 및 제약
+9. 인수 기준</div>
+<div class="footnote">L07 · </div><div class="pageno">16</div>
+</div></section>
+
+<section data-label="17 화면정의서 생성 프롬프트">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">화면정의서 생성 프롬프트</div>
+<div class="prompt-block">다음 웹 도구의 화면정의서를 작성해줘.
+
+화면은 하나의 메인 화면으로 구성된다.
+상단에는 제목과 설명 문구가 있고, 중간에는 입력 폼이 있으며, 하단에는 생성 결과가 카드 형태로 표시된다.
+결과 카드에는 각각 복사 버튼이 있다.
+
+화면정의서에는 다음을 포함해라.
+- 화면 ID
+- 화면명
+- 화면 목적
+- 주요 구성요소
+- 사용자 행동
+- 시스템 반응
+- 빈 상태
+- 오류 상태
+- 버튼/라벨 문구</div>
+<div class="footnote">L07 · </div><div class="pageno">17</div>
+</div></section>
+
+<section data-label="18 데이터 명세 생성 프롬프트">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">데이터 명세 생성 프롬프트</div>
+<div class="prompt-block">다음 입력과 출력 항목을 기준으로 데이터 항목 정의서를 작성해줘.
+
+입력 항목:
+- 만들고 싶은 것
+- 대상 사용자
+- 현재 불편
+- 기대 효과
+- 핵심 기능
+- 성공 KPI
+- 제약 조건
+
+출력 항목:
+- 보도자료 문장
+- 고객 가치
+- KPI 정리
+- 첫 화면 구성
+- 화면 생성 프롬프트
+- Codex 구현 프롬프트
+
+각 항목에 대해 항목명, 한글명, 입출력 구분, 필수 여부, 설명, 예시값을 표로 작성해라.</div>
+<div class="footnote">L07 · </div><div class="pageno">18</div>
+</div></section>
+
+<section data-label="19 공통 실습" class="bg-ink">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="color:var(--accent);">COMMON PRACTICE</div>
+<div class="num" style="font-size:220px; line-height:1; color:var(--accent); margin-top:50px;">02</div>
+<div class="h1" style="margin-top:24px;">공통 실습</div>
+<div class="body-lg" style="margin-top:32px; max-width:1250px;">6강 demo를 기준으로 기능정의서 초안을 만든다.</div>
+<div class="footnote">L07 · </div><div class="pageno">19</div>
+</div></section>
+
+<section data-label="20 공통 실습 절차">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">공통 실습 절차</div>
+<table class="compare"><thead><tr><th>순서</th><th>작업</th></tr></thead><tbody><tr><td>1</td><td>6강에서 만든 demo 화면을 열어본다</td></tr><tr><td>2</td><td>화면 요소를 기능 목록으로 옮긴다</td></tr><tr><td>3</td><td>입력 필드와 결과 필드를 데이터 항목으로 정리한다</td></tr><tr><td>4</td><td>버튼 동작을 업무 규칙으로 적는다</td></tr><tr><td>5</td><td>오류와 빈 상태를 정의한다</td></tr><tr><td>6</td><td>AI에게 기능정의서 초안을 생성시킨다</td></tr><tr><td>7</td><td>사람이 범위와 제약을 검토한다</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">20</div>
+</div></section>
+
+<section data-label="21 개인 적용">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">개인 적용</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">내 demo</div><div class="body" style="font-size:25px;">자기 아이디어의 화면 또는 로컬 앱</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">기능정의서</div><div class="body" style="font-size:25px;">기능, 화면, 데이터, 예외 정리</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">피드백</div><div class="body" style="font-size:25px;">동료가 이해할 수 있는지 확인</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">수정</div><div class="body" style="font-size:25px;">모호한 기능명과 범위를 정리</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">제외</div><div class="body" style="font-size:25px;">지금 하지 않을 기능을 명확히 표시</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">다음</div><div class="body" style="font-size:25px;">8강 RFP의 입력으로 사용</div></div></div>
+<div class="footnote">L07 · </div><div class="pageno">21</div>
+</div></section>
+
+<section data-label="22 이해관계자 리뷰 질문">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">이해관계자 리뷰 질문</div>
+<table class="compare"><thead><tr><th>대상</th><th>질문</th></tr></thead><tbody><tr><td>현업</td><td>이 기능이 실제 업무 흐름과 맞는가?</td></tr><tr><td>기획</td><td>기능 범위가 과하지 않은가?</td></tr><tr><td>개발</td><td>구현 단위가 구분되는가?</td></tr><tr><td>보안</td><td>위험 데이터와 외부 전송이 없는가?</td></tr><tr><td>운영</td><td>오류와 예외 상황을 대응할 수 있는가?</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">22</div>
+</div></section>
+
+<section data-label="23 완료 기준">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">완료 기준</div>
+<table class="compare"><thead><tr><th>산출물</th><th>완료 기준</th></tr></thead><tbody><tr><td>기능 목록</td><td>ID, 기능명, 설명, 우선순위가 있다</td></tr><tr><td>화면정의서</td><td>화면 목적과 구성요소가 있다</td></tr><tr><td>데이터 정의</td><td>입력과 출력 항목이 정리되어 있다</td></tr><tr><td>업무 규칙</td><td>조건과 시스템 반응이 적혀 있다</td></tr><tr><td>인수 기준</td><td>테스트 가능한 문장으로 되어 있다</td></tr><tr><td>제약 조건</td><td>하지 않을 것이 명시되어 있다</td></tr></tbody></table>
+<div class="footnote">L07 · </div><div class="pageno">23</div>
+</div></section>
+
+<section data-label="24 Slide 24" class="bg-accent">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="margin-bottom:36px;">RECAP</div>
+<div class="quote" style="max-width:1600px;">demo는 산출물의 끝이 아니라,<br><span style='color:#fff;'>요구사항 문서의 출발점</span>이다.</div>
+<div class="body-lg" style="margin-top:56px; max-width:1400px;">작동하는 화면을 기준으로 기능정의서와 RFP를 만들면 해석 차이가 줄어든다.</div>
+<div class="footnote">L07 · </div><div class="pageno">24</div>
+</div></section>
+
+<section data-label="25 다음 시간 예고">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 07</div>
+<div class="h3" style="margin-bottom:42px;">다음 시간 예고</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">8강</div><div class="body" style="font-size:25px;">RFP와 발표로 마무리하기</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">입력</div><div class="body" style="font-size:25px;">기능정의서와 demo</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">출력</div><div class="body" style="font-size:25px;">RFP 초안, 발표자료, 개선 백로그</div></div></div>
+<div class="footnote">L07 · </div><div class="pageno">25</div>
+</div></section>
+
+</deck-stage>
+</body>
+</html>

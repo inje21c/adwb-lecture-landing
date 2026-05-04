@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>8강 — RFP와 발표로 마무리하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+:root {
+  --ink: #16161a;
+  --ink-soft: #3a3a42;
+  --ink-mute: #76767f;
+  --paper: #f5f2ec;
+  --paper-warm: #ece7dd;
+  --line: #d8d2c4;
+  --accent: #ff5a1f;
+  --accent-soft: #ffe8de;
+}
+html, body { margin:0; padding:0; background:#0a0a0c; font-family:'Pretendard', sans-serif; color:var(--ink); }
+deck-stage section { background:var(--paper); overflow:hidden; font-family:'Pretendard', sans-serif; color:var(--ink); letter-spacing:-0.01em; }
+.slide-pad { padding: 94px 108px 86px; box-sizing:border-box; width:100%; height:100%; display:flex; flex-direction:column; position:relative; }
+.eyebrow { font-size:24px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); font-family:'JetBrains Mono', monospace; }
+.h1 { font-size:96px; font-weight:800; line-height:1.05; letter-spacing:-0.03em; }
+.h2 { font-size:72px; font-weight:760; line-height:1.1; letter-spacing:-0.025em; }
+.h3 { font-size:54px; font-weight:760; line-height:1.18; letter-spacing:-0.02em; }
+.body-lg { font-size:36px; font-weight:400; line-height:1.45; color:var(--ink-soft); }
+.body { font-size:29px; font-weight:400; line-height:1.52; color:var(--ink-soft); }
+.small { font-size:23px; font-weight:500; color:var(--ink-mute); line-height:1.45; }
+.mono { font-family:'JetBrains Mono', monospace; }
+.accent { color:var(--accent); }
+.strike { text-decoration: line-through; color: var(--ink-mute); }
+.rule { height:2px; background:var(--ink); width:100%; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:44px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; }
+.grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+.card { background:#fff; border:1.5px solid var(--ink); padding:34px 32px; }
+.card-warm { background:var(--paper-warm); padding:34px 32px; border-left:4px solid var(--ink); }
+.card-accent { background:var(--accent); border:1.5px solid var(--accent); color:#fff; padding:34px 32px; }
+.card-accent .small, .card-accent .body { color:rgba(255,255,255,.88); }
+.quote { font-size:56px; font-weight:700; line-height:1.27; letter-spacing:-0.02em; }
+.num { font-family:'JetBrains Mono', monospace; font-weight:800; }
+.bg-ink { background:var(--ink); color:var(--paper); }
+.bg-ink .h1, .bg-ink .h2, .bg-ink .h3, .bg-ink .quote { color:var(--paper); }
+.bg-ink .body-lg, .bg-ink .body, .bg-ink .small { color:#c0bfc7; }
+.bg-warm { background:var(--paper-warm); }
+.bg-accent { background:var(--accent); color:#fff; }
+.bg-accent .h1, .bg-accent .h2, .bg-accent .h3, .bg-accent .quote { color:#fff; }
+.bg-accent .body-lg, .bg-accent .body, .bg-accent .small { color:rgba(255,255,255,.9); }
+.pageno { position:absolute; bottom:36px; right:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; }
+.footnote { position:absolute; bottom:36px; left:48px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-mute); letter-spacing:.1em; text-transform:uppercase; }
+.bg-ink .pageno, .bg-ink .footnote { color:#76767f; }
+.bg-accent .pageno, .bg-accent .footnote { color:rgba(255,255,255,.72); }
+table.compare { width:100%; border-collapse:collapse; font-size:25px; }
+table.compare th, table.compare td { text-align:left; padding:19px 21px; border-bottom:1px solid var(--line); vertical-align:top; }
+table.compare th { font-weight:800; color:var(--ink); font-size:20px; text-transform:uppercase; letter-spacing:.08em; border-bottom:2px solid var(--ink); }
+table.compare td { color:var(--ink-soft); line-height:1.42; }
+.bg-ink table.compare th { color:var(--paper); border-bottom-color:var(--accent); }
+.bg-ink table.compare td { color:#d7d4ce; border-bottom-color:rgba(255,255,255,.15); }
+.prompt-block { font-family:'JetBrains Mono', monospace; background:var(--ink); color:#f5f2ec; padding:28px 32px; font-size:22px; line-height:1.62; white-space:pre-wrap; border-radius:5px; }
+.tag { display:inline-block; padding:7px 14px; border:1.4px solid var(--ink); border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:18px; margin:0 6px 8px 0; }
+ul.clean { margin:0; padding-left:28px; font-size:29px; line-height:1.72; color:var(--ink-soft); }
+</style>
+<script type="application/json" id="speaker-notes">
+[
+  "8강은 전체 과정의 마무리입니다. 기능정의서를 RFP와 발표자료로 바꿉니다.",
+  "오늘의 핵심은 RFP를 형식 문서가 아니라 실행 가능한 합의의 형식으로 보는 것입니다.",
+  "RFP까지 가는 이유는 조직 실행으로 연결하기 위해서입니다.",
+  "8강의 입력은 demo와 기능정의서이고, 출력은 RFP와 발표자료입니다.",
+  "RFP는 여러 이해관계자의 관심사를 한 문서로 모으는 역할을 합니다.",
+  "기본 RFP 구조는 배경, 목적, 범위, 요구사항, 산출물, 평가 기준입니다.",
+  "프로젝트 배경은 왜 이 과제가 필요한지를 설명합니다.",
+  "목적과 성공 기준이 모호하면 RFP 전체가 흔들립니다.",
+  "범위는 포함할 것보다 제외할 것을 명확히 하는 것이 중요합니다.",
+  "기능정의서의 기능 항목은 RFP의 요구사항 문장으로 전환됩니다.",
+  "RFP에는 기능뿐 아니라 비기능 요구사항도 들어가야 합니다.",
+  "기업 환경에서는 보안과 준법 요구사항이 명확해야 합니다.",
+  "RFP에는 받을 산출물을 구체적으로 적어야 합니다.",
+  "평가 기준은 제안서를 비교할 기준이 됩니다.",
+  "RFP에는 일정과 가정, 제약을 함께 적어야 합니다.",
+  "이 프롬프트로 기능정의서를 RFP 초안으로 바꿀 수 있습니다.",
+  "이제 발표 구조로 넘어갑니다.",
+  "3분 발표는 문제, 가치, demo, KPI, 다음 단계로 구성합니다.",
+  "발표 체크리스트는 피드백 기준으로도 사용할 수 있습니다.",
+  "상호 피드백은 비판보다 다음 개선점 도출에 초점을 둡니다.",
+  "개선 백로그는 확장 방향을 현실적인 순서로 정리합니다.",
+  "파일럿 결과는 계속, 보류, 폐기, 확장으로 판단합니다.",
+  "엔터프라이즈 적용에서는 한계를 분명히 설명해야 합니다.",
+  "전체 8강의 흐름을 회고합니다.",
+  "마지막 메시지입니다. 바이브코딩은 업무 문제를 실행 가능한 형태로 번역하는 역량입니다.",
+  "과정 이후에는 개인, 팀, 조직 차원으로 확장할 수 있습니다."
+]
+</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+<section data-label="01 RFP와 발표로 마무리하기">
+<div class="slide-pad" style="justify-content:center;">
+<div style="display:flex; justify-content:space-between; align-items:flex-start;">
+<div class="eyebrow">VIBE CODING · LECTURE 08</div>
+<div class="mono small">AI-DRIVEN WORKING BACKWARDS</div></div>
+<div style="margin-top:auto; margin-bottom:auto;">
+<div class="mono small" style="margin-bottom:28px; color:var(--ink-mute);">// 강의 8강</div>
+<div class="h1">RFP와<br><span class='accent'>발표로</span><br>마무리하기</div>
+<div class="body-lg" style="margin-top:48px; max-width:1260px;">기능정의서를 실행 가능한 제안요청서와 발표 자료로 전환한다.</div>
+</div><div style="display:flex; justify-content:space-between; align-items:flex-end;"><div class="rule" style="width:240px;"></div><div class="mono small">바이브코딩 시작하기</div></div>
+<div class="footnote">L08 · </div><div class="pageno">01</div>
+</div></section>
+
+<section data-label="02 Slide 2" class="bg-warm">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="margin-bottom:36px;">CORE MESSAGE</div>
+<div class="quote" style="max-width:1600px;">좋은 RFP는 문서가 아니라,<br><span class='accent'>실행 가능한 합의의 포맷</span>이다.</div>
+<div class="footnote">L08 · </div><div class="pageno">02</div>
+</div></section>
+
+<section data-label="03 왜 RFP까지 가는가">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">왜 RFP까지 가는가</div>
+<ul class="clean"><li>demo는 가능성을 보여준다</li><li>기능정의서는 범위를 설명한다</li><li>RFP는 실행 조건과 책임을 정리한다</li><li>발표는 이해관계자의 의사결정을 돕는다</li></ul>
+<div style="margin-top:48px; padding:28px 36px; background:var(--paper-warm); border-left:4px solid var(--accent);" class="body-lg">비개발자의 바이브코딩은 demo에서 끝나지 않고, 조직 의사결정 산출물로 이어져야 한다.</div>
+<div class="footnote">L08 · </div><div class="pageno">03</div>
+</div></section>
+
+<section data-label="04 오늘의 입력과 출력">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">오늘의 입력과 출력</div>
+<table class="compare"><thead><tr><th>입력</th><th>출력</th></tr></thead><tbody><tr><td>demo</td><td>발표 시연 자료</td></tr><tr><td>기능정의서</td><td>RFP 기능 요구사항</td></tr><tr><td>화면정의서</td><td>화면/UX 요구사항</td></tr><tr><td>데이터 항목 정의</td><td>데이터 요구사항</td></tr><tr><td>제약 조건</td><td>보안·운영·비범위 항목</td></tr><tr><td>피드백</td><td>개선 백로그</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">04</div>
+</div></section>
+
+<section data-label="05 이해관계자별 관심사">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">이해관계자별 관심사</div>
+<table class="compare"><thead><tr><th>대상</th><th>관심사</th></tr></thead><tbody><tr><td>경영진</td><td>왜 해야 하는가, 효과가 무엇인가</td></tr><tr><td>현업</td><td>내 업무가 얼마나 쉬워지는가</td></tr><tr><td>IT</td><td>구현 범위와 기술 위험은 무엇인가</td></tr><tr><td>보안</td><td>데이터와 외부 연동 위험은 없는가</td></tr><tr><td>구매/계약</td><td>범위, 일정, 산출물, 평가 기준은 무엇인가</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">05</div>
+</div></section>
+
+<section data-label="06 RFP의 기본 구조">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">RFP의 기본 구조</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">1. 배경</div><div class="body" style="font-size:25px;">왜 이 과제가 필요한가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">2. 목적</div><div class="body" style="font-size:25px;">무엇을 달성할 것인가</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">3. 범위</div><div class="body" style="font-size:25px;">어디까지 할 것인가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">4. 요구사항</div><div class="body" style="font-size:25px;">기능/화면/데이터/보안</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">5. 산출물</div><div class="body" style="font-size:25px;">무엇을 납품받을 것인가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">6. 평가 기준</div><div class="body" style="font-size:25px;">무엇으로 비교할 것인가</div></div></div>
+<div class="footnote">L08 · </div><div class="pageno">06</div>
+</div></section>
+
+<section data-label="07 프로젝트 배경 작성">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">프로젝트 배경 작성</div>
+<div class="prompt-block">다음 내용을 바탕으로 RFP의 프로젝트 배경을 작성해줘.
+
+- 현재 문제: [반복 업무 또는 비효율]
+- 대상 사용자: [사용자]
+- demo로 확인한 가능성: [demo에서 검증된 흐름]
+- 기대 효과: [시간 단축, 품질 향상, 커뮤니케이션 개선 등]
+
+문체는 기업 제안요청서에 맞게 간결하고 공식적으로 작성해라.</div>
+<div class="footnote">L08 · </div><div class="pageno">07</div>
+</div></section>
+
+<section data-label="08 목적과 성공 기준">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">목적과 성공 기준</div>
+<table class="compare"><thead><tr><th>항목</th><th>작성 방식</th></tr></thead><tbody><tr><td>목적</td><td>업무 문제를 어떤 상태로 바꿀 것인지 쓴다</td></tr><tr><td>성공 KPI</td><td>시간, 비용, 오류, 만족도, 처리량 중 하나 이상으로 쓴다</td></tr><tr><td>대상 사용자</td><td>최초 사용자와 확장 사용자를 구분한다</td></tr><tr><td>비범위</td><td>이번에 하지 않을 일을 명시한다</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">08</div>
+</div></section>
+
+<section data-label="09 범위 정의">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">범위 정의</div>
+<table class="compare"><thead><tr><th>구분</th><th>예시</th></tr></thead><tbody><tr><td>포함 범위</td><td>아이디어 입력, 1페이지 산출물 생성, 결과 복사</td></tr><tr><td>선택 범위</td><td>예시 입력, 템플릿 저장, PDF 출력</td></tr><tr><td>제외 범위</td><td>로그인, DB 저장, 외부 API 연동, 회사 시스템 연계</td></tr><tr><td>향후 확장</td><td>AI API 연동, 팀 공유, 관리자 기능</td></tr></tbody></table>
+<div style="margin-top:42px; padding:28px 36px; background:var(--paper-warm); border-left:4px solid var(--accent);" class="body-lg">범위를 잘라내는 능력이 RFP 품질을 결정한다.</div>
+<div class="footnote">L08 · </div><div class="pageno">09</div>
+</div></section>
+
+<section data-label="10 기능 요구사항 변환">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">기능 요구사항 변환</div>
+<table class="compare"><thead><tr><th>기능정의서</th><th>RFP 문장</th></tr></thead><tbody><tr><td>아이디어 입력</td><td>사용자는 아이디어, 사용자, 문제, KPI, 제약 조건을 입력할 수 있어야 한다</td></tr><tr><td>산출물 생성</td><td>시스템은 입력값을 기반으로 보도자료 문장, KPI, 화면 프롬프트, 구현 프롬프트를 생성해야 한다</td></tr><tr><td>결과 복사</td><td>사용자는 생성된 결과를 항목별로 복사할 수 있어야 한다</td></tr><tr><td>초기화</td><td>사용자는 입력값과 결과를 초기화할 수 있어야 한다</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">10</div>
+</div></section>
+
+<section data-label="11 비기능 요구사항">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">비기능 요구사항</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">사용성</div><div class="body" style="font-size:25px;">비개발자도 첫 사용에서 이해 가능</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">반응형</div><div class="body" style="font-size:25px;">노트북과 모바일 화면에서 사용 가능</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">성능</div><div class="body" style="font-size:25px;">로컬 또는 웹에서 즉시 반응</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">보안</div><div class="body" style="font-size:25px;">민감정보 저장 및 외부 전송 금지</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">운영</div><div class="body" style="font-size:25px;">오류 문구와 예외 상태 제공</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">유지보수</div><div class="body" style="font-size:25px;">문구와 템플릿 수정이 쉬운 구조</div></div></div>
+<div class="footnote">L08 · </div><div class="pageno">11</div>
+</div></section>
+
+<section data-label="12 보안·준법 요구사항">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">보안·준법 요구사항</div>
+<table class="compare"><thead><tr><th>영역</th><th>요구사항</th></tr></thead><tbody><tr><td>민감정보</td><td>개인정보, 고객정보, 회사 내부자료 입력을 금지한다</td></tr><tr><td>저장</td><td>별도 승인 전까지 입력 데이터를 저장하지 않는다</td></tr><tr><td>외부 전송</td><td>외부 API 연동 시 별도 보안 검토를 거친다</td></tr><tr><td>접근권한</td><td>사내 사용 범위와 접근 대상을 명확히 한다</td></tr><tr><td>로그</td><td>운영 로그 수집 시 수집 항목과 보관 기간을 정의한다</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">12</div>
+</div></section>
+
+<section data-label="13 산출물 정의">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">산출물 정의</div>
+<table class="compare"><thead><tr><th>산출물</th><th>설명</th></tr></thead><tbody><tr><td>서비스 화면 설계서</td><td>주요 화면과 사용자 흐름</td></tr><tr><td>기능정의서</td><td>기능 목록, 업무 규칙, 예외 처리</td></tr><tr><td>데이터 정의서</td><td>입력/출력 항목과 예시</td></tr><tr><td>프로토타입</td><td>시연 가능한 웹 demo</td></tr><tr><td>테스트 결과</td><td>인수 기준별 확인 결과</td></tr><tr><td>운영 가이드</td><td>사용법과 주의사항</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">13</div>
+</div></section>
+
+<section data-label="14 평가 기준">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">평가 기준</div>
+<table class="compare"><thead><tr><th>평가 항목</th><th>예시 기준</th></tr></thead><tbody><tr><td>업무 이해도</td><td>문제와 사용자 장면을 정확히 이해했는가</td></tr><tr><td>기능 적합성</td><td>필수 요구사항을 충족하는가</td></tr><tr><td>사용성</td><td>비개발자가 쉽게 사용할 수 있는가</td></tr><tr><td>보안 적합성</td><td>민감정보와 외부 전송 위험을 통제하는가</td></tr><tr><td>확장성</td><td>향후 AI API, 저장, 배포로 확장 가능한가</td></tr><tr><td>일정/비용</td><td>파일럿 범위에 맞는 현실적 제안인가</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">14</div>
+</div></section>
+
+<section data-label="15 일정과 가정">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">일정과 가정</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">파일럿</div><div class="body" style="font-size:25px;">1~2주 내 작동 demo 개선</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">검증</div><div class="body" style="font-size:25px;">현업 3~5명 사용 피드백</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">고도화</div><div class="body" style="font-size:25px;">저장, 공유, 권한 등 단계적 확장</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">가정</div><div class="body" style="font-size:25px;">실습용 데이터 사용</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">제약</div><div class="body" style="font-size:25px;">내부망·기간계 연동 제외</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">의사결정</div><div class="body" style="font-size:25px;">KPI 기준 충족 시 확장 검토</div></div></div>
+<div class="footnote">L08 · </div><div class="pageno">15</div>
+</div></section>
+
+<section data-label="16 RFP 생성 프롬프트">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">RFP 생성 프롬프트</div>
+<div class="prompt-block">다음 기능정의서를 바탕으로 제안요청서(RFP) 초안을 작성해줘.
+
+포함할 항목은 다음과 같다.
+1. 프로젝트 배경
+2. 추진 목적
+3. 대상 사용자
+4. 과업 범위
+5. 기능 요구사항
+6. 비기능 요구사항
+7. 보안 및 데이터 처리 요구사항
+8. 산출물
+9. 일정 및 수행 방식
+10. 제안서 평가 기준
+11. 제외 범위
+
+문체는 기업 내부 검토용 RFP 초안처럼 공식적이고 간결하게 작성해라.
+불확실한 부분은 임의로 단정하지 말고 '[확인 필요]'로 표시해라.</div>
+<div class="footnote">L08 · </div><div class="pageno">16</div>
+</div></section>
+
+<section data-label="17 발표로 마무리하기" class="bg-ink">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="color:var(--accent);">DEMO DAY</div>
+<div class="num" style="font-size:220px; line-height:1; color:var(--accent); margin-top:50px;">01</div>
+<div class="h1" style="margin-top:24px;">발표로 마무리하기</div>
+<div class="body-lg" style="margin-top:32px; max-width:1250px;">각자의 demo와 RFP 초안을 3분 안에 설명한다.</div>
+<div class="footnote">L08 · </div><div class="pageno">17</div>
+</div></section>
+
+<section data-label="18 3분 발표 구조">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">3분 발표 구조</div>
+<table class="compare"><thead><tr><th>시간</th><th>내용</th></tr></thead><tbody><tr><td>0:00~0:30</td><td>문제: 어떤 반복 업무를 줄이려 했는가</td></tr><tr><td>0:30~1:00</td><td>사용자와 가치: 누가 무엇을 얻는가</td></tr><tr><td>1:00~1:40</td><td>demo 시연: 입력, 실행, 결과, 복사</td></tr><tr><td>1:40~2:20</td><td>KPI와 기대 효과</td></tr><tr><td>2:20~3:00</td><td>다음 단계: RFP와 확장 방향</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">18</div>
+</div></section>
+
+<section data-label="19 발표 체크리스트">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">발표 체크리스트</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">문제</div><div class="body" style="font-size:25px;">듣는 사람이 공감하는가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">사용자</div><div class="body" style="font-size:25px;">누가 쓸지 분명한가</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">demo</div><div class="body" style="font-size:25px;">작동 흐름이 보이는가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">효과</div><div class="body" style="font-size:25px;">KPI가 있는가</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">제약</div><div class="body" style="font-size:25px;">하지 않을 것이 명확한가</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">요청</div><div class="body" style="font-size:25px;">다음 의사결정이 분명한가</div></div></div>
+<div class="footnote">L08 · </div><div class="pageno">19</div>
+</div></section>
+
+<section data-label="20 상호 피드백 방식">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">상호 피드백 방식</div>
+<table class="compare"><thead><tr><th>피드백 유형</th><th>질문</th></tr></thead><tbody><tr><td>강점</td><td>가장 설득력 있는 부분은 무엇인가</td></tr><tr><td>모호함</td><td>이해가 잘 안 되는 기능은 무엇인가</td></tr><tr><td>누락</td><td>화면이나 요구사항에서 빠진 것은 무엇인가</td></tr><tr><td>위험</td><td>보안, 데이터, 운영상 조심할 점은 무엇인가</td></tr><tr><td>다음</td><td>파일럿을 위해 가장 먼저 고칠 것은 무엇인가</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">20</div>
+</div></section>
+
+<section data-label="21 개선 백로그">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">개선 백로그</div>
+<table class="compare"><thead><tr><th>구분</th><th>예시</th></tr></thead><tbody><tr><td>Must</td><td>필수 입력 누락 안내, 복사 기능 안정화</td></tr><tr><td>Should</td><td>예시 입력 추가, 결과 포맷 개선</td></tr><tr><td>Could</td><td>PDF 저장, 템플릿 선택</td></tr><tr><td>Won't now</td><td>로그인, DB, 사내 시스템 연동</td></tr></tbody></table>
+<div style="margin-top:42px; padding:28px 36px; background:var(--paper-warm); border-left:4px solid var(--accent);" class="body-lg">백로그는 꿈을 버리는 것이 아니라 순서를 정하는 것이다.</div>
+<div class="footnote">L08 · </div><div class="pageno">21</div>
+</div></section>
+
+<section data-label="22 파일럿 의사결정">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">파일럿 의사결정</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">계속</div><div class="body" style="font-size:25px;">실제 사용자가 반복해서 쓴다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">보류</div><div class="body" style="font-size:25px;">문제는 있으나 사용 장면이 약하다</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">폐기</div><div class="body" style="font-size:25px;">도구보다 기존 방식이 낫다</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">확장</div><div class="body" style="font-size:25px;">저장, 배포, 권한 추가 검토</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">연계</div><div class="body" style="font-size:25px;">내부 시스템 연동 필요성 검토</div></div><div class="card-accent"><div class="mono small accent" style="margin-bottom:12px;">주의</div><div class="body" style="font-size:25px;">보안 검토 전 민감데이터 금지</div></div></div>
+<div class="footnote">L08 · </div><div class="pageno">22</div>
+</div></section>
+
+<section data-label="23 엔터프라이즈 적용 주의">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">엔터프라이즈 적용 주의</div>
+<ul class="clean"><li>바이브코딩으로 기업 핵심 시스템을 곧바로 만들자는 뜻이 아니다</li><li>비개발자가 문제와 화면을 더 선명하게 만드는 방법이다</li><li>demo는 의사결정과 요구사항 정렬을 위한 도구다</li><li>실서비스는 보안, 운영, IT 거버넌스를 통과해야 한다</li></ul>
+<div class="footnote">L08 · </div><div class="pageno">23</div>
+</div></section>
+
+<section data-label="24 전체 과정 회고">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">전체 과정 회고</div>
+<table class="compare"><thead><tr><th>강의</th><th>얻은 것</th></tr></thead><tbody><tr><td>1강</td><td>바이브코딩의 의미</td></tr><tr><td>2강</td><td>AI에게 말하는 법</td></tr><tr><td>3강</td><td>도구와 환경 선택</td></tr><tr><td>4강</td><td>Working Backwards 1페이지</td></tr><tr><td>5강</td><td>화면 목업</td></tr><tr><td>6강</td><td>로컬 프로토타입</td></tr><tr><td>7강</td><td>기능정의서</td></tr><tr><td>8강</td><td>RFP와 발표</td></tr></tbody></table>
+<div class="footnote">L08 · </div><div class="pageno">24</div>
+</div></section>
+
+<section data-label="25 Slide 25" class="bg-accent">
+<div class="slide-pad" style="justify-content:center;">
+<div class="eyebrow" style="margin-bottom:36px;">CLOSING</div>
+<div class="quote" style="max-width:1600px;">바이브코딩의 진짜 가치는<br>코드를 만드는 데 있지 않다.<br><span style='color:#fff;'>업무 문제를 실행 가능한 형태로 바꾸는 데 있다.</span></div>
+<div class="footnote">L08 · </div><div class="pageno">25</div>
+</div></section>
+
+<section data-label="26 이후 확장 과제">
+<div class="slide-pad" style="justify-content:flex-start;">
+<div class="eyebrow" style="margin-bottom:28px;">LECTURE 08</div>
+<div class="h3" style="margin-bottom:42px;">이후 확장 과제</div>
+<div class="grid-3"><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">개인</div><div class="body" style="font-size:25px;">내 업무 도구 하나를 계속 개선</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">팀</div><div class="body" style="font-size:25px;">공통 반복 업무를 하나 선정해 파일럿</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">조직</div><div class="body" style="font-size:25px;">demo 기반 요구사항 정렬 방식 도입</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">기술</div><div class="body" style="font-size:25px;">저장, 배포, AI API 연동</div></div><div class="card-warm"><div class="mono small accent" style="margin-bottom:12px;">거버넌스</div><div class="body" style="font-size:25px;">보안·데이터 기준 수립</div></div><div class="card"><div class="mono small accent" style="margin-bottom:12px;">문화</div><div class="body" style="font-size:25px;">비개발자도 만드는 학습 커뮤니티</div></div></div>
+<div class="footnote">L08 · </div><div class="pageno">26</div>
+</div></section>
+
+</deck-stage>
+</body>
+</html>

@@ -17,7 +17,9 @@ const FooterSection = () => {
             <FileText className="w-5 h-5" />
           </Link>
         </div>
-        <p className="text-sm text-primary-foreground/40">{t.footer.copyright}</p>
+        <p className="text-sm text-primary-foreground/40">
+          © <a href="/vibe-coding-course-12lectures/index.html" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground/70 underline underline-offset-2 transition-colors">2026</a>. AI-Driven Working Backwards Methodology.
+        </p>
       </div>
     </footer>
   );
