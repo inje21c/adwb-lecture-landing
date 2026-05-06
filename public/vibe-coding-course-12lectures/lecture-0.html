@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="바이브코딩 사내 동아리 0강: 환경 구성 시작하기 — 계정·로컬·개발서버·보안">
+<title>0강 — 환경 구성 시작하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --ink: #16161a;
+    --ink-soft: #3a3a42;
+    --ink-mute: #76767f;
+    --paper: #f5f2ec;
+    --paper-warm: #ece7dd;
+    --line: #d8d2c4;
+    --accent: #ff5a1f;
+    --accent-soft: #ffe8de;
+    --good: #1f7a3f;
+    --warn: #b8651a;
+    --bad: #a02020;
+  }
+  html, body { margin:0; padding:0; background:#0a0a0c; font-family: 'Pretendard', sans-serif; color: var(--ink); }
+  * { box-sizing: border-box; }
+  b, strong { font-weight: 800; }
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+  deck-stage section { background: var(--paper); overflow: hidden; font-family: 'Pretendard', sans-serif; color: var(--ink); letter-spacing: -0.01em; }
+  .slide-pad { padding: 100px 110px 90px; box-sizing: border-box; width:100%; height:100%; display:flex; flex-direction:column; }
+
+  .eyebrow { font-size: 24px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+  .h1 { font-size: 96px; font-weight: 800; line-height: 1.05; letter-spacing: -0.025em; }
+  .h2 { font-size: 72px; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; }
+  .h3 { font-size: 56px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+  .h4 { font-size: 42px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+  .body-lg { font-size: 36px; font-weight: 400; line-height: 1.45; color: var(--ink-soft); }
+  .body { font-size: 30px; font-weight: 400; line-height: 1.5; color: var(--ink-soft); }
+  .body-sm { font-size: 26px; line-height: 1.45; color: var(--ink-soft); }
+  .small { font-size: 24px; font-weight: 500; color: var(--ink-mute); line-height: 1.35; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .pageno { position: absolute; bottom: 36px; right: 48px; font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--ink-mute); letter-spacing: 0.1em; }
+  .footnote { position: absolute; bottom: 36px; left: 48px; font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--ink-mute); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .rule { height: 2px; background: var(--ink); width: 100%; }
+  .rule-thin { height: 1px; background: var(--line); width: 100%; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+
+  .card { background: #fff; border: 1.5px solid var(--ink); padding: 36px 32px; }
+  .card-warm { background: var(--paper-warm); padding: 36px 32px; border-left: 4px solid var(--ink); }
+  .card-accent { background: var(--paper-warm); padding: 36px 32px; border-left: 4px solid var(--accent); }
+  .card-title { font-size: 30px; font-weight: 700; margin: 14px 0 12px; line-height: 1.2; }
+  .card-title-sm { font-size: 26px; font-weight: 700; margin: 12px 0 8px; line-height: 1.2; }
+
+  .quote { font-size: 56px; font-weight: 600; line-height: 1.25; letter-spacing: -0.02em; }
+  .num { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 40px; }
+  .accent { color: var(--accent); }
+  .strike { text-decoration: line-through; color: var(--ink-mute); }
+  .bg-ink { background: var(--ink); color: var(--paper); }
+  .bg-ink .body, .bg-ink .body-lg, .bg-ink .body-sm, .bg-ink .small { color: #c0bfc7; }
+  .bg-ink .h1, .bg-ink .h2, .bg-ink .h3, .bg-ink .h4, .bg-ink .quote { color: var(--paper); }
+  .bg-ink .pageno, .bg-ink .footnote { color: #76767f; }
+  .bg-accent { background: var(--accent); color: #fff; }
+  .bg-accent .body, .bg-accent .body-lg, .bg-accent .body-sm, .bg-accent .small { color: rgba(255,255,255,0.9); }
+  .bg-accent .pageno, .bg-accent .footnote { color: rgba(255,255,255,0.7); }
+  .bg-warm { background: var(--paper-warm); }
+
+  .prompt-block { font-family: 'JetBrains Mono', monospace; background: var(--ink); color: #f5f2ec; padding: 24px 28px; font-size: 22px; line-height: 1.6; white-space: pre-wrap; border-radius: 4px; }
+  .terminal { font-family: 'JetBrains Mono', monospace; background: #0a0a0c; color: #d8d2c4; padding: 28px 32px; font-size: 22px; line-height: 1.65; border-radius: 6px; border: 1px solid var(--ink); }
+  .terminal .cmd { color: #f5f2ec; }
+  .terminal .out { color: #76767f; }
+  .terminal .ok { color: #6dd896; }
+  .terminal .prompt-sign { color: var(--accent); }
+
+  table.compare { width: 100%; border-collapse: collapse; font-size: 24px; }
+  table.compare th, table.compare td { text-align: left; padding: 18px 20px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.compare th { font-weight: 700; color: var(--ink); font-size: 20px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 2px solid var(--ink); }
+  table.compare td { color: var(--ink-soft); line-height: 1.4; }
+
+  .callout { margin-top: 40px; padding: 26px 34px; background: var(--paper-warm); border-left: 4px solid var(--accent); font-size: 28px; line-height: 1.45; color: var(--ink-soft); }
+  .callout b { color: var(--ink); }
+  .list { font-size: 26px; line-height: 1.7; color: var(--ink-soft); padding-left: 28px; margin: 14px 0 0; }
+  .list-lg { font-size: 30px; line-height: 1.7; color: var(--ink-soft); padding-left: 28px; margin: 14px 0 0; }
+
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 22px; color: var(--accent); font-weight: 700; }
+  .pill { display:inline-block; border:1.5px solid var(--ink); border-radius: 999px; padding: 8px 18px; font-size: 20px; font-weight: 600; }
+  .pill-accent { background: var(--accent); color:#fff; border-color: var(--accent); }
+  .pill-mute { color: var(--ink-mute); border-color: var(--line); }
+  .pill-good { color: var(--good); border-color: var(--good); }
+  .pill-bad { color: var(--bad); border-color: var(--bad); }
+
+  /* 도구 로고 박스 — placeholder */
+  .logo-box { width: 100%; aspect-ratio: 16/9; background: #fff; border: 1.5px solid var(--ink); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono', monospace; font-size: 18px; color: var(--ink-mute); letter-spacing: 0.08em; text-transform: uppercase; }
+  .logo-mark { font-size: 56px; font-weight: 800; letter-spacing: -0.04em; color: var(--ink); font-family: 'Pretendard', sans-serif; text-transform: none; }
+
+  /* 스크린샷 placeholder */
+  .shot { width: 100%; aspect-ratio: 16/10; background: repeating-linear-gradient(45deg, #fff 0 16px, var(--paper-warm) 16px 32px); border: 1.5px solid var(--ink); position: relative; display:flex; align-items:center; justify-content:center; }
+  .shot::after { content: attr(data-label); font-family:'JetBrains Mono', monospace; font-size: 18px; color: var(--ink); background: var(--paper); padding: 8px 16px; border:1px solid var(--ink); letter-spacing: 0.08em; text-transform: uppercase; }
+  .shot.tall { aspect-ratio: 4/3; }
+
+  /* 단계 다이어그램 */
+  .stepflow { display:grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .stepflow > div { background:#fff; border:1.5px solid var(--ink); padding: 24px 20px; min-height: 200px; }
+  .stepflow b { display:block; font-size: 24px; margin: 12px 0 10px; }
+  .stepflow span { display:block; font-size: 20px; line-height: 1.4; color: var(--ink-soft); }
+
+  /* 카테고리 칩 */
+  .chip { display:inline-flex; align-items:center; gap: 8px; padding: 6px 14px; border:1px solid var(--ink); font-family:'JetBrains Mono', monospace; font-size: 18px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  /* 키 테이블 */
+  .kv { display: grid; grid-template-columns: 220px 1fr; gap: 12px 28px; font-size: 24px; line-height: 1.5; }
+  .kv .k { font-family:'JetBrains Mono', monospace; font-size: 20px; color: var(--ink-mute); letter-spacing: 0.08em; text-transform: uppercase; padding-top: 4px; }
+  .kv .v { color: var(--ink); }
+
+  .check-row { display:grid; grid-template-columns: 56px 1fr 200px; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: center; }
+  .check-row:last-child { border-bottom: 0; }
+  .check-box { width: 36px; height: 36px; border: 2px solid var(--ink); display:flex; align-items:center; justify-content:center; }
+  .check-row .label { font-size: 26px; color: var(--ink); }
+  .check-row .meta { font-family:'JetBrains Mono', monospace; font-size: 18px; color: var(--ink-mute); letter-spacing: 0.08em; text-transform: uppercase; text-align: right; }
+</style>
+<script type="application/json" id="speaker-notes">
+[
+  "안녕하세요. 0강에서는 1강으로 들어가기 전에 미리 끝내야 할 환경 구성을 다룹니다. 완전 초보를 가정하고 한 단계씩 따라가도록 만들었습니다.",
+  "오늘의 핵심 메시지입니다. 환경 구성은 수업 내용이 아니라 수업의 전제입니다. 이걸 미리 끝내야 1강부터 막힘 없이 진행할 수 있습니다.",
+  "왜 환경 구성을 따로 떼어 놓았을까요. 강의 시간에 가입과 설치를 같이 하면 절반은 따라오지 못합니다. 그래서 0강은 비대면 사전 과제로 진행합니다.",
+  "오늘 다룰 다섯 영역입니다. 계정, 로컬, 개발 서버, 보안, 체크리스트. 모두 비개발자 기준으로 압축했습니다.",
+  "0강을 마치면 GitHub, OpenAI, Supabase, Vercel, Lovable 다섯 개 계정이 만들어지고, VS Code와 Codex가 설치되며, AWS EC2에 SSH로 접속할 수 있게 됩니다.",
+  "원칙입니다. OpenAI를 제외하고는 모두 무료로 시작합니다. 결제 카드를 등록해야 하는 곳은 미리 알려드리고, 한도와 알림도 함께 설정합니다.",
+  "전체 지도입니다. 계정 다섯 개, 로컬 두 개, 개발 서버 하나, 그리고 보안 원칙 한 묶음. 이 순서가 가장 적은 좌절을 만듭니다.",
+  "이제 Part 1 계정 만들기로 넘어갑니다. 모든 도구는 GitHub 계정을 기준으로 연결되기 때문에 GitHub부터 시작합니다.",
+  "GitHub는 우리가 만든 코드를 저장하고 공유하는 공간입니다. Vercel, Supabase, Lovable 모두 GitHub로 로그인할 수 있어 한 번 만들면 여러 번 씁니다.",
+  "GitHub 가입은 이메일, 비밀번호, 사용자 이름 세 가지면 됩니다. 사용자 이름은 회사 이메일이 아니라 영문 닉네임을 권장합니다. 나중에 공개 링크에 노출되기 때문입니다.",
+  "가입 후 반드시 2단계 인증을 켭니다. 휴대폰 인증 앱 또는 SMS로 충분합니다. 이건 미루지 말고 가입 직후에 끝냅니다.",
+  "OpenAI는 우리가 유일하게 결제하는 도구입니다. ChatGPT를 쓰기 위한 계정과 API를 쓰기 위한 결제는 별개입니다. 두 개를 헷갈리지 마세요.",
+  "API Key는 비밀번호와 같습니다. 한 번 만들면 화면에 다시 보여주지 않습니다. 그래서 만든 즉시 안전한 곳에 복사해두고, 절대 코드에 직접 붙이지 않습니다.",
+  "사용 한도를 먼저 설정합니다. Usage limits에서 월 한도와 알림 한도를 둘 다 잡아둡니다. 첫 실습은 월 5달러로도 충분합니다.",
+  "Supabase는 우리가 쓸 데이터베이스입니다. 9강에서 본격적으로 다루지만, 0강에서 미리 가입과 첫 프로젝트만 만들어둡니다.",
+  "Supabase 무료 플랜은 작은 사이드 프로젝트에 충분합니다. 다만 일정 기간 접속이 없으면 자동으로 일시 정지되니 강의 기간 중에는 가끔 들어가 줍니다.",
+  "Vercel은 만든 웹 앱을 인터넷에 올리는 호스팅 서비스입니다. 11강에서 GitHub와 연결해 자동 배포를 다룹니다. 0강에서는 GitHub로 가입까지만 합니다.",
+  "Lovable은 화면 디자인용 도구입니다. 5강에서 화면을 빠르게 만들고 그 결과를 6강 Codex 작업으로 가져옵니다. 가입은 GitHub로 합니다.",
+  "여기까지가 계정입니다. GitHub, OpenAI, Supabase, Vercel, Lovable 다섯 개가 GitHub 계정 하나로 거의 다 연결됩니다.",
+  "Part 2는 로컬 환경입니다. 내 PC에 설치할 것은 두 가지입니다. VS Code와 Copilot/Codex 확장. 그게 전부입니다.",
+  "VS Code는 우리가 코드를 쓰고 보는 에디터입니다. 무료이고 가볍습니다. 설치는 다음, 다음, 설치만 누르면 됩니다.",
+  "한국어 언어팩과 Pretendard 글꼴을 같이 잡으면 첫인상이 훨씬 편합니다. 하지만 필수는 아닙니다.",
+  "GitHub Copilot은 VS Code 안에서 동작하는 AI 보조 도구입니다. 우리가 강의에서 Codex라고 부를 때 대부분 이걸 의미합니다.",
+  "VS Code 마켓플레이스에서 GitHub Copilot, GitHub Copilot Chat 두 개를 설치합니다. 설치 후 GitHub 계정으로 로그인합니다.",
+  "Copilot은 학생, 오픈소스 기여자, 일반 사용자 요금이 다릅니다. 회사 계정 정책을 먼저 확인하세요. 개인이면 무료 체험 후 월 구독을 결정합니다.",
+  "Copilot이 잘 켜졌는지 확인하는 가장 쉬운 방법은 빈 파일에서 함수 한 줄을 쓰고 회색 추천이 뜨는지 보는 것입니다.",
+  "Part 3는 개발 서버입니다. 11강의 배포와 12강의 운영 점검을 위해 AWS EC2에 작은 Ubuntu 서버 한 대를 미리 만들어둡니다.",
+  "AWS는 처음 가입하면 12개월 프리티어를 줍니다. t2.micro 또는 t3.micro 한 대는 일정 시간 무료입니다. 카드는 등록하지만 한도 안에서는 청구되지 않습니다.",
+  "프리티어를 넘기면 과금이 됩니다. 그래서 결제 알림을 함께 설정합니다. 1달러 임계값으로 잡으면 안전합니다.",
+  "EC2 인스턴스는 작게 시작합니다. Ubuntu 22.04, t2.micro, 8GB 디스크면 충분합니다. 키 페어는 새로 만들고 다운로드한 .pem 파일을 안전한 폴더에 보관합니다.",
+  "보안 그룹은 SSH 22 포트만 본인 IP로 열고, 80과 443은 11강에서 필요할 때 엽니다. 처음부터 0.0.0.0으로 다 열지 않습니다.",
+  "Windows에서 SSH 접속은 PowerShell에서 ssh 명령으로 됩니다. .pem 파일 권한 문제는 자주 만나는 함정이라 따로 다룹니다.",
+  "접속이 되면 sudo apt update만 한 번 실행해서 정말로 들어왔는지 확인합니다. 첫 접속에서는 그 이상 손대지 않습니다.",
+  "Part 4는 보안입니다. 무료 도구를 쓴다고 해서 자유롭게 다 노출해도 되는 건 아닙니다. .env 파일과 키 관리가 가장 자주 사고를 냅니다.",
+  ".env는 환경 변수 파일입니다. API Key, DB 비밀번호 같은 비밀값을 코드와 분리해서 보관하는 곳입니다. 깃허브에 올리지 않도록 .gitignore에 반드시 넣습니다.",
+  "키 노출은 누구나 한 번은 합니다. 중요한 건 노출됐을 때 빠르게 폐기하고 새 키를 발급하는 절차를 아는 것입니다.",
+  "여기까지가 강의 내용입니다. 이제 가입과 설치 체크리스트를 보면서 본인 상태를 확인합니다.",
+  "체크리스트는 계정 다섯 줄, 로컬 세 줄, 개발 서버 세 줄, 보안 세 줄로 총 열네 항목입니다. 강의 시작 전까지 모두 체크되어 있어야 합니다.",
+  "트러블슈팅 FAQ입니다. 가장 많이 막히는 다섯 가지는 미리 알고 있으면 30분이 5분으로 줄어듭니다.",
+  "GitHub 2단계 인증 휴대폰 분실, OpenAI 카드 등록 실패, Supabase 일시 정지, EC2 .pem 권한, Copilot 결제 거절. 이 다섯 개가 항상 먼저 옵니다.",
+  "0강이 끝나고 막힌 부분이 있으면 본인의 OS, 어디까지 했는지, 어떤 메시지가 떴는지 세 가지를 캡처해서 채널에 올립니다.",
+  "오늘의 정리입니다. 0강은 수업 내용이 아니라 수업의 전제입니다. 여기서 시간을 들여놓아야 1강부터 14강까지 매 시간이 가벼워집니다.",
+  "다음은 1강 도대체 바이브코딩이 뭐야 입니다. 환경이 모두 준비된 상태로 만나뵙겠습니다.",
+  "감사합니다. 막히면 채널에 캡처와 함께 질문 남겨주세요.",
+  "감사합니다. 1강에서 만나뵙겠습니다."
+]
+</script>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+<!-- 1. Title -->
+<section data-screen-label="01 Title">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div class="eyebrow">VIBE CODING · LECTURE 00</div>
+      <div class="mono small">2026 · 사전 과제</div>
+    </div>
+    <div>
+      <div class="mono small" style="margin-bottom: 28px; color: var(--ink-mute);">// 강의 0강 · 환경 구성</div>
+      <div class="h1">환경 구성<br><span class="accent">시작하기.</span></div>
+      <div style="margin-top: 56px; max-width: 1280px;" class="body-lg">
+        1강이 시작되기 전에 끝내야 할 계정·로컬·개발 서버·보안 세팅. 완전 초보 기준 · Windows · 단계별 캡처.
+      </div>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div class="rule" style="width: 240px;"></div>
+      <div class="mono small">SETUP BEFORE LECTURE 01</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Core Message -->
+<section data-screen-label="02 Core Message" class="bg-warm">
+  <div class="slide-pad" style="justify-content:center;">
+    <div class="eyebrow" style="margin-bottom: 40px;">CORE MESSAGE</div>
+    <div class="quote" style="max-width: 1600px;">
+      환경 구성은 <span class="accent">수업 내용</span>이 아니라<br>
+      <span class="accent">수업의 전제</span>다.<br>
+      여기서 끝내야 1강이 가벼워진다.
+    </div>
+    <div class="pageno">02</div>
+  </div>
+</section>
+
+<!-- 3. Why Pre-class -->
+<section data-screen-label="03 Why Pre Class">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">WHY ZERO LECTURE</div>
+    <div class="h3" style="margin-bottom: 56px;">왜 환경 구성을 따로 떼어놓는가.</div>
+    <table class="compare">
+      <thead><tr><th>수업 중 같이 하기</th><th class="accent">사전 과제로 떼어놓기 (이번 방식)</th></tr></thead>
+      <tbody>
+        <tr><td>가입·설치·인증을 한 번에 시도</td><td>본 강의 전 비대면으로 미리 완료</td></tr>
+        <tr><td>속도가 빠른 사람·느린 사람이 갈림</td><td>모두 같은 출발선에서 1강 시작</td></tr>
+        <tr><td>강사가 한 번에 모든 화면을 못 봄</td><td>막힌 사람만 채널에서 따로 도움</td></tr>
+        <tr><td>본 강의 시간 절반이 가입에 소진</td><td>본 강의 100%가 만들기에 집중</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">0강은 <b>혼자 천천히, 막히면 캡처</b> 원칙으로 진행한다.</div>
+    <div class="footnote">L00 · 의도</div><div class="pageno">03</div>
+  </div>
+</section>
+
+<!-- 4. Agenda -->
+<section data-screen-label="04 Agenda">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 32px;">AGENDA</div>
+    <div class="h2" style="margin-bottom: 80px;">오늘 다룰 다섯 영역</div>
+    <div style="display:grid; grid-template-columns: 80px 1fr 220px; row-gap: 32px; column-gap: 40px; font-size: 32px; align-items:baseline;">
+      <div class="step-num">01</div><div><b>계정 만들기</b> · GitHub → OpenAI → Supabase → Vercel → Lovable</div><div class="mono small">5 ACCOUNTS</div>
+      <div class="step-num">02</div><div><b>로컬 환경</b> · VS Code + GitHub Copilot 확장 (= Codex)</div><div class="mono small">2 INSTALLS</div>
+      <div class="step-num">03</div><div><b>개발 서버</b> · AWS 프리티어 → EC2 Ubuntu → SSH 접속</div><div class="mono small">1 SERVER</div>
+      <div class="step-num">04</div><div><b>보안 원칙</b> · .env 관리 · 키 노출 방지 · 사고 시 대응</div><div class="mono small">3 RULES</div>
+      <div class="step-num">05</div><div><b>체크리스트 + FAQ</b> · 14개 항목 · 자주 막히는 5개 함정</div><div class="mono small">14 ITEMS</div>
+    </div>
+    <div class="footnote">L00 · AGENDA</div><div class="pageno">04</div>
+  </div>
+</section>
+
+<!-- 5. End State -->
+<section data-screen-label="05 End State">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">END STATE</div>
+    <div class="h3" style="margin-bottom: 48px;">0강을 마치면 이 상태가 된다.</div>
+    <div class="grid-3">
+      <div class="card-warm"><div class="mono small accent">A · ACCOUNTS</div><div class="card-title">계정 5개 보유</div><div class="body-sm">GitHub · OpenAI · Supabase · Vercel · Lovable</div></div>
+      <div class="card-warm"><div class="mono small accent">B · LOCAL</div><div class="card-title">VS Code + Copilot 동작</div><div class="body-sm">에디터에서 회색 추천이 뜨는 상태</div></div>
+      <div class="card-warm" style="border-left-color: var(--accent);"><div class="mono small accent">C · SERVER</div><div class="card-title">EC2에 SSH 접속</div><div class="body-sm">Ubuntu 터미널에 정상 로그인</div></div>
+    </div>
+    <div class="callout">기능을 쓸 줄 아는 게 아니라 <b>로그인되어 있고 키가 발급된 상태</b>가 목표다. 깊이 파지 않는다.</div>
+    <div class="footnote">L00 · 도착점</div><div class="pageno">05</div>
+  </div>
+</section>
+
+<!-- 6. Free vs Paid -->
+<section data-screen-label="06 Free vs Paid" class="bg-ink">
+  <div class="slide-pad" style="justify-content:center;">
+    <div class="eyebrow" style="margin-bottom: 40px;">COST PRINCIPLE</div>
+    <div class="h2" style="margin-bottom: 60px;">OpenAI 빼고 <span class="accent">전부 무료</span>로 시작한다.</div>
+    <div class="grid-2" style="gap: 40px;">
+      <div class="card" style="background: #1f1f24; border-color: #3a3a42;">
+        <div class="mono small" style="color: #6dd896;">FREE TIER</div>
+        <div class="card-title" style="color: #fff;">결제 없이 시작 가능</div>
+        <ul class="list" style="color: #c0bfc7;"><li>GitHub · 무료 (Copilot은 별도)</li><li>Supabase · 무료 플랜</li><li>Vercel · Hobby 무료</li><li>Lovable · 무료 크레딧</li><li>AWS · 12개월 프리티어</li></ul>
+      </div>
+      <div class="card" style="background: var(--accent); border-color: var(--accent);">
+        <div class="mono small" style="color: rgba(255,255,255,0.85);">PAID</div>
+        <div class="card-title" style="color: #fff;">유일하게 결제하는 곳</div>
+        <ul class="list" style="color: rgba(255,255,255,0.92);"><li>OpenAI API · 사용량 과금</li><li>월 한도와 알림 한도 필수 설정</li><li>첫 실습은 월 5 USD면 충분</li><li>회사 카드 정책 먼저 확인</li></ul>
+      </div>
+    </div>
+    <div class="pageno">06</div>
+  </div>
+</section>
+
+<!-- 7. Map -->
+<section data-screen-label="07 Map">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">SETUP MAP</div>
+    <div class="h3" style="margin-bottom: 56px;">전체 지도 — 이 순서가 좌절을 가장 적게 만든다.</div>
+    <div class="stepflow">
+      <div><div class="num accent">01</div><b>계정</b><span>GitHub → OpenAI → Supabase → Vercel → Lovable</span></div>
+      <div><div class="num accent">02</div><b>로컬</b><span>VS Code → Copilot/Codex 확장</span></div>
+      <div><div class="num accent">03</div><b>서버</b><span>AWS 가입 → EC2 → SSH 접속</span></div>
+      <div><div class="num accent">04</div><b>보안</b><span>.env · .gitignore · 키 폐기 절차</span></div>
+      <div style="background: var(--accent); color:#fff; border-color: var(--accent);"><div class="num" style="color:#fff;">05</div><b style="color:#fff;">검증</b><span style="color: rgba(255,255,255,0.92);">체크리스트 14개 모두 ✓</span></div>
+    </div>
+    <div class="callout">계정 → 로컬 → 서버 → 보안. <b>왼쪽이 안 끝나면 오른쪽으로 가지 않는다.</b></div>
+    <div class="footnote">L00 · 전체 지도</div><div class="pageno">07</div>
+  </div>
+</section>
+
+<!-- 8. Section P1 Accounts -->
+<section data-screen-label="08 Section P1 Accounts" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 01 / 04</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">01</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">계정 만들기</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1300px;">
+        다섯 개 계정을 만든다. <b style="color:var(--accent);">GitHub가 모든 도구의 열쇠</b>이므로 가장 먼저 만든다.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">08</div>
+  </div>
+</section>
+
+<!-- 9. GitHub Why -->
+<section data-screen-label="09 GitHub Why">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">01 · GITHUB · 왜 먼저인가</div>
+    <div class="h3" style="margin-bottom: 48px;">GitHub는 <span class="accent">모든 도구의 공용 열쇠</span>가 된다.</div>
+    <div class="grid-2">
+      <div>
+        <div class="body-lg" style="margin-bottom: 24px;">우리가 쓸 도구 중 GitHub로 로그인할 수 있는 곳:</div>
+        <div style="display:flex; flex-wrap:wrap; gap: 12px;">
+          <div class="pill pill-accent">Vercel</div>
+          <div class="pill pill-accent">Supabase</div>
+          <div class="pill pill-accent">Lovable</div>
+          <div class="pill">Copilot 인증</div>
+          <div class="pill">코드 저장</div>
+          <div class="pill">자동 배포</div>
+        </div>
+        <div class="callout" style="margin-top: 36px;">GitHub 한 번 만들고, 다른 곳은 <b>"GitHub로 계속하기"</b>를 누르면 끝.</div>
+      </div>
+      <div class="logo-box"><div class="logo-mark">GitHub</div></div>
+    </div>
+    <div class="footnote">L00 · 01 GITHUB</div><div class="pageno">09</div>
+  </div>
+</section>
+
+<!-- 10. GitHub Steps -->
+<section data-screen-label="10 GitHub Steps">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">01 · GITHUB · 가입 단계</div>
+    <div class="h3" style="margin-bottom: 48px;">github.com에서 5분.</div>
+    <div class="stepflow">
+      <div><div class="num accent">01</div><b>이메일 입력</b><span>회사 메일 가능. 별도 메일도 OK.</span></div>
+      <div><div class="num accent">02</div><b>비밀번호</b><span>15자 이상 권장</span></div>
+      <div><div class="num accent">03</div><b>사용자 이름</b><span>영문 닉네임. 공개 노출됨.</span></div>
+      <div><div class="num accent">04</div><b>이메일 인증</b><span>받은편지함에서 코드 확인</span></div>
+      <div style="background: var(--accent); color:#fff; border-color: var(--accent);"><div class="num" style="color:#fff;">05</div><b style="color:#fff;">2단계 인증</b><span style="color: rgba(255,255,255,0.92);">가입 직후 즉시 활성화</span></div>
+    </div>
+    <div style="margin-top: 44px;" class="grid-2">
+      <div class="card-warm">
+        <div class="mono small accent">USERNAME 권장</div>
+        <div class="body-sm" style="margin-top: 12px;">회사 메일 ID 그대로 쓰지 말 것. 영문 닉네임 + 숫자 조합 권장.<br>예: <span class="mono">jisoo-park</span>, <span class="mono">vc-jisoo</span></div>
+      </div>
+      <div class="card-warm" style="border-left-color: var(--accent);">
+        <div class="mono small accent">2FA 필수</div>
+        <div class="body-sm" style="margin-top: 12px;">Settings → Password and authentication → Two-factor authentication. 인증 앱 또는 SMS.</div>
+      </div>
+    </div>
+    <div class="footnote">L00 · 01 GITHUB</div><div class="pageno">10</div>
+  </div>
+</section>
+
+<!-- 11. GitHub Screens -->
+<section data-screen-label="11 GitHub Screens" class="bg-warm">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">01 · GITHUB · 화면 자리</div>
+    <div class="h3" style="margin-bottom: 48px;">단계별 캡처 슬롯.</div>
+    <div class="grid-3">
+      <div><div class="shot" data-label="signup form"></div><div class="small" style="margin-top: 12px;">① github.com/signup</div></div>
+      <div><div class="shot" data-label="email verify"></div><div class="small" style="margin-top: 12px;">② 이메일 인증 코드</div></div>
+      <div><div class="shot" data-label="2FA setup"></div><div class="small" style="margin-top: 12px;">③ 2단계 인증 설정</div></div>
+    </div>
+    <div class="callout">실제 강의 자료에는 본인 계정 캡처를 이 자리에 끼워 넣는다.</div>
+    <div class="footnote">L00 · 01 GITHUB</div><div class="pageno">11</div>
+  </div>
+</section>
+
+<!-- 12. OpenAI Why -->
+<section data-screen-label="12 OpenAI Why">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">02 · OPENAI · 두 개의 계정을 헷갈리지 말 것</div>
+    <div class="h3" style="margin-bottom: 48px;">ChatGPT 계정 <span class="accent">≠</span> API 결제 계정.</div>
+    <table class="compare">
+      <thead><tr><th>chatgpt.com</th><th class="accent">platform.openai.com</th></tr></thead>
+      <tbody>
+        <tr><td>대화형 ChatGPT 사용</td><td>API Key 발급 · 코드에서 호출</td></tr>
+        <tr><td>Free / Plus / Team 구독</td><td>사용량 기반 종량제</td></tr>
+        <tr><td>Plus 결제해도 API는 별개</td><td>API는 <b>별도 충전</b>해야 동작</td></tr>
+        <tr><td>0강에서는 다루지 않음</td><td><b>이 강의가 결제하는 곳</b></td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>같은 이메일로 가입</b>하지만, 결제는 platform.openai.com에서 따로 한다.</div>
+    <div class="footnote">L00 · 02 OPENAI</div><div class="pageno">12</div>
+  </div>
+</section>
+
+<!-- 13. OpenAI Steps -->
+<section data-screen-label="13 OpenAI Steps">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">02 · OPENAI · 6단계</div>
+    <div class="h3" style="margin-bottom: 40px;">platform.openai.com 가입 → 결제 → Key 발급 → 한도 설정.</div>
+    <div style="display:grid; grid-template-columns: 60px 1fr; row-gap: 18px; column-gap: 28px; font-size: 26px;">
+      <div class="step-num">01</div><div><b>가입</b> · platform.openai.com → 이메일/구글/MS 계정으로 가입</div>
+      <div class="step-num">02</div><div><b>전화번호 인증</b> · SMS 1회. 같은 번호로 여러 계정 만들지 말 것</div>
+      <div class="step-num">03</div><div><b>결제 수단 등록</b> · Settings → Billing → Add payment method (해외 결제 가능 카드)</div>
+      <div class="step-num">04</div><div><b>크레딧 충전</b> · 첫 충전 5~10 USD. 자동 충전(Auto recharge)은 일단 끔</div>
+      <div class="step-num">05</div><div><b>Usage limits</b> · Soft limit (알림) 5 USD · Hard limit (차단) 10 USD부터</div>
+      <div class="step-num">06</div><div style="color: var(--accent); font-weight: 700;"><b>API Key 발급</b> · API keys → Create new secret key → <b>한 번만 보임. 즉시 복사.</b></div>
+    </div>
+    <div class="callout" style="margin-top: 36px;">⚠️ Key는 만든 직후 화면에서 사라진다. 안전한 메모장에 즉시 복사 → 그 후 .env에 옮긴다.</div>
+    <div class="footnote">L00 · 02 OPENAI</div><div class="pageno">13</div>
+  </div>
+</section>
+
+<!-- 14. OpenAI Screens -->
+<section data-screen-label="14 OpenAI Screens" class="bg-warm">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">02 · OPENAI · 화면 자리</div>
+    <div class="h3" style="margin-bottom: 48px;">단계별 캡처 슬롯.</div>
+    <div class="grid-4">
+      <div><div class="shot" data-label="billing"></div><div class="small" style="margin-top: 12px;">① Billing</div></div>
+      <div><div class="shot" data-label="add credit"></div><div class="small" style="margin-top: 12px;">② 크레딧 충전</div></div>
+      <div><div class="shot" data-label="usage limits"></div><div class="small" style="margin-top: 12px;">③ Usage limits</div></div>
+      <div><div class="shot" data-label="api key"></div><div class="small" style="margin-top: 12px;">④ API Key 발급</div></div>
+    </div>
+    <div class="footnote">L00 · 02 OPENAI</div><div class="pageno">14</div>
+  </div>
+</section>
+
+<!-- 15. OpenAI Cost -->
+<section data-screen-label="15 OpenAI Cost">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">02 · OPENAI · 한도 설정 예시</div>
+    <div class="h3" style="margin-bottom: 48px;">처음에는 작게 잡고 늘린다.</div>
+    <div class="grid-3">
+      <div class="card"><div class="mono small accent">SOFT LIMIT</div><div class="card-title">5 USD</div><div class="body-sm">이 금액에 도달하면 <b>알림 메일</b>이 온다. 차단은 안 됨.</div></div>
+      <div class="card"><div class="mono small accent">HARD LIMIT</div><div class="card-title">10 USD</div><div class="body-sm">이 금액에 도달하면 <b>API 호출이 자동 차단</b>된다.</div></div>
+      <div class="card bg-accent"><div class="mono small" style="color:rgba(255,255,255,0.85);">AUTO RECHARGE</div><div class="card-title" style="color:#fff;">OFF</div><div class="body-sm" style="color:rgba(255,255,255,0.92);">자동 충전은 일단 끈다. <b>모니터링 습관</b>이 먼저.</div></div>
+    </div>
+    <div class="callout"><b>왜 두 개를 다 잡나?</b> Soft만 잡으면 알람만 오고 계속 과금된다. Hard만 잡으면 미리 알 수 없다.</div>
+    <div class="footnote">L00 · 02 OPENAI</div><div class="pageno">15</div>
+  </div>
+</section>
+
+<!-- 16. Supabase Why -->
+<section data-screen-label="16 Supabase Why">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">03 · SUPABASE · 왜 가입만 해두는가</div>
+    <div class="h3" style="margin-bottom: 48px;">9강에서 본격적으로 쓴다. 0강은 <span class="accent">자리 잡기</span>.</div>
+    <div class="grid-2">
+      <div>
+        <div class="body-lg" style="margin-bottom: 24px;">Supabase = <b>무료 데이터베이스 + 인증 + 파일 저장</b>이 한 곳에 있는 서비스.</div>
+        <div class="kv">
+          <div class="k">Plan</div><div class="v">Free Tier</div>
+          <div class="k">DB</div><div class="v">PostgreSQL 500MB</div>
+          <div class="k">Auth</div><div class="v">월 50,000명</div>
+          <div class="k">Storage</div><div class="v">1GB</div>
+          <div class="k">주의</div><div class="v" style="color: var(--accent);">7일간 미접속 시 자동 일시 정지</div>
+        </div>
+      </div>
+      <div class="logo-box"><div class="logo-mark">Supabase</div></div>
+    </div>
+    <div class="callout">강의 기간 중 일주일에 한 번은 대시보드에 들어가 일시 정지를 막는다.</div>
+    <div class="footnote">L00 · 03 SUPABASE</div><div class="pageno">16</div>
+  </div>
+</section>
+
+<!-- 17. Supabase Steps -->
+<section data-screen-label="17 Supabase Steps">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">03 · SUPABASE · 가입과 첫 프로젝트</div>
+    <div class="h3" style="margin-bottom: 48px;">supabase.com → "Start your project".</div>
+    <div class="stepflow">
+      <div><div class="num accent">01</div><b>GitHub로 가입</b><span>"Continue with GitHub"</span></div>
+      <div><div class="num accent">02</div><b>조직 만들기</b><span>개인 이름으로 OK · Free</span></div>
+      <div><div class="num accent">03</div><b>프로젝트 생성</b><span>이름 · DB 비번 · 리전 (Tokyo 권장)</span></div>
+      <div><div class="num accent">04</div><b>대기</b><span>약 2분 — 프로비저닝</span></div>
+      <div style="background: var(--accent); color:#fff; border-color: var(--accent);"><div class="num" style="color:#fff;">05</div><b style="color:#fff;">URL · anon key</b><span style="color: rgba(255,255,255,0.92);">Project Settings → API에서 확인 (9강에서 사용)</span></div>
+    </div>
+    <div class="callout"><b>DB 비밀번호는 절대 잊지 말 것.</b> 분실 시 재설정은 가능하나 연결된 모든 코드를 다시 잡아야 한다.</div>
+    <div class="footnote">L00 · 03 SUPABASE</div><div class="pageno">17</div>
+  </div>
+</section>
+
+<!-- 18. Vercel -->
+<section data-screen-label="18 Vercel">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">04 · VERCEL · 왜 / 어떻게</div>
+    <div class="h3" style="margin-bottom: 48px;">Vercel = <span class="accent">만든 웹 앱을 인터넷에 올리는 곳</span>.</div>
+    <div class="grid-2">
+      <div>
+        <div class="body-lg">11강에서 GitHub와 연결해 <b>코드를 push하면 자동으로 배포</b>되는 환경을 만든다. 0강에서는 가입만 한다.</div>
+        <div class="kv" style="margin-top: 36px;">
+          <div class="k">Plan</div><div class="v">Hobby (무료)</div>
+          <div class="k">개인 사용</div><div class="v">상업적 비목적</div>
+          <div class="k">대역폭</div><div class="v">월 100GB</div>
+          <div class="k">가입</div><div class="v" style="color: var(--accent);">"Continue with GitHub" 한 번이면 끝</div>
+        </div>
+      </div>
+      <div class="logo-box"><div class="logo-mark">▲ Vercel</div></div>
+    </div>
+    <div class="callout">결제 카드 등록 <b>필요 없음</b>. Hobby 플랜은 무료로 시작하고 한도 도달 시 알림만 온다.</div>
+    <div class="footnote">L00 · 04 VERCEL</div><div class="pageno">18</div>
+  </div>
+</section>
+
+<!-- 19. Lovable Why -->
+<section data-screen-label="19 Lovable Why">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">05 · LOVABLE · 화면 디자인용 도구</div>
+    <div class="h3" style="margin-bottom: 48px;">Lovable에서 <span class="accent">화면을 그리고</span>, Codex로 <span class="accent">코드를 다듬는다</span>.</div>
+    <div class="stepflow" style="grid-template-columns: 1fr 80px 1fr 80px 1fr; align-items:center;">
+      <div><div class="num accent">A</div><b>Lovable</b><span>"이런 앱 만들어줘" → 화면 + 초기 코드 자동 생성</span></div>
+      <div style="border:0; text-align:center; min-height:auto;"><div style="font-size: 56px; color: var(--accent);">→</div></div>
+      <div><div class="num accent">B</div><b>GitHub</b><span>Lovable 결과를 본인 레포로 export</span></div>
+      <div style="border:0; text-align:center; min-height:auto;"><div style="font-size: 56px; color: var(--accent);">→</div></div>
+      <div style="background: var(--accent); color:#fff; border-color: var(--accent);"><div class="num" style="color:#fff;">C</div><b style="color:#fff;">Codex</b><span style="color: rgba(255,255,255,0.92);">VS Code에서 받아 본격 수정</span></div>
+    </div>
+    <div class="callout">Lovable은 <b>5강 화면 만들기</b>의 입구, Codex는 <b>6강 로컬 제작</b>의 본진. 0강에서는 가입만.</div>
+    <div class="footnote">L00 · 05 LOVABLE</div><div class="pageno">19</div>
+  </div>
+</section>
+
+<!-- 20. Lovable Steps -->
+<section data-screen-label="20 Lovable Steps">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">05 · LOVABLE · 가입</div>
+    <div class="h3" style="margin-bottom: 48px;">lovable.dev → "Sign in with GitHub".</div>
+    <div class="grid-2">
+      <div>
+        <div style="display:grid; grid-template-columns: 60px 1fr; row-gap: 16px; column-gap: 24px; font-size: 26px;">
+          <div class="step-num">01</div><div>lovable.dev 접속</div>
+          <div class="step-num">02</div><div>"Sign in with GitHub" 클릭</div>
+          <div class="step-num">03</div><div>GitHub 권한 승인 (Authorize)</div>
+          <div class="step-num">04</div><div>대시보드 진입 확인</div>
+          <div class="step-num">05</div><div style="color: var(--accent); font-weight: 700;">무료 크레딧 잔량 확인 후 종료</div>
+        </div>
+        <div class="callout" style="margin-top: 32px;">5강 전까지는 <b>들어와서 가입 확인만</b>. 새 프로젝트는 5강에서 만든다.</div>
+      </div>
+      <div class="shot tall" data-label="lovable dashboard"></div>
+    </div>
+    <div class="footnote">L00 · 05 LOVABLE</div><div class="pageno">20</div>
+  </div>
+</section>
+
+<!-- 21. Account Recap -->
+<section data-screen-label="21 Account Recap" class="bg-warm">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">PART 1 · 계정 다섯 줄 정리</div>
+    <div class="h3" style="margin-bottom: 48px;">여기까지 왔다면 절반은 끝.</div>
+    <table class="compare">
+      <thead><tr><th>도구</th><th>역할</th><th>가입 방식</th><th>비용</th></tr></thead>
+      <tbody>
+        <tr><td><b>GitHub</b></td><td>코드 저장 · 공용 로그인</td><td>이메일 + 2FA</td><td>무료</td></tr>
+        <tr><td><b>OpenAI</b></td><td>API 호출 (10강+)</td><td>이메일 + 카드 + 한도</td><td><span style="color: var(--accent); font-weight:700;">월 5~10 USD</span></td></tr>
+        <tr><td><b>Supabase</b></td><td>DB · 인증 (9강+)</td><td>GitHub 로그인</td><td>무료 (Free)</td></tr>
+        <tr><td><b>Vercel</b></td><td>웹 배포 (11강)</td><td>GitHub 로그인</td><td>무료 (Hobby)</td></tr>
+        <tr><td><b>Lovable</b></td><td>화면 디자인 (5강)</td><td>GitHub 로그인</td><td>무료 크레딧</td></tr>
+      </tbody>
+    </table>
+    <div class="footnote">L00 · PART 1 RECAP</div><div class="pageno">21</div>
+  </div>
+</section>
+
+<!-- 22. Section P2 Local -->
+<section data-screen-label="22 Section P2 Local" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 02 / 04</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">02</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">로컬 환경</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1300px;">
+        내 PC에 설치할 것은 <b style="color: var(--accent);">두 가지뿐</b>이다. VS Code와 GitHub Copilot.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">22</div>
+  </div>
+</section>
+
+<!-- 23. VS Code Install -->
+<section data-screen-label="23 VS Code Install">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">06 · VS CODE · 설치 (Windows)</div>
+    <div class="h3" style="margin-bottom: 48px;">code.visualstudio.com → "Download for Windows".</div>
+    <div class="grid-2">
+      <div>
+        <div style="display:grid; grid-template-columns: 60px 1fr; row-gap: 16px; column-gap: 24px; font-size: 26px;">
+          <div class="step-num">01</div><div>code.visualstudio.com 접속</div>
+          <div class="step-num">02</div><div>Windows 설치 파일 다운로드 (User Installer)</div>
+          <div class="step-num">03</div><div>실행 → 라이선스 동의 → "다음"</div>
+          <div class="step-num">04</div><div><b>"Add to PATH" 체크</b> · "Open with Code" 체크 권장</div>
+          <div class="step-num">05</div><div>설치 → 실행 확인</div>
+        </div>
+        <div class="callout" style="margin-top: 32px;">"Add to PATH"를 체크해야 PowerShell에서 <span class="mono">code .</span>이 동작한다.</div>
+      </div>
+      <div class="shot tall" data-label="vscode installer"></div>
+    </div>
+    <div class="footnote">L00 · 06 VS CODE</div><div class="pageno">23</div>
+  </div>
+</section>
+
+<!-- 24. VS Code Quick Setup -->
+<section data-screen-label="24 VS Code Quick Setup">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">06 · VS CODE · 첫 5분 세팅</div>
+    <div class="h3" style="margin-bottom: 48px;">필수만 본다. 나머지는 강의 중 추가.</div>
+    <div class="grid-3">
+      <div class="card-warm"><div class="mono small accent">EXT 01</div><div class="card-title-sm">Korean Language Pack</div><div class="body-sm">메뉴 한국어. 본인 취향대로.</div></div>
+      <div class="card-warm"><div class="mono small accent">EXT 02</div><div class="card-title-sm">Prettier</div><div class="body-sm">코드 자동 정렬. Codex 결과를 깔끔하게.</div></div>
+      <div class="card-warm" style="border-left-color: var(--accent);"><div class="mono small accent">EXT 03</div><div class="card-title-sm">GitHub Copilot</div><div class="body-sm">다음 슬라이드에서 본격 설명.</div></div>
+    </div>
+    <div class="callout">설치 방법 — 좌측 ⊞ 아이콘(Extensions) → 검색 → Install. <b>한 번 설치하면 모든 폴더에서 동작</b>.</div>
+    <div class="footnote">L00 · 06 VS CODE</div><div class="pageno">24</div>
+  </div>
+</section>
+
+<!-- 25. Codex Meaning -->
+<section data-screen-label="25 Codex Meaning">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">07 · CODEX · 용어 정리</div>
+    <div class="h3" style="margin-bottom: 48px;">이 강의에서 "Codex"는 <span class="accent">VS Code 안의 GitHub Copilot</span>이다.</div>
+    <table class="compare">
+      <thead><tr><th>이름</th><th>실체</th><th>이 강의에서</th></tr></thead>
+      <tbody>
+        <tr><td>OpenAI Codex</td><td>2021년 코드 생성 모델 (단종)</td><td>X — 안 씀</td></tr>
+        <tr><td>OpenAI Codex CLI</td><td>터미널용 AI 도구</td><td>X — 별도 도구</td></tr>
+        <tr><td><b>GitHub Copilot</b></td><td>VS Code 확장 · 인라인 추천</td><td><span class="accent" style="font-weight:700;">✓ 우리가 부르는 "Codex"</span></td></tr>
+        <tr><td><b>Copilot Chat</b></td><td>VS Code 안의 채팅 패널</td><td><span class="accent" style="font-weight:700;">✓ 같이 사용</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout">강의 중 "Codex에게 물어보세요"는 <b>VS Code 사이드바의 Copilot Chat 창</b>에 입력하라는 뜻이다.</div>
+    <div class="footnote">L00 · 07 CODEX</div><div class="pageno">25</div>
+  </div>
+</section>
+
+<!-- 26. Copilot Install -->
+<section data-screen-label="26 Copilot Install">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">07 · COPILOT · 설치 (3단계)</div>
+    <div class="h3" style="margin-bottom: 48px;">VS Code Marketplace → 두 개 확장 → GitHub 로그인.</div>
+    <div class="stepflow">
+      <div><div class="num accent">01</div><b>Extensions 열기</b><span>좌측 ⊞ 아이콘 또는 Ctrl+Shift+X</span></div>
+      <div><div class="num accent">02</div><b>"GitHub Copilot" 설치</b><span>인라인 회색 추천</span></div>
+      <div><div class="num accent">03</div><b>"GitHub Copilot Chat" 설치</b><span>사이드바 채팅 창</span></div>
+      <div><div class="num accent">04</div><b>로그인</b><span>"Sign in with GitHub" → 브라우저 인증</span></div>
+      <div style="background: var(--accent); color:#fff; border-color: var(--accent);"><div class="num" style="color:#fff;">05</div><b style="color:#fff;">동작 확인</b><span style="color: rgba(255,255,255,0.92);">.js 파일에서 회색 추천 뜨면 OK</span></div>
+    </div>
+    <div class="callout">Copilot은 <b>유료</b>. 신규 가입 시 30일 무료 체험. 학생/오픈소스 기여자는 무료. <b>회사 카드 등록 정책을 먼저 확인</b>.</div>
+    <div class="footnote">L00 · 07 COPILOT</div><div class="pageno">26</div>
+  </div>
+</section>
+
+<!-- 27. Copilot Test -->
+<section data-screen-label="27 Copilot Test" class="bg-warm">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">07 · COPILOT · 동작 테스트</div>
+    <div class="h3" style="margin-bottom: 36px;">새 폴더 → test.js 파일 → 한 줄 입력.</div>
+    <div class="grid-2">
+      <div>
+        <div class="body-lg" style="margin-bottom: 20px;">test.js 안에 한국어 주석을 입력한다.</div>
+        <div class="prompt-block">// 두 숫자를 더하는 함수</div>
+        <div class="body-sm" style="margin-top: 24px;">엔터를 치면 회색 글자로 함수 본문이 추천되어야 한다. <b>Tab</b>으로 채택, <b>Esc</b>로 거절.</div>
+      </div>
+      <div>
+        <div class="terminal" style="font-size: 20px;"><span class="out">// 두 숫자를 더하는 함수</span>
+<span class="cmd">function add(a, b) {</span>
+  <span class="out" style="background: rgba(255,90,31,0.15);">return a + b;  ← 회색 추천</span>
+<span class="cmd">}</span></div>
+        <div class="callout" style="margin-top: 24px;">회색 글자가 안 뜨면 우측 하단 Copilot 아이콘 → "Sign in" 다시 확인.</div>
+      </div>
+    </div>
+    <div class="footnote">L00 · 07 COPILOT</div><div class="pageno">27</div>
+  </div>
+</section>
+
+<!-- 28. Copilot Chat -->
+<section data-screen-label="28 Copilot Chat">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">07 · COPILOT CHAT · 두 가지 사용법</div>
+    <div class="h3" style="margin-bottom: 48px;">인라인 추천 + 사이드바 채팅. 둘을 섞어 쓴다.</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="mono small accent">A · INLINE</div>
+        <div class="card-title">인라인 추천</div>
+        <div class="body-sm">코드를 쓰는 중간에 회색으로 다음 줄을 제안. Tab으로 채택. <b>속도용</b>.</div>
+      </div>
+      <div class="card" style="background: var(--accent); border-color: var(--accent);">
+        <div class="mono small" style="color: rgba(255,255,255,0.85);">B · CHAT</div>
+        <div class="card-title" style="color:#fff;">사이드바 채팅</div>
+        <div class="body-sm" style="color: rgba(255,255,255,0.92);">Ctrl+Alt+I → 자연어로 "이 함수 설명해줘", "이 코드 다시 짜줘". <b>대화용</b>.</div>
+      </div>
+    </div>
+    <div class="callout">강의에서 <b>"Codex에게 ___ 라고 말해보세요"</b>는 거의 항상 채팅 창을 의미한다.</div>
+    <div class="footnote">L00 · 07 COPILOT</div><div class="pageno">28</div>
+  </div>
+</section>
+
+<!-- 29. Section P3 Server -->
+<section data-screen-label="29 Section P3 Server" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 03 / 04</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">03</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">개발 서버</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1300px;">
+        AWS 프리티어로 Ubuntu 한 대를 만들고, <b style="color: var(--accent);">SSH로 들어가는 것까지</b>만.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">29</div>
+  </div>
+</section>
+
+<!-- 30. AWS Free Tier -->
+<section data-screen-label="30 AWS Free Tier">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">08 · AWS · 프리티어란</div>
+    <div class="h3" style="margin-bottom: 48px;">12개월 무료. 단, <span class="accent">한도를 넘기면 과금</span>된다.</div>
+    <div class="grid-3">
+      <div class="card-warm"><div class="mono small accent">기간</div><div class="card-title">12개월</div><div class="body-sm">계정 생성일 기준 1년. 이후 일반 요금.</div></div>
+      <div class="card-warm"><div class="mono small accent">EC2</div><div class="card-title">t2/t3.micro</div><div class="body-sm">월 750시간. 1대를 24/7 켜둘 수 있는 양.</div></div>
+      <div class="card-warm" style="border-left-color: var(--accent);"><div class="mono small accent">스토리지</div><div class="card-title">EBS 30GB</div><div class="body-sm">8GB 인스턴스 3대 또는 30GB 1대.</div></div>
+    </div>
+    <div class="callout">⚠️ 가입 시 <b>카드 등록 필수</b>. 한도 안에서는 0원이지만, 결제 알림(Budgets)을 따로 잡아두는 게 안전.</div>
+    <div class="footnote">L00 · 08 AWS</div><div class="pageno">30</div>
+  </div>
+</section>
+
+<!-- 31. AWS Signup -->
+<section data-screen-label="31 AWS Signup">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">08 · AWS · 가입 6단계</div>
+    <div class="h3" style="margin-bottom: 40px;">aws.amazon.com → "AWS 계정 생성".</div>
+    <div style="display:grid; grid-template-columns: 60px 1fr; row-gap: 16px; column-gap: 28px; font-size: 26px;">
+      <div class="step-num">01</div><div><b>이메일 + 계정 이름</b> · GitHub와 다른 이메일 권장 (관리 분리)</div>
+      <div class="step-num">02</div><div><b>전화번호 + 주소</b> · 한국 전화번호 인증 OK</div>
+      <div class="step-num">03</div><div><b>결제 카드</b> · 해외 결제 가능 카드. 1 USD 임시 청구 후 환불</div>
+      <div class="step-num">04</div><div><b>전화/SMS 인증</b> · 6자리 코드</div>
+      <div class="step-num">05</div><div><b>지원 플랜</b> · <span class="accent" style="font-weight:700;">"기본 지원 - 무료"</span> 선택</div>
+      <div class="step-num">06</div><div style="color: var(--accent); font-weight:700;"><b>Budgets 알림</b> · "1 USD 도달 시 메일" 즉시 설정</div>
+    </div>
+    <div class="callout" style="margin-top: 36px;">Budgets 설정은 <b>결제 화면 → AWS Budgets → Create budget</b>. 가입 직후가 가장 안전한 타이밍.</div>
+    <div class="footnote">L00 · 08 AWS</div><div class="pageno">31</div>
+  </div>
+</section>
+
+<!-- 32. EC2 Launch -->
+<section data-screen-label="32 EC2 Launch">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">09 · EC2 · 인스턴스 시작</div>
+    <div class="h3" style="margin-bottom: 40px;">EC2 콘솔 → "인스턴스 시작".</div>
+    <div class="kv" style="grid-template-columns: 260px 1fr; font-size: 24px;">
+      <div class="k">리전</div><div class="v">서울 (ap-northeast-2) — 우상단에서 변경</div>
+      <div class="k">이름</div><div class="v">vc-dev-01 (마음대로)</div>
+      <div class="k">AMI</div><div class="v"><b>Ubuntu Server 22.04 LTS</b> (프리티어 적용)</div>
+      <div class="k">인스턴스 유형</div><div class="v"><b>t2.micro</b> 또는 <b>t3.micro</b> (프리티어 적용)</div>
+      <div class="k">키 페어</div><div class="v" style="color: var(--accent);">"새 키 페어 생성" → 이름 vc-key → <b>.pem 다운로드 (한 번만 받음)</b></div>
+      <div class="k">네트워크</div><div class="v">기본 VPC · 퍼블릭 IP 자동 할당 ✓</div>
+      <div class="k">보안 그룹</div><div class="v">SSH(22) — <b>"내 IP"</b>만 허용. 0.0.0.0/0 금지</div>
+      <div class="k">스토리지</div><div class="v">8 GiB gp3 (기본)</div>
+    </div>
+    <div class="callout" style="margin-top: 32px;"><b>.pem 파일은 다시 받을 수 없다.</b> 다운로드 후 안전한 폴더로 옮기고, GitHub에 절대 업로드하지 말 것.</div>
+    <div class="footnote">L00 · 09 EC2</div><div class="pageno">32</div>
+  </div>
+</section>
+
+<!-- 33. EC2 Screens -->
+<section data-screen-label="33 EC2 Screens" class="bg-warm">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">09 · EC2 · 화면 자리</div>
+    <div class="h3" style="margin-bottom: 48px;">단계별 캡처 슬롯.</div>
+    <div class="grid-4">
+      <div><div class="shot" data-label="region select"></div><div class="small" style="margin-top: 12px;">① 리전 선택</div></div>
+      <div><div class="shot" data-label="ami ubuntu"></div><div class="small" style="margin-top: 12px;">② Ubuntu AMI</div></div>
+      <div><div class="shot" data-label="key pair"></div><div class="small" style="margin-top: 12px;">③ 키 페어 생성</div></div>
+      <div><div class="shot" data-label="security group"></div><div class="small" style="margin-top: 12px;">④ 보안 그룹</div></div>
+    </div>
+    <div class="footnote">L00 · 09 EC2</div><div class="pageno">33</div>
+  </div>
+</section>
+
+<!-- 34. SSH Connect -->
+<section data-screen-label="34 SSH Connect">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">10 · SSH · Windows에서 접속</div>
+    <div class="h3" style="margin-bottom: 36px;">PowerShell + ssh 명령. 별도 프로그램 불필요.</div>
+    <div class="grid-2">
+      <div>
+        <div class="body-lg" style="margin-bottom: 16px;">PowerShell을 열고 .pem이 있는 폴더로 이동.</div>
+        <div class="terminal"><span class="prompt-sign">PS&gt;</span> <span class="cmd">cd C:\Users\me\keys</span>
+<span class="prompt-sign">PS&gt;</span> <span class="cmd">icacls vc-key.pem /inheritance:r</span>
+<span class="prompt-sign">PS&gt;</span> <span class="cmd">icacls vc-key.pem /grant:r "$($env:USERNAME):(R)"</span>
+<span class="prompt-sign">PS&gt;</span> <span class="cmd">ssh -i vc-key.pem ubuntu@&lt;EC2 퍼블릭 IP&gt;</span>
+<span class="out">The authenticity of host ... can't be established.</span>
+<span class="out">Are you sure you want to continue connecting? <b>yes</b></span>
+<span class="ok">ubuntu@ip-172-31-...:~$ _</span></div>
+      </div>
+      <div>
+        <div class="card-warm">
+          <div class="mono small accent">왜 icacls가 필요한가</div>
+          <div class="body-sm" style="margin-top: 12px;">.pem 파일이 <b>너무 공개적</b>이면 SSH가 거부한다. Linux의 <span class="mono">chmod 400</span>에 해당하는 윈도우 명령이 icacls.</div>
+        </div>
+        <div class="card-warm" style="margin-top: 20px; border-left-color: var(--accent);">
+          <div class="mono small accent">사용자 이름</div>
+          <div class="body-sm" style="margin-top: 12px;">Ubuntu AMI는 <b>ubuntu</b>. Amazon Linux는 ec2-user. 헷갈리면 콘솔에서 "Connect" 버튼이 알려줌.</div>
+        </div>
+      </div>
+    </div>
+    <div class="footnote">L00 · 10 SSH</div><div class="pageno">34</div>
+  </div>
+</section>
+
+<!-- 35. Server First Move -->
+<section data-screen-label="35 Server First Move">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">10 · SSH · 들어와서 단 한 줄</div>
+    <div class="h3" style="margin-bottom: 40px;">정말 들어왔는지만 확인하고 나간다.</div>
+    <div class="grid-2">
+      <div>
+        <div class="terminal"><span class="ok">ubuntu@ip-172-31:~$</span> <span class="cmd">sudo apt update</span>
+<span class="out">Hit:1 http://ap-northeast-2.ec2...</span>
+<span class="out">Get:2 ...</span>
+<span class="ok">Reading package lists... Done</span>
+<span class="ok">ubuntu@ip-172-31:~$</span> <span class="cmd">exit</span>
+<span class="out">logout</span>
+<span class="prompt-sign">PS&gt;</span></div>
+      </div>
+      <div>
+        <div class="callout" style="margin-top: 0;"><b>왜 더 안 만지나?</b> 0강 목표는 "접속 성공"까지다. Node 설치, Nginx, 도메인은 11강에서 필요할 때 한다.</div>
+        <div class="card-warm" style="margin-top: 28px;">
+          <div class="mono small accent">중지 vs 종료</div>
+          <div class="body-sm" style="margin-top: 12px;">강의 안 할 때는 <b>인스턴스 중지(Stop)</b>로 비용 절감. <b>종료(Terminate)는 삭제</b>이므로 누르지 말 것.</div>
+        </div>
+      </div>
+    </div>
+    <div class="footnote">L00 · 10 SSH</div><div class="pageno">35</div>
+  </div>
+</section>
+
+<!-- 36. Section P4 Security -->
+<section data-screen-label="36 Section P4 Security" class="bg-ink">
+  <div class="slide-pad" style="justify-content:space-between;">
+    <div class="eyebrow" style="color: var(--accent);">PART 04 / 04</div>
+    <div>
+      <div class="num" style="font-size: 240px; line-height:1; color: var(--accent);">04</div>
+      <div class="h1" style="margin-top: 24px; color: var(--paper);">보안 원칙</div>
+      <div class="body-lg" style="margin-top: 32px; max-width: 1300px;">
+        무료 도구도 <b style="color: var(--accent);">키와 비밀값</b>은 함부로 두면 안 된다. 세 가지만 지킨다.
+      </div>
+    </div>
+    <div class="rule" style="background: var(--accent); width: 240px;"></div>
+    <div class="pageno">36</div>
+  </div>
+</section>
+
+<!-- 37. Env File -->
+<section data-screen-label="37 Env File">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">11 · .ENV · 비밀값을 코드에서 분리한다</div>
+    <div class="h3" style="margin-bottom: 40px;">키는 <span class="accent">.env에만</span>, 코드에는 <span class="accent">참조만</span>.</div>
+    <div class="grid-2">
+      <div>
+        <div class="mono small" style="margin-bottom: 12px; color: var(--bad);">✗ 위험 — 코드에 직접 박기</div>
+        <div class="prompt-block" style="background: #2a1414; border: 1px solid var(--bad);">const apiKey = "sk-proj-AbCd1234...";
+
+fetch("https://api.openai.com/...", {
+  headers: { "Authorization": "Bearer " + apiKey }
+});</div>
+        <div class="small" style="margin-top: 12px; color: var(--bad);">→ 이 파일을 GitHub에 올리는 순간 키가 공개된다.</div>
+      </div>
+      <div>
+        <div class="mono small" style="margin-bottom: 12px; color: var(--good);">✓ 권장 — .env에서 읽기</div>
+        <div class="prompt-block" style="background: #142a1a; border: 1px solid var(--good);"><span style="color:#888;">// .env (절대 커밋하지 않음)</span>
+OPENAI_API_KEY=sk-proj-AbCd1234...
+
+<span style="color:#888;">// app.js</span>
+const apiKey = process.env.OPENAI_API_KEY;</div>
+        <div class="small" style="margin-top: 12px; color: var(--good);">→ 코드는 키를 모른 채 동작한다.</div>
+      </div>
+    </div>
+    <div class="footnote">L00 · 11 ENV</div><div class="pageno">37</div>
+  </div>
+</section>
+
+<!-- 38. Gitignore -->
+<section data-screen-label="38 Gitignore">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">12 · .GITIGNORE · 올라가지 않게 막는다</div>
+    <div class="h3" style="margin-bottom: 40px;">GitHub에 <span class="accent">절대 올라가면 안 되는 파일</span> 목록.</div>
+    <div class="grid-2">
+      <div>
+        <div class="prompt-block">.env
+.env.local
+*.pem
+node_modules/
+.DS_Store
+.vscode/settings.json</div>
+        <div class="small" style="margin-top: 16px;">프로젝트 루트에 <span class="mono">.gitignore</span> 파일로 저장. Codex에게 "이 프로젝트용 .gitignore 만들어줘"라고 시켜도 된다.</div>
+      </div>
+      <div>
+        <div class="card-warm">
+          <div class="mono small accent">왜 .pem도 넣나</div>
+          <div class="body-sm" style="margin-top: 12px;">EC2 키 파일은 <b>서버 접속 비밀번호와 같은 무게</b>. 실수로 올리면 누구나 본인 서버에 접속 가능.</div>
+        </div>
+        <div class="card-warm" style="margin-top: 16px;">
+          <div class="mono small accent">올린 후 발견했다면</div>
+          <div class="body-sm" style="margin-top: 12px;">단순 삭제 + 커밋으로는 부족. <b>해당 키를 즉시 폐기하고 새로 발급</b>한 뒤 히스토리 정리.</div>
+        </div>
+      </div>
+    </div>
+    <div class="footnote">L00 · 12 GITIGNORE</div><div class="pageno">38</div>
+  </div>
+</section>
+
+<!-- 39. Leak Response -->
+<section data-screen-label="39 Leak Response" class="bg-warm">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">13 · 사고 발생 시 · 5분 안에 해야 할 일</div>
+    <div class="h3" style="margin-bottom: 40px;">키 노출은 누구나 한 번은 한다. <span class="accent">대응 속도가 중요</span>.</div>
+    <div class="stepflow">
+      <div><div class="num accent">01</div><b>키 폐기</b><span>OpenAI · GitHub · AWS 콘솔에서 즉시 Revoke / Delete</span></div>
+      <div><div class="num accent">02</div><b>새 키 발급</b><span>같은 화면에서 "Create new"</span></div>
+      <div><div class="num accent">03</div><b>.env 교체</b><span>로컬과 서버의 .env를 새 값으로</span></div>
+      <div><div class="num accent">04</div><b>한도 확인</b><span>OpenAI Usage · AWS Billing 확인</span></div>
+      <div style="background: var(--accent); color:#fff; border-color: var(--accent);"><div class="num" style="color:#fff;">05</div><b style="color:#fff;">기록 남기기</b><span style="color: rgba(255,255,255,0.92);">언제·어떻게·무엇을 했는지 메모. 다음 사람에게 도움.</span></div>
+    </div>
+    <div class="callout"><b>비용 청구가 보이면 즉시 OpenAI/AWS 고객지원에 신고</b>. 첫 노출은 사정에 따라 환불해주는 경우가 있다.</div>
+    <div class="footnote">L00 · 13 사고 대응</div><div class="pageno">39</div>
+  </div>
+</section>
+
+<!-- 40. Checklist -->
+<section data-screen-label="40 Checklist">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">14 · CHECKLIST · 14개 항목</div>
+    <div class="h3" style="margin-bottom: 32px;">강의 시작 전 모두 ✓.</div>
+    <div class="grid-2" style="gap: 36px;">
+      <div>
+        <div class="mono small accent" style="margin-bottom: 8px;">A · ACCOUNTS</div>
+        <div class="check-row"><div class="check-box"></div><div class="label">GitHub 가입 · 2FA 활성화</div><div class="meta">5 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">OpenAI 가입 · 카드 + 한도 + Key</div><div class="meta">10 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">Supabase 가입 · 첫 프로젝트</div><div class="meta">5 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">Vercel 가입 (GitHub)</div><div class="meta">2 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">Lovable 가입 (GitHub)</div><div class="meta">2 MIN</div></div>
+        <div class="mono small accent" style="margin: 24px 0 8px;">B · LOCAL</div>
+        <div class="check-row"><div class="check-box"></div><div class="label">VS Code 설치 · PATH 추가</div><div class="meta">5 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">Copilot + Copilot Chat 설치</div><div class="meta">5 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">test.js에서 회색 추천 확인</div><div class="meta">2 MIN</div></div>
+      </div>
+      <div>
+        <div class="mono small accent" style="margin-bottom: 8px;">C · SERVER</div>
+        <div class="check-row"><div class="check-box"></div><div class="label">AWS 가입 · Budgets 알림</div><div class="meta">10 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">EC2 인스턴스 생성 · .pem 보관</div><div class="meta">10 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">PowerShell SSH 접속 성공</div><div class="meta">5 MIN</div></div>
+        <div class="mono small accent" style="margin: 24px 0 8px;">D · SECURITY</div>
+        <div class="check-row"><div class="check-box"></div><div class="label">.env에 OpenAI Key 저장</div><div class="meta">2 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">.gitignore에 .env · *.pem 포함</div><div class="meta">2 MIN</div></div>
+        <div class="check-row"><div class="check-box"></div><div class="label">사고 시 5단계 절차 숙지</div><div class="meta">5 MIN</div></div>
+        <div style="margin-top: 24px; padding: 16px 20px; background: var(--paper-warm); border-left: 3px solid var(--accent); font-size: 22px;">총 약 <b>70~80분</b>. 나눠서 두 번에 끝내도 OK.</div>
+      </div>
+    </div>
+    <div class="footnote">L00 · CHECKLIST</div><div class="pageno">40</div>
+  </div>
+</section>
+
+<!-- 41. FAQ Title -->
+<section data-screen-label="41 FAQ Title" class="bg-ink">
+  <div class="slide-pad" style="justify-content:center;">
+    <div class="eyebrow" style="margin-bottom: 32px;">TROUBLESHOOTING FAQ</div>
+    <div class="h2" style="margin-bottom: 32px;">자주 막히는 다섯 가지</div>
+    <div class="body-lg" style="max-width: 1400px;">미리 알면 30분이 5분이 된다. 하나라도 해당되면 채널에 캡처 + OS + 단계를 남긴다.</div>
+    <div class="pageno">41</div>
+  </div>
+</section>
+
+<!-- 42. FAQ 1-2-3 -->
+<section data-screen-label="42 FAQ 1 2 3">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">FAQ · 01 ~ 03</div>
+    <div class="h4" style="margin-bottom: 28px;">계정 단계의 흔한 함정.</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="mono small" style="color: var(--bad);">FAQ 01</div>
+        <div class="card-title">GitHub 2FA 휴대폰 분실</div>
+        <div class="body-sm">→ 가입 시 받은 <b>recovery codes 8개</b>로 복구. 못 받았으면 GitHub 고객지원 신원 확인 절차.</div>
+        <div class="callout" style="margin-top: 16px; font-size: 22px;">예방 — 가입 직후 recovery codes 캡처 + 별도 보관.</div>
+      </div>
+      <div class="card">
+        <div class="mono small" style="color: var(--bad);">FAQ 02</div>
+        <div class="card-title">OpenAI 카드 등록 실패</div>
+        <div class="body-sm">→ 한국 발급 카드 중 일부는 거절됨. <b>해외 결제 가능 카드</b>로 변경. Wise/트래블 카드도 가능.</div>
+        <div class="callout" style="margin-top: 16px; font-size: 22px;">메시지 — "Your card was declined". 카드 잔액 문제 아닐 수 있음.</div>
+      </div>
+      <div class="card">
+        <div class="mono small" style="color: var(--bad);">FAQ 03</div>
+        <div class="card-title">Supabase 일시 정지</div>
+        <div class="body-sm">→ 7일 미접속 시 자동. <b>Restore</b> 버튼 클릭 1분이면 복구. 데이터는 그대로 유지.</div>
+        <div class="callout" style="margin-top: 16px; font-size: 22px;">예방 — 주 1회 대시보드 방문. 강의 일정에 자동 알림 추가.</div>
+      </div>
+    </div>
+    <div class="footnote">L00 · FAQ</div><div class="pageno">42</div>
+  </div>
+</section>
+
+<!-- 43. FAQ 4-5 -->
+<section data-screen-label="43 FAQ 4 5">
+  <div class="slide-pad">
+    <div class="eyebrow" style="margin-bottom: 28px;">FAQ · 04 ~ 05</div>
+    <div class="h4" style="margin-bottom: 28px;">로컬·서버 단계의 흔한 함정.</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="mono small" style="color: var(--bad);">FAQ 04</div>
+        <div class="card-title">EC2 SSH "Permissions are too open"</div>
+        <div class="body-sm">→ Windows 기본 권한이 너무 열려 있어서. <span class="mono">icacls</span> 명령으로 권한 잠그기.</div>
+        <div class="terminal" style="font-size: 18px; margin-top: 16px;"><span class="prompt-sign">PS&gt;</span> <span class="cmd">icacls vc-key.pem /inheritance:r</span>
+<span class="prompt-sign">PS&gt;</span> <span class="cmd">icacls vc-key.pem /grant:r "$($env:USERNAME):(R)"</span></div>
+      </div>
+      <div class="card">
+        <div class="mono small" style="color: var(--bad);">FAQ 05</div>
+        <div class="card-title">Copilot "결제가 거절되었습니다"</div>
+        <div class="body-sm">→ 회사 카드는 GitHub 결제가 막혀 있는 경우 흔함. 개인 카드로 30일 체험 → 회사에 정식 라이선스 신청.</div>
+        <div class="callout" style="margin-top: 16px; font-size: 22px;">대안 — <b>학생/오픈소스 기여자</b>는 무료. github.com/education 또는 Maintainer 자격 확인.</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top: 32px;">위 5개에 해당하지 않는 막힘은 — <b>OS · 어디까지 했는지 · 화면 메시지 캡처</b> 세 가지를 채널에 올린다.</div>
+    <div class="footnote">L00 · FAQ</div><div class="pageno">43</div>
+  </div>
+</section>
+
+<!-- 44. Closing -->
+<section data-screen-label="44 Closing" class="bg-accent">
+  <div class="slide-pad" style="justify-content:center;">
+    <div class="eyebrow" style="color: rgba(255,255,255,0.85); margin-bottom: 40px;">CLOSING — LECTURE 00</div>
+    <div class="h1" style="color: #fff; margin-bottom: 56px;">환경 구성은 한 번이면 된다.<br>이제 <span style="text-decoration: underline; text-decoration-thickness: 6px; text-underline-offset: 12px;">만드는 시간</span>이다.</div>
+    <div class="body-lg" style="color: rgba(255,255,255,0.95); max-width: 1500px;">
+      체크리스트 14개가 모두 ✓ 되었다면, 다음 시간 <b>1강 — 도대체 바이브코딩이 뭐야?</b>에서 만난다.
+    </div>
+    <div class="pageno" style="color: rgba(255,255,255,0.7);">44</div>
+  </div>
+</section>
+
+<!-- 45. End -->
+<section data-screen-label="45 End">
+  <div class="slide-pad" style="justify-content:center; align-items:center; text-align:center;">
+    <div class="eyebrow" style="margin-bottom: 40px;">FIN · LECTURE 00</div>
+    <div class="h1">감사합니다.</div>
+    <div class="body-lg" style="margin-top: 40px;">막히면 <b>OS · 단계 · 캡처</b> 세 가지로 채널에 질문.</div>
+    <div class="mono small" style="margin-top: 56px; color: var(--ink-mute); letter-spacing: 0.12em;">NEXT · LECTURE 01 — 도대체 바이브코딩이 뭐야?</div>
+    <div class="pageno">45</div>
+  </div>
+</section>
+
+</deck-stage>
+</body>
+</html>
